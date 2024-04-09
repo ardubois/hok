@@ -22,7 +22,7 @@ vet1 = Matrex.new(list)
 ref1= Hok.new_gmatrex(vet1)
 ref2= Hok.new_gmatrex(1,n)
 
-map=GPotion.load(&PMap.map/4)
+map=Hok.load(&PMap.map/4)
 
 threadsPerBlock = 128;
 numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
@@ -30,11 +30,11 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,n, Hok.load_fun(&Map.inc/1)])
+Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,n, Hok.load_fun(&PMap.inc/1)])
 Hok.synchronize()
 
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref3)
+result = Hok.get_gmatrex(ref2)
 IO.inspect result
