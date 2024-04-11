@@ -9,9 +9,12 @@ float inc(float v)
 __global__
 void inc_vet(float *result, float *a, int n)
 {
+	// void **fun_res;
+
+	float (*fun)(float) = inc; 
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
-            result[i] = inc(a[i]);
+            result[i] = fun(a[i]);
 }
 
 
