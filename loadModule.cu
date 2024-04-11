@@ -1,5 +1,5 @@
-__global__
-void inc(float v)
+__device__
+float inc(float v)
 {
  return v+1;
 }
@@ -20,6 +20,11 @@ int main (int argc, char *argv[]) {
 
 	int n = 10000;
 
+	int block_size = 32;
+	int nBlocks = (nBodies + block_size - 1) / block_size;
+
+	printf("block_size = %d   nBlocks = %d total = %d\n", block_size,nBlocks,block_size*nBlocks)
+
 	a = (float*)malloc(n*sizeof(float));
 
 	
@@ -33,9 +38,9 @@ int main (int argc, char *argv[]) {
 	cudaMalloc((void**)&dev_a, n*sizeof(float));
 	cudaMalloc((void**)&dev_resp, n*sizeof(float));
 	
-    cudaMemcpy(dev_a, a, N*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(dev_a, a, n*sizeof(float), cudaMemcpyHostToDevice);
 	
-	inc_vet<<<blocksPerGrid, threadsPerBlock>>>(dev_result, dev_a , n);
+	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
 
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
