@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 __device__
 float inc(float v)
 {
@@ -21,7 +23,7 @@ int main (int argc, char *argv[]) {
 	int n = 10000;
 
 	int block_size = 32;
-	int nBlocks = (nBodies + block_size - 1) / block_size;
+	int nBlocks = (n + block_size - 1) / block_size;
 
 	printf("block_size = %d   nBlocks = %d total = %d\n", block_size,nBlocks,block_size*nBlocks)
 
