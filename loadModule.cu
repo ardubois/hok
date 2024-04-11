@@ -25,7 +25,7 @@ int main (int argc, char *argv[]) {
 	int block_size = 32;
 	int nBlocks = (n + block_size - 1) / block_size;
 
-	printf("block_size = %d   nBlocks = %d total = %d\n", block_size,nBlocks,block_size*nBlocks)
+	printf("block_size = %d   nBlocks = %d total = %d\n", block_size,nBlocks,block_size*nBlocks);
 
 	a = (float*)malloc(n*sizeof(float));
 
@@ -46,13 +46,12 @@ int main (int argc, char *argv[]) {
 
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
-	c = 0;
 	for(int i=0; i<10; i++) {
 		printf("resp[%i] = %f", i,resp[i]);
 	}
    
 	cudaFree(dev_a);
-	cudaFree(dev_resp;
+	cudaFree(dev_resp);
     
 	
 	free(a);
