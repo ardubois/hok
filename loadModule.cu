@@ -3,7 +3,7 @@
 __device__
 float inc(float v)
 {
- return v+1;
+ return v+2;
 }
 
 __global__
@@ -47,7 +47,7 @@ int main (int argc, char *argv[]) {
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<10; i++) {
-		printf("resp[%i] = %f", i,resp[i]);
+		printf("resp[%i] = %f\n", i,resp[i]);
 	}
    
 	cudaFree(dev_a);
