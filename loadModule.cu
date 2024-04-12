@@ -30,6 +30,8 @@ __device__ float (*fun_pointer)(float) = inc;
 int main (int argc, char *argv[]) {
 	float *a, *resp, *dev_a, *dev_resp;
 
+	float (*pfun)(float);
+
 	int n = 10000;
 
 	int block_size = 32;
@@ -70,9 +72,10 @@ int main (int argc, char *argv[]) {
 
 	printf("retorno %d\n", ret);
 
+    cudaMemcpy((void*)pfun,(void*)fun_pointer, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
 
 
-	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,fun_pointer);
+	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,pfun);
 
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
