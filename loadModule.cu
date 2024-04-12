@@ -71,7 +71,7 @@ int main (int argc, char *argv[]) {
 	printf("retorno %d funs= %d\n", ret,funs);
 
 
-	ret = cuModuleGetFunction(&function, cuModule, "inc2");
+	ret = cuModuleGetFunction(&function, cuModule, "inc");
 
 	printf("retorno %d\n", ret);
 
