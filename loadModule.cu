@@ -72,7 +72,7 @@ int main (int argc, char *argv[]) {
 
 	printf("retorno %d\n", ret);
 
-    cudaMemcpy((void*)pfun,(void*)fun_pointer, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
+    cudaMemcpy((void*)pfun,(void*)inc, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
 
 
 	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,pfun);
