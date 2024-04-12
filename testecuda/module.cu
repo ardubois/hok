@@ -9,7 +9,7 @@ float inc(float v)
 
 typedef float (*func)(float);
 
-//__device__ func ptr_inc_fun = inc;
+__device__ func ptr_inc_fun = inc;
 
 
 extern "C" func ptr_inc()
