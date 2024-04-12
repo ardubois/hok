@@ -1,5 +1,9 @@
 #include<stdio.h>
-#include "cuda.h"
+
+
+#include <cuda.h>
+#include <builtin_types.h>
+#include <cuda_runtime.h>
 
 __device__
 float inc(float v)
@@ -51,14 +55,14 @@ int main (int argc, char *argv[]) {
 
     int ret = cuModuleLoad(&cuModule, "loadModule.cubin");
 
-	printf("retorno %d", ret);
+	printf("retorno %d\n", ret);
 
 	CUfunction function;
 
 
 	ret = cuModuleGetFunction(&function, cuModule, "inc");
 
-	printf("retorno %d", ret);
+	printf("retorno %d\n", ret);
 
 
 
