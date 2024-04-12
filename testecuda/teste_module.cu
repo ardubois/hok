@@ -25,7 +25,7 @@ int main()
 
 void (*launch)();
 launch= (void(*)())dlsym( m_handle, "launch");
-
+printf("ok.\n");
 (*launch)();
 
 }
