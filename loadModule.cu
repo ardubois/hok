@@ -18,7 +18,7 @@ void inc_vet(float *result, float *a, int n,float (*fun)(float))
 {
 	// void **fun_res;
 
-	
+	fun = inc;
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
             result[i] = fun(a[i]);
