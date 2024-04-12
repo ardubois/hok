@@ -4,7 +4,7 @@
 #include <dlfcn.h>
 typedef float (*func)(float);
 
-main()
+int main()
 {
 
  void * m_handle = dlopen("module.so", RTLD_NOW);
@@ -15,16 +15,17 @@ main()
 
 
 
-func (*fun)();
-fun= (func(*)())dlsym( m_handle, "inc_ptr");
+//func (*fun)();
+//fun= (func(*)())dlsym( m_handle, "inc_ptr");
 
-printf("ok1!\n");
-func pointer = fun();
+//printf("ok1!\n");
+//func pointer = fun();
 
-printf("ok2!\n");
-void (*launch)(func);
-launch= (void(*)(func))dlsym( m_handle, "launch");
+//printf("ok2!\n");
 
-launch(pointer);
+void (*launch)();
+launch= (void(*)())dlsym( m_handle, "launch");
+
+launch();
 
 }

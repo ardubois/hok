@@ -9,6 +9,9 @@ float inc(float v)
 
 typedef float (*func)(float);
 
+__device__ func ptr_inc_fun = inc;
+
+
 extern "C" func ptr_inc()
 {
 
@@ -29,7 +32,7 @@ void inc_vet(float *result, float *a, int n,float (*fun)(float))
             result[i] = fun(a[i]);
 }
 
-extern "C" void launch(float (*fptr)(float))
+extern "C" void launch()
 {
 
     float *a, *resp, *dev_a, *dev_resp;
@@ -51,6 +54,10 @@ extern "C" void launch(float (*fptr)(float))
 	cudaMalloc((void**)&dev_resp, n*sizeof(float));
 	
     cudaMemcpy(dev_a, a, n*sizeof(float), cudaMemcpyHostToDevice);
+
+    float(*fptr)(float) =  NULL;
+
+    cudaMemcpy((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
 
     inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,fptr);
 
