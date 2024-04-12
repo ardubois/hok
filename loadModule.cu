@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <cuda_runtime.h>
 
-__device__
+extern "C" __device__
 float inc(float v)
 {
  return v+2;
@@ -53,7 +53,7 @@ int main (int argc, char *argv[]) {
 
 	CUmodule cuModule;
 
-    int ret = cuModuleLoad(&cuModule, "/home/dubois/hok/loadModule.cubin");
+    int ret = cuModuleLoad(&cuModule, "/home/dubois/hok/loadModule.ptx");
 
 	printf("retorno %d\n", ret);
 
