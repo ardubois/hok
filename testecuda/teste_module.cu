@@ -15,7 +15,7 @@ printf("inicio.\n");
       }
 
 
-
+printf("m handle %p\n",m_handle);
 //func (*fun)();
 //fun= (func(*)())dlsym( m_handle, "inc_ptr");
 
