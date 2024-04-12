@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <cuda_runtime.h>
 
-__global__
+extern "C" __global__
 void inc2(float v)
 {
  int x = v;
