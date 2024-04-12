@@ -5,11 +5,6 @@
 #include <builtin_types.h>
 #include <cuda_runtime.h>
 
-extern "C" __global__
-void inc2(float v)
-{
- int x = v;
-}
 
 extern "C"
 __device__
@@ -19,17 +14,17 @@ float inc(float v)
 }
 
 __global__
-void inc_vet(float *result, float *a, int n)
+void inc_vet(float *result, float *a, int n,float (*fun)(float))
 {
 	// void **fun_res;
 
-	float (*fun)(float) = inc; 
+	
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
             result[i] = fun(a[i]);
 }
 
-
+__device__ float (*fun_pointer)(float) = inc;
 
 
 int main (int argc, char *argv[]) {
@@ -77,7 +72,7 @@ int main (int argc, char *argv[]) {
 
 
 
-	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
+	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,fun_pointer);
 
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
