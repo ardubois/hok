@@ -61,7 +61,7 @@ extern "C" void launch()
 
     inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
 
-	//cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
+	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<10; i++) {
 		printf("resp[%i] = %f\n", i,resp[i]);
