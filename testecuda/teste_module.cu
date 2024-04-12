@@ -9,7 +9,7 @@ int main()
 
 printf("inicio.\n");
  void * m_handle = dlopen("module.so", RTLD_NOW);
-  if (!ext_mod) { 
+  if (!m_handle) { 
    fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
    exit (EXIT_FAILURE); }
 
