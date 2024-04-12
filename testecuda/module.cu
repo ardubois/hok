@@ -22,14 +22,14 @@ extern "C" func ptr_inc()
 
 
 __global__
-void inc_vet(float *result, float *a, int n,float (*fun)(float))
+void inc_vet(float *result, float *a, int n)//,float (*fun)(float))
 {
 	// void **fun_res;
 
 	fun = inc;
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
-            result[i] = fun(a[i]);
+            result[i] = inc(a[i]);
 }
 
 extern "C" void launch()
@@ -57,9 +57,9 @@ extern "C" void launch()
 
     float(*fptr)(float) =  NULL;
 
-    cudaMemcpy((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
+   // cudaMemcpy((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
 
-    inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,fptr);
+    inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
 
 	//cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
