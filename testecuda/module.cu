@@ -34,7 +34,7 @@ void inc_vet(float *result, float *a, int n)//,float (*fun)(float))
 
 extern "C" void launch()
 {
-
+    printf("hello world\n");
     float *a, *resp, *dev_a, *dev_resp;
 
 
