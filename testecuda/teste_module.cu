@@ -26,6 +26,6 @@ int main()
 void (*launch)();
 launch= (void(*)())dlsym( m_handle, "launch");
 
-launch();
+(*launch)();
 
 }
