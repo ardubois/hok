@@ -16,6 +16,12 @@ printf("inicio.\n");
 
 
 printf("m handle %p\n",m_handle);
+char *errstr;
+
+
+errstr = dlerror();
+if (errstr != NULL)
+printf ("A dynamic linking error occurred: (%s)\n", errstr);
 //func (*fun)();
 //fun= (func(*)())dlsym( m_handle, "inc_ptr");
 
