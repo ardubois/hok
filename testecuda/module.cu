@@ -61,6 +61,14 @@ extern "C" void launch()
 
     inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
 
+    cudaError_t error_gpu = cudaGetLastError();
+    if(error_gpu != cudaSuccess)
+     { char message[200];
+       strcpy(message,"Error kernel call: ");
+       strcat(message, cudaGetErrorString(error_gpu));
+       printf(message);
+     }
+
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<10; i++) {
