@@ -11,7 +11,7 @@ void inc2(float v)
  int x = v;
 }
 
-
+extern "C"
 __device__
 float inc(float v)
 {
