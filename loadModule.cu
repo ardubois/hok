@@ -5,7 +5,7 @@
 #include <builtin_types.h>
 #include <cuda_runtime.h>
 
-extern "C" __device__
+extern "C" __global__
 float inc(float v)
 {
  return v+2;
