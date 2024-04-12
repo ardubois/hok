@@ -58,7 +58,7 @@ extern "C" void launch()
    float(*fptr)(float) =  NULL;
 
     cudaMemcpy((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
-
+     printf("cuda mem depois \n");
     inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,fptr);
 
     cudaError_t error_gpu = cudaGetLastError();
