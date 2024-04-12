@@ -18,8 +18,10 @@ main()
 func (*fun)();
 fun= (func(*)())dlsym( m_handle, "inc_ptr");
 
+printf("ok1!\n");
 func pointer = fun();
 
+printf("ok2!\n");
 void (*launch)(func);
 launch= (void(*)(func))dlsym( m_handle, "launch");
 
