@@ -53,7 +53,7 @@ int main (int argc, char *argv[]) {
 
 	CUmodule cuModule;
 
-    int ret = cuModuleLoad(&cuModule, "./loadModule.cubin");
+    int ret = cuModuleLoad(&cuModule, "/home/dubois/hok/loadModule.cubin");
 
 	printf("retorno %d\n", ret);
 
