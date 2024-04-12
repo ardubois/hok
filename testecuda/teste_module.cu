@@ -7,7 +7,7 @@ typedef float (*func)(float);
 int main()
 {
 
-printf("inicio.\n")
+printf("inicio.\n");
  void * m_handle = dlopen("module.so", RTLD_NOW);
   if(m_handle== NULL)  
       { char message[200];
