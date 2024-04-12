@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include "cuda.h"
 
 __device__
 float inc(float v)
@@ -44,7 +45,23 @@ int main (int argc, char *argv[]) {
 	cudaMalloc((void**)&dev_resp, n*sizeof(float));
 	
     cudaMemcpy(dev_a, a, n*sizeof(float), cudaMemcpyHostToDevice);
-	
+
+
+	CUmodule cuModule;
+
+    int ret = cuModuleLoad(&cuModule, "loadModule.cubin");
+
+	printf("retorno %d", ret);
+
+	CUfunction function;
+
+
+	ret = cuModuleGetFunction(&function, cuModule, "inc");
+
+	printf("retorno %d", ret);
+
+
+
 	inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n);
 
 	cudaMemcpy(resp,dev_resp, n*sizeof(float), cudaMemcpyDeviceToHost);
