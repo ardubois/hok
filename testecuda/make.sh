@@ -1,3 +1,4 @@
 git pull
-nvcc --shared --compiler-options '-fPIC' -o mudule.so module.cu
+nvcc --shared -g --compiler-options '-fPIC' -o mudule.so module.cu
 nvcc teste_module.cu
+
