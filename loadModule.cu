@@ -5,7 +5,14 @@
 #include <builtin_types.h>
 #include <cuda_runtime.h>
 
-extern "C" __global__
+__global__
+void inc2(float v)
+{
+ int x = v;
+}
+
+
+__device__
 float inc(float v)
 {
  return v+2;
@@ -19,7 +26,7 @@ void inc_vet(float *result, float *a, int n)
 	float (*fun)(float) = inc; 
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
-            result[i] = (*fun)(a[i]);
+            result[i] = fun(a[i]);
 }
 
 
@@ -58,9 +65,13 @@ int main (int argc, char *argv[]) {
 	printf("retorno %d\n", ret);
 
 	CUfunction function;
+    int funs = 0;
+//	ret = cuModuleGetFunctionCount(&funs,cuModule) ;
+
+	printf("retorno %d funs= %d\n", ret,funs);
 
 
-	ret = cuModuleGetFunction(&function, cuModule, "inc");
+	ret = cuModuleGetFunction(&function, cuModule, "inc2");
 
 	printf("retorno %d\n", ret);
 
