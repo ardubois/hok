@@ -26,7 +26,8 @@ __global__
 void inc_vet(float *result, float *a, int n, float (*fun)(float))
 {
 	// void **fun_res;
-
+    printf("fun %f\n",fun);
+	printf("inc %f\n",inc);
 	fun = inc;
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
