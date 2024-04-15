@@ -38,6 +38,7 @@ __global__
 void copy_ptr(func f)
 {
 	 f = ptr_inc_fun;
+	 printf("kernel f %p\n", f);
 }
 
 extern "C" void launch()
