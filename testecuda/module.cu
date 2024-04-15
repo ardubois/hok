@@ -59,7 +59,7 @@ extern "C" void launch()
 
    float(*fptr)(float) =  NULL;
 
-    cudaMemcpyFromSymbol((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
+    cudaMemcpy((void*)fptr,(void*)ptr_inc_fun, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
      printf("cuda mem depois \n %f", fptr);
    // inc_vet<<<nBlocks, block_size>>>(dev_resp, dev_a , n,ptr_inc_fun);
 inc_vet<<<2, 2>>>(dev_resp, dev_a , n,fptr);
