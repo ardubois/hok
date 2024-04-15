@@ -28,7 +28,7 @@ void inc_vet(float *result, float *a, int n, float (*fun)(float))
 	// void **fun_res;
     printf("fun %p\n",fun);
 	printf("inc %p\n",inc);
-	fun = inc;
+	fun = ptr_inc_fun;
 	int i= (threadIdx.x + (blockIdx.x * blockDim.x));
 	if(i < n)   
             result[i] = fun(a[i]);
