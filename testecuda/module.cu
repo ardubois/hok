@@ -66,7 +66,7 @@ extern "C" void launch()
 
 	copy_ptr<<<1,1>>>(dev_inc_pointer);
 
-	cudaMemcpy(host_inc_pointer, dev_inc_pointer, sizeof(func), cudaMemcpyDeviceToHost);
+	cudaMemcpy((void*) host_inc_pointer, (void*) dev_inc_pointer, sizeof(func), cudaMemcpyDeviceToHost);
 
 	printf("pointer copied %p\n", host_inc_pointer);
 
