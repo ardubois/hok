@@ -34,6 +34,12 @@ void inc_vet(float *result, float *a, int n, float (*fun)(float))
             result[i] = fun(a[i]);
 }
 
+__global__
+void copy_ptr(func f)
+{
+	 f = inc;
+}
+
 extern "C" void launch()
 {
     printf("hello world\n");
@@ -52,6 +58,19 @@ extern "C" void launch()
 		a[i] = i;
 	}
     
+
+	func dev_inc_pointer;
+	func host_inc_pointer;
+
+	cudaMalloc((void**) &dev_inc_pointer, sizeof(func));
+
+	copy_ptr<<<1,1>>>(dev_inc_pointer);
+
+	cudaMemcpy(host_inc_pointer, dev_inc_pointer, sizeof(func), cudaMemcpyDeviceToHost);
+
+	printf("pointer copied %p\n", host_inc_pointer);
+
+
 	cudaMalloc((void**)&dev_a, n*sizeof(float));
 	cudaMalloc((void**)&dev_resp, n*sizeof(float));
 	
