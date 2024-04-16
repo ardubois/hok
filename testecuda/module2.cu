@@ -1,4 +1,5 @@
-include <stdio.h>
+#include <stdio.h>
+
 #define gpuErrchk(val) \
     cudaErrorCheck(val, __FILE__, __LINE__, true)
 void cudaErrorCheck(cudaError_t err, char* file, int line, bool abort)
