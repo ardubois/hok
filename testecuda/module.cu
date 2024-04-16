@@ -69,7 +69,7 @@ extern "C" void launch()
 	copy_ptr<<<1,1>>>(dev_inc_pointer);
    printf("afterkernel launch\n");
 	cudaMemcpyFromSymbol((void*) host_inc_pointer, (void*) dev_inc_pointer, sizeof(func), cudaMemcpyDeviceToHost);
-    printf("after memory  copy %f\n",host_inc_pointer);
+    printf("after memory  copy %p\n",host_inc_pointer);
 //	printf("pointer copied %p\n", host_inc_pointer);
 
 
