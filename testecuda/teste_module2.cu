@@ -39,7 +39,7 @@ host_function_ptr = get_ptr();
 printf("host function pointer main %p", host_function_ptr);
 
 void (*launch)();
-launch= (void(*)())dlsym( m_handle, "launch");
+launch= (void(*)(fun))dlsym( m_handle, "launch");
 printf("ok.\n");
 if (launch==NULL) {printf("NULL\n");}
 (*launch)(host_function_ptr);
