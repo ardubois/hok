@@ -30,7 +30,7 @@ printf ("A dynamic linking error occurred: (%s)\n", errstr);
 //printf("ok2!\n");
 func host_function_ptr;
 
-host_function_ptr = func (*get_ptr)();
+func (*get_ptr)();
 
 get_ptr = (func (*)())dlsym( m_handle, "get_pointer");
 
