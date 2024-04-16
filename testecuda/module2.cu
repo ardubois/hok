@@ -32,6 +32,8 @@ extern "C" void launch()
     // copy function pointer value from device to host
     gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, dev_func_ptr, sizeof(pfunc)));
     // pass the copied function pointer in kernel
+
+    printf("pointeiro %p", host_function_ptr);
     ker_func<<<1,1>>>(host_function_ptr);
 
     gpuErrchk(cudaPeekAtLastError());
