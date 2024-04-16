@@ -36,6 +36,8 @@ get_ptr = (func (*)())dlsym( m_handle, "get_pointer");
 
 host_function_ptr = get_ptr();
 
+printf("host function pointer main %p", host_function_ptr);
+
 void (*launch)();
 launch= (void(*)())dlsym( m_handle, "launch");
 printf("ok.\n");
