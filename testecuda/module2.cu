@@ -35,7 +35,7 @@ extern "C" pfunc get_pointer()
 }
 
 
-extern "C" void launch()
+extern "C" void launch(pfunc myptr)
 {
     // create a host function pointer
     pfunc host_function_ptr;
@@ -45,7 +45,7 @@ extern "C" void launch()
 
     printf("pointeiro %p\n", host_function_ptr);
 
-    ker_func<<<1,1>>>(host_function_ptr);
+    ker_func<<<1,1>>>(myptr);
 
     gpuErrchk(cudaPeekAtLastError());
     gpuErrchk(cudaDeviceSynchronize());
