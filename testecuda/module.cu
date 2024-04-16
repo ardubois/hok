@@ -35,9 +35,9 @@ void inc_vet(float *result, float *a, int n, float (*fun)(float))
 }
 
 __global__
-void copy_ptr(func *f)
+void copy_ptr(func f)
 {
-	 *f = ptr_inc_fun;
+	 f = ptr_inc_fun;
 	 printf("kernel f %p\n", f);
 	 printf("kernel f %p\n", *f);
 }
