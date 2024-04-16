@@ -35,5 +35,5 @@ extern "C" void launch()
     gpuErrchk(cudaPeekAtLastError());
     gpuErrchk(cudaDeviceSynchronize());
 
-    return 0;
+ 
 }
