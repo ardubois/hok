@@ -38,12 +38,12 @@ extern "C" pfunc get_pointer()
 extern "C" void launch(pfunc myptr)
 {
     // create a host function pointer
-    pfunc host_function_ptr;
+ //   pfunc host_function_ptr;
     // copy function pointer value from device to host
-    gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, dev_func_ptr, sizeof(pfunc)));
+   // gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, dev_func_ptr, sizeof(pfunc)));
     // pass the copied function pointer in kernel
-    printf("my pointer %p\n", myptr);
-    printf("pointeiro %p\n", host_function_ptr);
+   // printf("my pointer %p\n", myptr);
+   // printf("pointeiro %p\n", host_function_ptr);
 
     ker_func<<<1,1>>>(myptr);
 
