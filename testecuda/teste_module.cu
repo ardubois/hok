@@ -7,7 +7,7 @@ typedef float (*func)(float);
 int main()
 {
 
- void * m_handle = dlopen("./module2.so", RTLD_NOW);
+ void * m_handle = dlopen("./module.so", RTLD_NOW);
   if (!m_handle) { 
    fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
    exit (EXIT_FAILURE); }
@@ -19,7 +19,7 @@ printf ("A dynamic linking error occurred: (%s)\n", errstr);
 
 func host_function_ptr;
 func (*get_ptr)();
-get_ptr = (func (*)())dlsym( m_handle, "get_ptr_five_times");
+get_ptr = (func (*)())dlsym( m_handle, "get_pointer");
 host_function_ptr = get_ptr();
 printf("host function pointer main %p", host_function_ptr);
 
