@@ -241,7 +241,9 @@ defmacro deff(header, do: body) do
  ptr =      Hok.CudaBackend.gen_function_ptr(fname)
  get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
 
+ IO.puts "pointer:"
  IO.puts ptr
+ IO.puts "get_ptr:"
  IO.puts get_ptr
 
  #accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
