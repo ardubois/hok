@@ -20,9 +20,9 @@ __device__ float dev_func(float arg) {
 // create device function pointer here
 __device__ pfunc dev_func_ptr = dev_func;
 
-__global__ void ker_func(pfunc fnc) {
+__global__ void ker_func(pfunc fnc,pfunc func2) {
     // call function through device function pointer
-    printf("%f\n", fnc(2));
+    printf("%f\n", fnc2(fnc(2)));
 }
 
 extern "C" pfunc get_pointer()
@@ -52,7 +52,7 @@ extern "C" pfunc get_ptr_five_times()
 }
 
 
-extern "C" void launch(pfunc myptr)
+extern "C" void launch(pfunc myptr,myptr2)
 {
     // create a host function pointer
  //   pfunc host_function_ptr;
@@ -62,7 +62,7 @@ extern "C" void launch(pfunc myptr)
    // printf("my pointer %p\n", myptr);
    // printf("pointeiro %p\n", host_function_ptr);
 
-    ker_func<<<1,1>>>(myptr);
+    ker_func<<<1,1>>>(myptr,myptr2);
 
     gpuErrchk(cudaPeekAtLastError());
     gpuErrchk(cudaDeviceSynchronize());
