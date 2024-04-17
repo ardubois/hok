@@ -30,7 +30,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-#Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,n, Hok.load_fun(&PMap.inc/1)])
+Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,n, Hok.load_fun(&PMap.inc/1)])
 #Hok.synchronize()
 
 next = System.monotonic_time()
