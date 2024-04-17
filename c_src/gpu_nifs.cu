@@ -357,7 +357,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
   strcpy(func_name,"get_");
   strcat(func_name,kernel_name);
-  strcat(func_name,"_ptr")
+  strcat(func_name,"_ptr");
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
  // strcat(func_name,"_call");
