@@ -54,7 +54,9 @@ if (err != CUDA_SUCCESS) {
         exit(-1);
 }
 
-
+checkCudaErrors( cuLaunchKernel(function, 1, 1, 1,  // Nx1x1 blocks
+                                    1, 1, 1,            // 1x1x1 threads
+                                    0, 0, {}, 0) );
 
 
 }
