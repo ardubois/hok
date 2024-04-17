@@ -41,12 +41,12 @@ if (err != CUDA_SUCCESS) {
 
 err = cuModuleLoad(&module, "module.ptx");
 if (err != CUDA_SUCCESS) {
-        fprintf(stderr, "* Error loading the module %s\n", module_file);
+        fprintf(stderr, "* Error loading the module %s\n", "module.ptx");
         cuCtxDetach(context);
         exit(-1);
 }
 
-err = cuModuleGetFunction(&function, module, kernel_name);
+err = cuModuleGetFunction(&function, module, "simple_kernel");
 
 if (err != CUDA_SUCCESS) {
         fprintf(stderr, "* Error getting kernel function %s\n", kernel_name);
