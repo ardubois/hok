@@ -11,7 +11,7 @@ void cudaErrorCheck(cudaError_t err, char* file, int line, bool abort)
     }
 }
 
-//typedef float (*pfunc)(float arg);
+typedef float (*pfunc)(float arg);
 
 __device__ float dev_func(float arg) {
     return arg * arg;
