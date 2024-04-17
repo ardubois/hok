@@ -24,7 +24,7 @@ host_function_ptr = get_ptr();
 printf("host function pointer main %p", host_function_ptr);
 
 
- void * m_handle2 = dlopen("./module.so", RTLD_NOW);
+/* void * m_handle2 = dlopen("./module.so", RTLD_NOW);
   if (!m_handle2) { 
    fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
    exit (EXIT_FAILURE); }
@@ -33,10 +33,10 @@ errstr = dlerror();
 if (errstr != NULL)
 printf ("A dynamic linking error occurred: (%s)\n", errstr);
 
-
+*/
 
 void (*launch)(func);
-launch= (void(*)(func))dlsym( m_handle2, "launch");
+launch= (void(*)(func))dlsym( m_handle, "launch");
 printf("ok.\n");
 if (launch==NULL) {printf("NULL\n");}
 (*launch)(host_function_ptr);
