@@ -51,6 +51,13 @@ extern "C" pfunc get_ptr_five_times()
    
 }
 
+extern "C"
+__global__ void simple_kernel() {
+    // call function through device function pointer
+    printf("hello world");
+}
+
+
 
 extern "C" void launch(pfunc myptr,pfunc myptr2)
 {
