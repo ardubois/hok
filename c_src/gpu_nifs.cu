@@ -376,7 +376,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 
-  printf("function name %s \n lib name %s \n", func_name, lib_name);
+  printf("function name %s \nlib name %s \n", func_name, lib_name);
 
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
@@ -390,6 +390,8 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   // Let's create conn and let the resource point to it
   
   *kernel_res = ptr;
+
+  printf("kernel resource %p", *kernel_res);
   
   // We can now make the Erlang term that holds the resource...
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
