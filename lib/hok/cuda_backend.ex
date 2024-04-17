@@ -7,7 +7,7 @@ defmodule Hok.CudaBackend do
     "{\n" <>
       "\tvoid* host_function_ptr;\n" <>
       "\tcudaMemcpyFromSymbol(&host_function_ptr, #{fname}_ptr, sizeof(void*));\n" <>
-      "\treturn host_function_ptr;\n"
+      "\treturn host_function_ptr;\n" <>
     "}\n")
   end
   def gen_kernel(name,para,body) do
