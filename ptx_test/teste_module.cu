@@ -49,7 +49,7 @@ if (err != CUDA_SUCCESS) {
 err = cuModuleGetFunction(&function, module, "simple_kernel");
 
 if (err != CUDA_SUCCESS) {
-        fprintf(stderr, "* Error getting kernel function %s\n", kernel_name);
+        fprintf(stderr, "* Error getting kernel function %s\n", "simple_kernel");
         cuCtxDetach(context);
         exit(-1);
 }
