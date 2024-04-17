@@ -355,7 +355,9 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   enif_get_string(env,e_name_fun,kernel_name,size_name_fun+1,ERL_NIF_LATIN1);
   enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
 
-  strcpy(func_name,kernel_name);
+  strcpy(func_name,"get_");
+  strcat(func_name,kernel_name);
+  strcat(func_name,"_ptr")
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
  // strcat(func_name,"_call");
@@ -374,14 +376,18 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 
-  void (*fn)();
-  fn= (void (*)())dlsym( m_handle, func_name);
+  printf("function name %s \n lib name %s \n", func_name, lib_name);
+
+  void* (*fn)();
+  fn= (void* (*)())dlsym( m_handle, func_name);
   
+  void* ptr = fn();
+
   void (**kernel_res)() = (void (**)()) enif_alloc_resource(KERNEL_TYPE, sizeof(void *));
 
   // Let's create conn and let the resource point to it
   
-  *kernel_res = fn;
+  *kernel_res = ptr;
   
   // We can now make the Erlang term that holds the resource...
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
