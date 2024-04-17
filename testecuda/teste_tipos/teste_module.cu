@@ -17,9 +17,9 @@ if (errstr != NULL)
 printf ("A dynamic linking error occurred: (%s)\n", errstr);
 
 
-void* host_function_ptr;
-void* (*get_ptr)();
-get_ptr = (void* (*)())dlsym( m_handle, "get_ptr_five_times");
+func host_function_ptr;
+func (*get_ptr)();
+get_ptr = (func (*)())dlsym( m_handle, "get_ptr_five_times");
 host_function_ptr = get_ptr();
 printf("host function pointer main %p", host_function_ptr);
 
@@ -32,9 +32,9 @@ errstr = dlerror();
 if (errstr != NULL)
 printf ("A dynamic linking error occurred: (%s)\n", errstr);
 
-void* host_function_ptr2;
-void* (*get_ptr2)();
-get_ptr2 = (void* (*)())dlsym( m_handle2, "get_pointer");
+func host_function_ptr2;
+func (*get_ptr2)();
+get_ptr2 = (func (*)())dlsym( m_handle2, "get_pointer");
 host_function_ptr2 = get_ptr2();
 printf("host function pointer main %p", host_function_ptr2);
 
@@ -53,6 +53,6 @@ void (*launch)(func,func);
 launch= (void(*)(func,func))dlsym( m_handle3, "launch");
 printf("ok.\n");
 if (launch==NULL) {printf("NULL\n");}
-(*launch)((func)host_function_ptr,(func)host_function_ptr2);
+(*launch)(host_function_ptr,host_function_ptr2);
 
 }

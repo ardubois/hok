@@ -11,19 +11,25 @@ void cudaErrorCheck(cudaError_t err, char* file, int line, bool abort)
     }
 }
 
-//typedef float (*pfunc)(float arg);
+typedef float (*pfunc)(float arg);
 
 __device__ float dev_func(float arg) {
     return arg * arg;
 }
-// create device function pointer here
-__device__ void* dev_func_ptr = (void*) dev_func;
 
-extern "C" void* get_pointer()
+// create device function pointer here
+__device__ pfunc dev_func_ptr = dev_func;
+
+__global__ void ker_func(pfunc fnc,pfunc func2) {
+    // call function through device function pointer
+    printf("%f\n", func2(fnc(2)));
+}
+
+extern "C" pfunc get_pointer()
 {
-    void* host_function_ptr;
+    pfunc host_function_ptr;
     // copy function pointer value from device to host
-    gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, dev_func_ptr, sizeof(void*)));
+    gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, dev_func_ptr, sizeof(pfunc)));
     return host_function_ptr;
    
 }
@@ -34,21 +40,15 @@ __device__ float five_times(float arg) {
 }
 
 // create device function pointer here
-__device__ void* five_times_ptr = (void*) five_times;
+__device__ pfunc five_times_ptr = five_times;
 
-extern "C" void* get_ptr_five_times()
+extern "C" pfunc get_ptr_five_times()
 {
-    void* host_function_ptr;
+    pfunc host_function_ptr;
     // copy function pointer value from device to host
-    gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, five_times_ptr, sizeof(void*)));
+    gpuErrchk(cudaMemcpyFromSymbol(&host_function_ptr, five_times_ptr, sizeof(pfunc)));
     return host_function_ptr;
    
-}
-
-
-__global__ void ker_func(pfunc fnc,pfunc func2) {
-    // call function through device function pointer
-    printf("%f\n", func2(fnc(2)));
 }
 
 
