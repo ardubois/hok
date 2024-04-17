@@ -1,6 +1,15 @@
 #define gpuErrchk(val) \
     cudaErrorCheck(val, __FILE__, __LINE__, true)
-    
+
+void cudaErrorCheck(cudaError_t err, char* file, int line, bool abort)
+{
+    if(err != cudaSuccess)
+    {
+        printf("%s %s %d\n", cudaGetErrorString(err), file, line);
+        if(abort) exit(-1);
+    }
+}
+
 typedef float (*pfunc)(float arg);
 
 __device__ float five_times(float arg) {
