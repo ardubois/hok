@@ -252,7 +252,7 @@ defmacro deff(header, do: body) do
   IO.write(file, "\n" <> k <> "\n\n" <> ptr <> "\n\n" <> get_ptr <> "\n\n")
 else
   file = File.open!("c_src/#{module_name}.cu", [:write])
-  IO.write(file, "#include \"erl_nif.h\"\n\n" <> k <> "\n\n")
+  IO.write(file, "#include \"erl_nif.h\"\n\n" <> k <> "\n\n" <> ptr <> "\n\n" <> get_ptr <> "\n\n")
   File.close(file)
 end
  #IO.puts k
