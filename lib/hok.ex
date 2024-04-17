@@ -237,11 +237,14 @@ defmacro deff(header, do: body) do
  # IO.inspect param_list
  # raise "hell"
  cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
- k = Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
+ k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
+ ptr =      Hok.CudaBackend.gen_function_ptr(fname)
+ get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
+
  #accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
  if(File.exists?("c_src/#{module_name}.cu")) do
   file = File.open!("c_src/#{module_name}.cu", [:append])
-  IO.write(file, "\n" <> k <> "\n\n")
+  IO.write(file, "\n" <> k <> "\n\n" <> ptr <> "\n\n" <> get_ptr <> "\n\n")
 else
   file = File.open!("c_src/#{module_name}.cu", [:write])
   IO.write(file, "#include \"erl_nif.h\"\n\n" <> k <> "\n\n")
