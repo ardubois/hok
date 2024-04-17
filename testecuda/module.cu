@@ -52,7 +52,7 @@ extern "C" pfunc get_ptr_five_times()
 }
 
 
-extern "C" void launch(pfunc myptr,myptr2)
+extern "C" void launch(pfunc myptr,pfunc myptr2)
 {
     // create a host function pointer
  //   pfunc host_function_ptr;
