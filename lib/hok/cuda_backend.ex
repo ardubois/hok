@@ -3,12 +3,12 @@ defmodule Hok.CudaBackend do
     "__device__ void* #{fname}_ptr = (void*) #{fname};"
   end
   def gen_get_function_ptr(fname) do
-    "extern \"C\" void* get_#{fname}_ptr()\n" <>
+    ("extern \"C\" void* get_#{fname}_ptr()\n" <>
     "{\n" <>
       "\tvoid* host_function_ptr;\n" <>
       "\tcudaMemcpyFromSymbol(&host_function_ptr, #{fname}_ptr, sizeof(void*));\n" <>
       "\treturn host_function_ptr;\n"
-    "}\n"
+    "}\n")
   end
   def gen_kernel(name,para,body) do
     "__global__\nvoid #{name}(#{para})\n{\n#{body}\n}"
