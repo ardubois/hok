@@ -22,7 +22,7 @@ __device__ pfunc dev_func_ptr = dev_func;
 
 __global__ void ker_func(pfunc fnc,pfunc func2) {
     // call function through device function pointer
-    printf("%f\n", fnc2(fnc(2)));
+    printf("%f\n", func2(fnc(2)));
 }
 
 extern "C" pfunc get_pointer()
