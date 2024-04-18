@@ -317,7 +317,7 @@ end
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
       printf(\"ponteiro recebido kernel %p\", *fun_res);
       printf(\"rsource %p\", fun_res);
-
+      arg#{narg} = 0x130;
       list = tail;
 
     "
