@@ -296,7 +296,7 @@ end
   end
   def gen_arg_matrix(narg) do
 "  enif_get_list_cell(env,list,&head,&tail);
-  enif_get_resource(env, head, type, (void **) &array_res);
+  printf(\"resposta get matrex %d  \",enif_get_resource(env, head, type, (void **) &array_res));
   float *arg#{narg} = *array_res;
   list = tail;
 
