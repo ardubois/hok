@@ -312,7 +312,7 @@ end
     #raise "heel"
     r ="  enif_get_list_cell(env,list,&head,&tail);
       printf(\"head %p\",head);
-      printf(\"resposta get %d \",enif_get_resource(env, head, type, (void **) &fun_res));
+      printf(\"resposta get %d \",enif_get_resource(env, head, KERNEL_TYPE, (void **) &fun_res));
       printf(\"ponteiro recebido kernel %p\", *fun_res);
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
       printf(\"ponteiro recebido kernel %p\", *fun_res);
