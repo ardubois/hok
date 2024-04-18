@@ -391,15 +391,15 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   
   *kernel_res = ptr;
 
-  printf("kernel resource %p", *kernel_res);
-  printf("erlang resource %p", kernel_res);
+  printf("kernel resource %p\n", *kernel_res);
+  printf("erlang resource %p\n", kernel_res);
   
   // We can now make the Erlang term that holds the resource...
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
   enif_release_resource(kernel_res);
  
-
+  printf("term %p\n", term);
   return term;
 }
 
