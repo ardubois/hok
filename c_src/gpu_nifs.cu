@@ -406,7 +406,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 static ERL_NIF_TERM spawn_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
-  void (**kernel_res)(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type);
+  void (**kernel_res)(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type,ErlNifResourceType* ftype);
   //void (**kernel_res)();
   //float **array_res;
   //printf("spawn begin\n");
@@ -415,11 +415,11 @@ static ERL_NIF_TERM spawn_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[
     return enif_make_badarg(env);
   }
   
-  void (*fn)(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type) = *kernel_res;
+  void (*fn)(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type,ErlNifResourceType* ftype) = *kernel_res;
   //void (*fn)() = *kernel_res;
   //float *array = *array_res;
   //printf("ok nif");
-  (*fn)(env,argv,ARRAY_TYPE);
+  (*fn)(env,argv,ARRAY_TYPE,KERNEL_TYPE);
   //(*fn)();
 
 

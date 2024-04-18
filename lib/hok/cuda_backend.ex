@@ -203,7 +203,7 @@ end
   end
 
   def gen_header(fname) do
-  "extern \"C\" void #{fname}_call(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type)
+  "extern \"C\" void #{fname}_call(ErlNifEnv *env, const ERL_NIF_TERM argv[], ErlNifResourceType* type,ErlNifResourceType* ftype)
   {
 
     ERL_NIF_TERM list;
