@@ -210,7 +210,7 @@ end
     ERL_NIF_TERM head;
     ERL_NIF_TERM tail;
     float **array_res;
-    void *fun_res;
+    void **fun_res;
 
     const ERL_NIF_TERM *tuple_blocks;
     const ERL_NIF_TERM *tuple_threads;
@@ -317,7 +317,6 @@ end
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
       printf(\"ponteiro recebido kernel %p\", *fun_res);
       printf(\"rsource %p\", fun_res);
-      arg#{narg} = 0x130;
       list = tail;
 
     "
