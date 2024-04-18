@@ -313,7 +313,9 @@ end
     r ="  enif_get_list_cell(env,list,&head,&tail);
       enif_get_resource(env, head, type, (void **) &fun_res);
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
-      printf(\"ponteiro recebido kernel %p\", *fun_res);
+      printf(\"ponteiro recebido kernel %p\n\", *fun_res);
+      printf(\"rsource %p\n\", *fun_res);
+
       list = tail;
 
     "
