@@ -19,7 +19,7 @@ defmodule PMap2 do
   deff sum(a)do
     return 5*a
   end
-  deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float -> float ~> float]  ~> unit
+  deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
   defk map2(a1,a2,a3,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
