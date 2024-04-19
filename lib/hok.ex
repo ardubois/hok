@@ -10,6 +10,10 @@ defmodule Hok do
     IO.inspect body
   end
 
+  defmacro include(module) do
+    IO.inspect module
+  end
+
   #####################
   #####
   #####  gptype macro ##########
@@ -17,8 +21,7 @@ defmodule Hok do
   ##########################
 
   defmacro deft({func,_,[type]}) do
-    IO.puts func
-    IO.inspect type
+
     if (nil == Process.whereis(:gptype_server)) do
       pid = spawn_link(fn -> gptype_server() end)
       Process.register(pid, :gptype_server)
@@ -203,10 +206,10 @@ defmacro deff(header, do: body) do
 
   caller_st = __CALLER__
   module_name = to_string caller_st.module
-  #IO.puts module_name
+
 
   {delta,is_typed,fun_type}  = if(is_typed?()) do
-    #IO.puts "asdf"
+
     types = get_type_fun(fname)
     [fun_type|_] = Enum.reverse(types)
     delta= para
@@ -216,13 +219,13 @@ defmacro deff(header, do: body) do
 
     {delta,true,fun_type}
   else
-    #IO.puts "asdf"
+
     delta=para
       |> Enum.map(fn({p, _, _}) -> p end)
       |> Map.new(fn x -> {x,:none} end)
     {delta,false,:none}
   end
-  #IO.inspect fun_type
+
   delta = Map.put(delta,:return,fun_type)
 
   inf_types = Hok.TypeInference.infer_types(delta,body)
@@ -234,17 +237,13 @@ defmacro deff(header, do: body) do
     |> Enum.join(", ")
 
 
- # IO.inspect param_list
- # raise "hell"
+
  cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
  k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
  ptr =      Hok.CudaBackend.gen_function_ptr(fname)
  get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
 
- IO.puts "pointer:"
- IO.puts ptr
- IO.puts "get_ptr:"
- IO.puts get_ptr
+
 
  #accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
  if(File.exists?("c_src/#{module_name}.cu")) do

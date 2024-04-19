@@ -1,5 +1,6 @@
 defmodule PMap do
   import Hok
+  include PMap2
   deft inc float ~> float
   deff inc(a)do
     return 5*a

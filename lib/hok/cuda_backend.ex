@@ -181,8 +181,8 @@ def types_server(used,types, is_typed) do
       if (!Enum.member?(used,var)) do
         type = Map.get(types,String.to_atom(var))
         if(type == nil) do
-          IO.inspect var
-          IO.inspect types
+          #IO.inspect var
+          #IO.inspect types
           raise "Could not find type for variable #{var}. Please declare it using \"var #{var} type\""
         end
         send(pid,{:type,type})
@@ -296,7 +296,6 @@ end
   end
   def gen_arg_matrix(narg) do
 "  enif_get_list_cell(env,list,&head,&tail);
-  printf(\"resposta get matrex %d  \",enif_get_resource(env, head, type, (void **) &array_res));
   float *arg#{narg} = *array_res;
   list = tail;
 
@@ -311,12 +310,7 @@ end
     #IO.inspect types
     #raise "heel"
     r ="  enif_get_list_cell(env,list,&head,&tail);
-      printf(\"head %p\",head);
-      printf(\"resposta get %d \",enif_get_resource(env, head, ftype, (void **) &fun_res));
-      printf(\"ponteiro recebido kernel %p\", *fun_res);
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
-      printf(\"ponteiro recebido kernel %p\", *fun_res);
-      printf(\"rsource %p\", fun_res);
       list = tail;
 
     "
