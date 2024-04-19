@@ -2,7 +2,7 @@ defmodule PMap do
   import Hok
   deft inc float ~> float
   deff inc(a)do
-    return 1+a
+    return 5*a
   end
   deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk map(a1,a2,size,f) do
