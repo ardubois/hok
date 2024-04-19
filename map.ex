@@ -16,8 +16,8 @@ end
 defmodule PMap2 do
   import Hok
   deft sum float ~> float ~> float
-  deff sum(a)do
-    return 5*a
+  deff sum(a,b)do
+    return a+b
   end
   deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
   defk map2(a1,a2,a3,size,f) do
