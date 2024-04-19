@@ -15,7 +15,7 @@ end
 
 defmodule PMap2 do
   import Hok
-  deft sum float -> float ~> float
+  deft sum float ~> float ~> float
   deff sum(a)do
     return 5*a
   end
