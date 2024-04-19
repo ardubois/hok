@@ -53,5 +53,5 @@ Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, Hok.
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref2)
+result = Hok.get_gmatrex(ref3)
 IO.inspect result
