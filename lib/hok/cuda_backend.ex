@@ -1,8 +1,9 @@
 defmodule Hok.CudaBackend do
   def compile_module(body) do
-    {:__block__, [], definitions} = body
-    code = compile_definitions(definitions)
-    code
+    case body do
+        {:__block__, [], definitions} ->  compile_definitions(definitions)
+        _   -> compile_definitions([body])
+    end
   end
   defp compile_definitions([]), do: ""
   defp compile_definitions([h|t]) do
@@ -11,19 +12,68 @@ defmodule Hok.CudaBackend do
           {:deft,_,[{fname,_,_}]} = h
           raise "Type definition for #{fname} is not followed by function definition!"
         end
-        [function | rest ] = t
-        code = compile_function(function,h)
-        rest_code = compile_definitions(rest)
-        code <> rest_code
+        [definition | rest ] = t
+        case definition do
+           {:defh , _, _ } ->   code = compile_function(definition,h)
+                                rest_code = compile_definitions(rest)
+                                code <> rest_code
+           {:defk, _, _ } ->   code = compile_kernel(definition,h)
+                              rest_code = compile_definitions(rest)
+                              code <> rest_code
+           _              -> compile_definitions(rest)
+        end
     else
-        code = compile_function(h, :none)
-        rest_code = compile_definitions(t)
-        code <> rest_code
+        case h do
+          {:defk, _, _ } ->   code = compile_kernel(h, :none)
+                            rest_code = compile_definitions(t)
+                            code <> rest_code
+          {:defh , _, _ } -> code = compile_function(h, :none)
+                            rest_code = compile_definitions(t)
+                            code <> rest_code
+          _               -> compile_definitions(t)
+        end
     end
   end
   defp is_type_definition({:deft,_,_}), do: true
   defp is_type_definition(_v), do: false
+  def compile_kernel({:defk,_,[header,[body]]}, type_def) do
+    {fname, _, para} = header
+    {delta,is_typed}  = if(is_tuple(type_def)) do
+        types = get_type_fun(type_def)
+        delta= para
+          |> Enum.map(fn({p, _, _}) -> p end)
+          |> Enum.zip(types)
+          |> Map.new()
+      {delta,true}
+    else
+      delta=para
+        |> Enum.map(fn({p, _, _}) -> p end)
+        |> Map.new(fn x -> {x,:none} end)
+    {delta,false}
+    end
+    inf_types = Hok.TypeInference.type_check(delta,body)
 
+    #IO.inspect inf_types
+   # raise "hell"
+
+    param_list = para
+       |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
+       |> Enum.join(", ")
+
+    types_para = para
+       |>  Enum.map(fn {p, _, _}-> Map.get(inf_types,p) end)
+
+
+
+
+    inf_types = if is_typed do %{} else inf_types end
+    #IO.inspect inf_types
+    #raise "hell"
+    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
+    k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
+    accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
+    "\n" <> k <> "\n\n" <> accessfunc
+  end
   def compile_function({:defh,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
     {delta,is_typed,fun_type}  = if(is_tuple(type_def)) do
@@ -43,7 +93,7 @@ defmodule Hok.CudaBackend do
 
     delta = Map.put(delta,:return,fun_type)
 
-    inf_types = Hok.TypeInference.infer_types(delta,body)
+    inf_types = Hok.TypeInference.type_check(delta,body)
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
 
