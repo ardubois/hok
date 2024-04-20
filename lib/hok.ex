@@ -5,9 +5,15 @@ defmodule Hok do
       #IO.puts("ok")
   end
 
-  defmacro gpmodule(header,do: body) do
+  defmacro defmodule(header,do: body) do
     IO.inspect header
     IO.inspect body
+    #{:__aliases__, [line: 2, column: 15], [:Teste]}
+
+    code = Hok.CudaBackend.compile_module(body)
+
+    IO.puts code
+
     quote do: IO.puts "ok"
   end
 

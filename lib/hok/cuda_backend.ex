@@ -1,22 +1,120 @@
 defmodule Hok.CudaBackend do
-  def gen_function_ptr(fname) do
-    "__device__ void* #{fname}_ptr = (void*) #{fname};"
+  def compile_module(body) do
+    {:__block__, [], definitions} = body
+    code = compile_definitions(definitions)
+    code
   end
-  def gen_get_function_ptr(fname) do
+  defp compile_definitions([]), do: ""
+  defp compile_definitions([h|t]) do
+    if is_type_definition(h) do
+        if t == [] do
+          {:deft,_,[{fname,_,_}]} = h
+          raise "Type definition for #{fname} is not followed by function definition!"
+        end
+        [function | rest ] = t
+        code = compile_function(function,h)
+        rest_code = compile_definitions(rest)
+        code <> rest_code
+    else
+        code = compile_function(h, :none)
+        rest_code = compile_definitions(t)
+        code <> rest_code
+    end
+  end
+  defp is_type_definition({:deft,_,_}), do: true
+  defp is_type_definition(_v), do: false
+
+  def compile_function({:defh,_,[header,[body]]}, type_def) do
+    {fname, _, para} = header
+    {delta,is_typed,fun_type}  = if(is_tuple(type_def)) do
+        types = get_type_fun(type_def)
+        [fun_type|_] = Enum.reverse(types)
+        delta= para
+          |> Enum.map(fn({p, _, _}) -> p end)
+          |> Enum.zip(types)
+          |> Map.new()
+      {delta,true,fun_type}
+    else
+      delta=para
+        |> Enum.map(fn({p, _, _}) -> p end)
+        |> Map.new(fn x -> {x,:none} end)
+    {delta,false,:none}
+    end
+
+    delta = Map.put(delta,:return,fun_type)
+
+    inf_types = Hok.TypeInference.infer_types(delta,body)
+
+    fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
+
+    param_list = para
+      |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
+      |> Enum.join(", ")
+
+    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
+    k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
+    ptr =      Hok.CudaBackend.gen_function_ptr(fname)
+    get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
+
+
+    "\n" <> k <> "\n\n" <> ptr <> "\n\n" <> get_ptr <> "\n\n"
+end
+defp get_type_fun({:deft , _ , [{_name,_, [type]}]}) do
+      type_to_list(type)
+end
+defp type_to_list({:integer,_,_}), do: [:int]
+defp type_to_list({:unit,_,_}), do: [:unit]
+defp type_to_list({:float,_,_}), do: [:float]
+defp type_to_list({:gmatrex,_,_}), do: [:matrex]
+defp type_to_list([type]), do: [type_to_list(type)]
+defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
+defp type_to_list({x,_,_}), do: raise "Unknown type constructor #{x}"
+defp gen_para(p,:matrex) do
+  "float *#{p}"
+end
+defp gen_para(p,:float) do
+  "float #{p}"
+end
+defp gen_para(p,:int) do
+  "int #{p}"
+end
+defp gen_para(p, list) when is_list(list) do
+  size = length(list)
+
+  {ret,type}=List.pop_at(list,size-1)
+  #IO.inspect list
+  #IO.inspect ret
+  #IO.inspect type
+  #raise "hell"
+  r="#{ret} (*#{p})(#{to_arg_list(type)})"
+  r
+
+end
+defp to_arg_list([t]) do
+  "#{t}"
+end
+defp to_arg_list([v|t]) do
+  "#{v}," <> to_arg_list(t)
+end
+
+def gen_function_ptr(fname) do
+    "__device__ void* #{fname}_ptr = (void*) #{fname};"
+end
+def gen_get_function_ptr(fname) do
     ("extern \"C\" void* get_#{fname}_ptr()\n" <>
     "{\n" <>
       "\tvoid* host_function_ptr;\n" <>
       "\tcudaMemcpyFromSymbol(&host_function_ptr, #{fname}_ptr, sizeof(void*));\n" <>
       "\treturn host_function_ptr;\n" <>
     "}\n")
-  end
-  def gen_kernel(name,para,body) do
+end
+def gen_kernel(name,para,body) do
     "__global__\nvoid #{name}(#{para})\n{\n#{body}\n}"
-  end
-  def gen_function(name,para,body,type) do
+end
+def gen_function(name,para,body,type) do
     "__device__\n#{type} #{name}(#{para})\n{\n#{body}\n}"
-  end
-  def gen_cuda(body,types,is_typed) do
+end
+def gen_cuda(body,types,is_typed) do
     pid = spawn_link(fn -> types_server([],types,is_typed) end)
     Process.register(pid, :types_server)
     code = gen_body(body)
@@ -315,12 +413,6 @@ end
 
     "
     r
-  end
-  defp to_arg_list([t]) do
-    "#{t}"
-  end
-  defp to_arg_list([v|t]) do
-    "#{v}," <> to_arg_list(t)
   end
   def gen_arg_int(narg) do
 "  enif_get_list_cell(env,list,&head,&tail);

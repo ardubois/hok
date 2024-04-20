@@ -339,10 +339,10 @@ end
                            :int -> :int
                            :float -> :float
                            :none -> :int
-                           _  -> raise "Incompatible operandos (#{inspect info}: op (#{inspect op}) applyed to  type #{inspect t2}"
+                           _  -> raise "Incompatible operands (#{inspect info}: op (#{inspect op}) applyed to  type #{inspect t2}"
                           end
                 :float -> :float
-                _ -> raise "Incompatible operandos (#{inspect info}: op (#{inspect op}) applyed to  type #{inspect t1}"
+                _ -> raise "Incompatible operands (#{inspect info}: op (#{inspect op}) applyed to  type #{inspect t1}"
 
               end
           end
