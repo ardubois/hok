@@ -7,13 +7,13 @@ defmodule Hok.CudaBackend do
     end
 
 
-    quote do
+    new_module = quote do
       defmodule (unquote(header)) do
        unquote(new_body)
        end
     end
 
-
+    new_module
 
   end
 
@@ -22,6 +22,10 @@ defmodule Hok.CudaBackend do
 
       gen_new_definitions(t)
   end
+  defp gen_new_definitions([{:include,_,_para}|t]) do
+
+    gen_new_definitions(t)
+end
   defp gen_new_definitions([{:defh , _, [header, _code] }| t]) do
   {fname, comp_info, para} = header
 
@@ -64,7 +68,7 @@ defmodule Hok.CudaBackend do
            {:defk, _, _ } ->   code = compile_kernel(definition,h)
                               rest_code = compile_definitions(rest)
                               code <> rest_code
-           _              -> compile_definitions(rest)
+           _              -> raise "Type definition must be followed by gpu function definition or kernel"
         end
     else
         case h do
@@ -74,7 +78,16 @@ defmodule Hok.CudaBackend do
           {:defh , _, _ } -> code = compile_function(h, :none)
                             rest_code = compile_definitions(t)
                             code <> rest_code
+          {:include, _, [{_,_,[name]}]} -> #IO.inspect(name)
+                                            code = File.read!("c_src/Elixir.#{name}.cu")
+                                              |>  String.split("\n")
+                                              |>  Enum.drop(1)
+                                              |> Enum.join("\n")
+                                            rest_code = compile_definitions(t)
+                                            code <> rest_code
           _               -> compile_definitions(t)
+
+
         end
     end
   end
