@@ -6,15 +6,16 @@ defmodule Hok do
   end
 
   defmacro defmodule(header,do: body) do
-    IO.inspect header
-    IO.inspect body
+    #IO.inspect header
+    #IO.inspect body
     #{:__aliases__, [line: 2, column: 15], [:Teste]}
+    #code = Hok.CudaBackend.compile_module(body)
+    ast_new_module = Hok.CudaBackend.gen_new_module(header,body)
+    #IO.inspect ast_new_module
+    ast_new_module
 
-    code = Hok.CudaBackend.compile_module(body)
 
-    IO.puts code
-
-    quote do: IO.puts "ok"
+    #quote do: IO.puts "ok"
   end
 
   defmacro include({_, _, [imp_module]}) do

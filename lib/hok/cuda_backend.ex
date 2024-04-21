@@ -1,4 +1,48 @@
 defmodule Hok.CudaBackend do
+  def gen_new_module(header,body) do
+
+    new_body =  case body do
+          {:__block__, [], definitions} ->  gen_new_definitions(definitions)
+          _   -> gen_new_definitions([body])
+    end
+
+
+    quote do
+      defmodule (unquote(header)) do
+       unquote(new_body)
+       end
+    end
+
+
+
+  end
+
+  defp gen_new_definitions([]), do: []
+  defp gen_new_definitions([{:deft,_,_para}|t]) do
+
+      gen_new_definitions(t)
+  end
+  defp gen_new_definitions([{:defh , _, [header, _code] }| t]) do
+  {fname, comp_info, para} = header
+
+    para = para
+    |> Enum.map(fn {p, b, c}-> {String.to_atom("_" <> to_string(p)),b,c} end)
+
+    new_code = quote do: (def unquote({fname, comp_info, para}), do:  raise "A hok function can only be called by kernels!")
+
+    [new_code | gen_new_definitions(t)]
+  end
+  defp gen_new_definitions([{:defk , _, [header, _code] }| t]) do
+    {fname, comp_info, para} = header
+
+    para = para
+    |> Enum.map(fn {p, b, c}-> {String.to_atom("_" <> to_string(p)),b,c} end)
+    new_code = quote do: (def unquote({fname, comp_info, para}), do: raise "A kernel can only be executed with spawn!")
+    [new_code | gen_new_definitions(t)]
+  end
+  defp gen_new_definitions([h | t]) do
+      [h | gen_new_definitions(t)]
+  end
   def compile_module(body) do
     case body do
         {:__block__, [], definitions} ->  compile_definitions(definitions)
@@ -169,6 +213,7 @@ def gen_cuda(body,types,is_typed) do
     Process.register(pid, :types_server)
     code = gen_body(body)
     send(pid,{:kill})
+    Process.unregister(:types_server)
     code
   end
   def gen_body(body) do
