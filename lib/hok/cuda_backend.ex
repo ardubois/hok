@@ -141,7 +141,7 @@ end
             |> Enum.join("\n###########################################\n")
 
     IO.inspect code
-    file = File.open!("c_src/Elixir.#{module}.cu", [:append])
+    file = File.open!("c_src/#{module}.cu", [:append])
     IO.write(file, code)
     File.close(file)
     IO.puts "c_src/Elixir.#{module}.cu"
