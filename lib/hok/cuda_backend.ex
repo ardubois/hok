@@ -153,8 +153,8 @@ end
           "--compiler-options",
           "'-fPIC'",
           "-o",
-          "priv/Elixir.#{module}.so",
-          "c_src/Elixir.#{module}.cu"
+          "priv/#{module}.so",
+          "c_src/#{module}.cu"
     ], stderr_to_stdout: true)
 
 
