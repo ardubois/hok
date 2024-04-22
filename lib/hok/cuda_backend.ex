@@ -146,6 +146,8 @@ end
     File.close(file)
     IO.puts "c_src/#{module}.cu"
    # raise "hell"
+   IO.puts "before compilation"
+   IO.puts module
     {result, errcode} = System.cmd("nvcc",
         [ "--shared",
           "--compiler-options",
