@@ -401,7 +401,7 @@ def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
 def spawn(k,t,b,l) when is_function(k) do
-  load(k)
+  k=load(k)
   spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
 end
 def spawn(k,t,b,l) do
