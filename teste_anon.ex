@@ -43,7 +43,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, &PMap.sum/2) #Hok.hok (fn (x,y) -> type x float; type y float; return x+y end)])
+Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, &PMap.sum/2]) #Hok.hok (fn (x,y) -> type x float; type y float; return x+y end)])
 #Hok.synchronize()
 
 next = System.monotonic_time()
