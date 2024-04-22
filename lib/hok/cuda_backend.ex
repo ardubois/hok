@@ -141,10 +141,11 @@ end
             |> Enum.join("\n###########################################\n")
 
     IO.inspect code
-    raise "hell"
     file = File.open!("c_src/Elixir.#{module}.cu", [:append])
     IO.write(file, code)
     File.close(file)
+    IO.puts "c_src/Elixir.#{module}.cu"
+    raise "hell"
     {result, errcode} = System.cmd("nvcc",
         [ "--shared",
           "--compiler-options",
