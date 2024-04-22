@@ -404,7 +404,7 @@ def spawn(k,t,b,l) when is_function(k) do
   anon_func = Enum.filter(l, fn arg -> case arg do
                                         {:anon,_} -> true
                                          _ -> false
-                                        end)
+                                        end end)
   IO.inspect anon_func
   raise "hell"
   k=load(k)
