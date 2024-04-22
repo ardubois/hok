@@ -419,7 +419,7 @@ def spawn(k,t,b,l) when is_function(k) do
     spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
   else
     {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
-    refs = gen_lambda_ref(module, anon_func)
+    refs = Hok.Backend.gen_lambda_ref(module, anon_func)
     k = load(k)
     args = subs_lambda_ref(l,refs)
     spawn_nif(k,t,b,Enum.map(args,&get_ref/1))
