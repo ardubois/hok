@@ -161,7 +161,7 @@ end
     names = name_code
             |> Enum.map(fn {name,_code} -> name end)
 
-    Enum.map(names, fn name -> Hok.load_fun_nif(to_charlist("Elixir.#{module}"),to_charlist(name)) end)
+    Enum.map(names, fn name -> Hok.load_fun_nif(to_charlist(module),to_charlist(name)) end)
 
   end
   def gen_lambda_name() do
