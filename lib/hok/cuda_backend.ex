@@ -575,11 +575,12 @@ end
     args <> arg
   end
   def gen_arg_matrix(narg) do
-"  enif_get_list_cell(env,list,&head,&tail);
-  float *arg#{narg} = *array_res;
-  list = tail;
+    "  enif_get_list_cell(env,list,&head,&tail);
+    enif_get_resource(env, head, type, (void **) &array_res);
+    float *arg#{narg} = *array_res;
+    list = tail;
 
-"
+  "
   end
   def gen_arg_fun(narg,t) do
     size = length(t)
@@ -590,6 +591,7 @@ end
     #IO.inspect types
     #raise "heel"
     r ="  enif_get_list_cell(env,list,&head,&tail);
+    enif_get_resource(env, head, ftype, (void **) &fun_res);
       #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
       list = tail;
 

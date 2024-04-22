@@ -383,7 +383,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   
   void* ptr = fn();
 
-  printf("function pointer %p",ptr);
+  printf("function pointer %p\n",ptr);
 
   void** kernel_res = (void**) enif_alloc_resource(KERNEL_TYPE, sizeof(void *));
 
