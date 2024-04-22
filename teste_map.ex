@@ -12,7 +12,7 @@ Hok.defmodule PMap do
     end
   end
   deft sum float ~> float ~> float
-  deff sum(a,b)do
+  defh sum(a,b)do
     return a+b
   end
   deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
