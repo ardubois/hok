@@ -35,7 +35,7 @@ ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
 ref3= Hok.new_gmatrex(1,n)
 
-map=Hok.load(&PMap.map2/4)
+#map=Hok.load(&PMap.map2/4)
 
 threadsPerBlock = 128;
 numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
@@ -43,7 +43,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(map,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, Hok.load_fun(&PMap.sum/2)])
+Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, Hok.load_fun(&PMap.sum/2)])
 #Hok.synchronize()
 
 next = System.monotonic_time()
