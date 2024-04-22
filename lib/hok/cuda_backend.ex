@@ -145,7 +145,7 @@ end
     IO.write(file, code)
     File.close(file)
     IO.puts "c_src/Elixir.#{module}.cu"
-    raise "hell"
+   # raise "hell"
     {result, errcode} = System.cmd("nvcc",
         [ "--shared",
           "--compiler-options",
