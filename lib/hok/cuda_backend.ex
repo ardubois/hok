@@ -144,7 +144,7 @@ end
     file = File.open!("c_src/#{module}.cu", [:append])
     IO.write(file, code)
     File.close(file)
-    IO.puts "c_src/Elixir.#{module}.cu"
+    IO.puts "c_src/#{module}.cu"
    # raise "hell"
     {result, errcode} = System.cmd("nvcc",
         [ "--shared",
