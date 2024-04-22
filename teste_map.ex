@@ -35,7 +35,7 @@ ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
 ref3= Hok.new_gmatrex(1,n)
 
-map=Hok.load(&PMap2.map2/4)
+map=Hok.load(&PMap.map2/4)
 
 threadsPerBlock = 128;
 numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
