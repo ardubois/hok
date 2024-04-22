@@ -424,7 +424,7 @@ def spawn(k,t,b,l) when is_function(k) do
     args = subs_lambda_ref(l,refs)
     IO.inspect args
     IO.inspect k
-    raise "hell"
+   # raise "hell"
     spawn_nif(k,t,b,Enum.map(args,&get_ref/1))
   end
 end
