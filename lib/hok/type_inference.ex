@@ -130,6 +130,13 @@ defmodule Hok.TypeInference do
           {:var, _ , [{var,_,[type]}]} ->
                 map
                 |> Map.put(var,type)
+          {:type, _ , [{var,_,[{type,_,_}]}]} ->
+                  map
+                  |> Map.put(var,type)
+          {:type, _ , [{var,_,[type]}]} ->
+                  map
+                  |> Map.put(var,type)
+
           {:return,_,[arg]} ->
             inf_type = find_type_exp(map,arg)
             #IO.inspect "return #{type}"

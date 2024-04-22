@@ -1,11 +1,14 @@
-defmodule Teste do
-  import Hok
-  deft soma float ~> float ~> float
-  deff soma(a,b)do
-    return a + b
+require Hok
+Hok.defmodule Teste do
+ include PMap2
+ defh soma() do
+     return 1
   end
-  deft apply [float ~> float ~> float] ~> float ~> float ~> unit
-  defk apply(f,x,y) do
-    f(x,y)
-  end
+  def inc(x), do: x + 1
+  def teste(), do: 1
 end
+
+
+IO.puts Teste.soma()
+IO.puts Teste.inc(10)
+IO.puts Teste.teste()

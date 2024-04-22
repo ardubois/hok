@@ -11,10 +11,6 @@ Hok.defmodule PMap do
       a2[id] = f(a1[id])
     end
   end
-end
-
-defmodule PMap2 do
-  import Hok
   deft sum float ~> float ~> float
   deff sum(a,b)do
     return a+b
