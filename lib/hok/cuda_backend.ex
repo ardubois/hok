@@ -140,6 +140,8 @@ end
             |> Enum.map(fn {_name,code} -> code end)
             |> Enum.join("\n###########################################\n")
 
+    IO.inspect code
+    raise "hell"
     file = File.open!("c_src/Elixir.#{module}.cu", [:append])
     IO.write(file, code)
     File.close(file)
