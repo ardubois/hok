@@ -423,6 +423,7 @@ def spawn(k,t,b,l) when is_function(k) do
     k = load(k)
     args = subs_lambda_ref(l,refs)
     spawn_nif(k,t,b,Enum.map(args,&get_ref/1))
+  end
 end
 def spawn(k,t,b,l) do
   spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
