@@ -14,6 +14,7 @@ defmodule Hok.TypeInference do
         IO.puts "Could not find types, choosing type float."
         map =for {var, type} <- types, into: %{} do if(type == :none)do {var, :float} else {var,type}  end end
         IO.inspect map
+        raise "hell"
         map
       else
         type_check(types2,body)
@@ -39,7 +40,35 @@ defmodule Hok.TypeInference do
    IO.inspect nmap
    :ok
   end
+  defp add_return(map,body) do
+    if map[:return] == nil do
+      body
+    else
+      case body do
+        {:__block__, pos, code} ->
+                {:__block__, pos, check_return(code)}
+        {:do, {:__block__,pos, code}} ->
+                {:do, {:__block__,pos, check_return(code)}}
+        {:do, exp} ->
+            case exp do
+              {:return,_,_} -> {:do, exp}
+              _ -> {:do, {:return,[],[exp]}}
+            end
+        {_,_,_} -> {:return,[],[body]}
+      end
+    end
+  end
+  defp check_return([com]) do
+    case com do
+          {:return,_,_} -> com
+              _ -> {:return,[],[com]}
+    end
+  end
+  defp check_return([h|t]) do
+    [h|check_return t]
+  end
   def infer_types(map,body) do
+    body = add_return(map,body)
     case body do
         {:__block__, _, _code} ->
           infer_block(map,body)

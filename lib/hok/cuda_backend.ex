@@ -389,9 +389,9 @@ def gen_cuda(body,types,is_typed) do
            "#{to_string type} #{to_string var};"
         {:var, _ , [{var,_,[type]}]} ->
            "#{to_string type} #{to_string var};"
-        {:type, _ , [{var,_,[{type,_,_}]}]} ->
+        {:type, _ , [{_,_,[{_,_,_}]}]} ->
             ""
-        {:type, _ , [{var,_,[type]}]} ->
+        {:type, _ , [{_,_,_}]} ->
             ""
         {fun, _, args} when is_list(args)->
           nargs=args
