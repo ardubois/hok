@@ -296,6 +296,37 @@ end
 def gen_function(name,para,body,type) do
     "__device__\n#{type} #{name}(#{para})\n{\n#{body}\n}"
 end
+defp add_return(body) do
+  send(:types_server,{:check_return, self()})
+  resp = receive do
+             msg  -> msg
+  end
+  if resp == nil do
+    body
+  else
+    case body do
+      {:__block__, pos, code} ->
+              {:__block__, pos, check_return(code)}
+      {:do, {:__block__,pos, code}} ->
+              {:do, {:__block__,pos, check_return(code)}}
+      {:do, exp} ->
+          case exp do
+            {:return,_,_} -> {:do, exp}
+            _ -> {:do, {:return,[],[exp]}}
+          end
+      {_,_,_} -> {:return,[],[body]}
+    end
+  end
+end
+defp check_return([com]) do
+  case com do
+        {:return,_,_} -> com
+            _ -> {:return,[],[com]}
+  end
+end
+defp check_return([h|t]) do
+  [h|check_return t]
+end
 def gen_cuda(body,types,is_typed) do
     pid = spawn_link(fn -> types_server([],types,is_typed) end)
     Process.register(pid, :types_server)
@@ -305,7 +336,7 @@ def gen_cuda(body,types,is_typed) do
     code
   end
   def gen_body(body) do
-
+    body = add_return(body)
     case body do
       {:__block__, _, _code} ->
         gen_block body
@@ -457,6 +488,8 @@ def types_server(used,types, is_typed) do
       {:check_var, _var, pid} ->
           send(pid,{:is_typed})
           types_server(used,types, is_typed)
+      {:check_return,pid} ->  send(pid, Map.get(types,:return))
+                              types_server(used,types, is_typed)
       {:kill} ->
             :ok
    end
@@ -476,6 +509,8 @@ def types_server(used,types, is_typed) do
         send(pid,{:alredy_declared})
         types_server(used,types,is_typed)
       end
+    {:check_return,pid} -> send(pid, Map.get(types,:return))
+                       types_server(used,types, is_typed)
     {:kill} ->
       :ok
     end
