@@ -1,6 +1,9 @@
+require Hok
+
 Hok.defmodule PMap2 do
-  deft saxpy float ~> float ~> float
-  deff saxpy(a,b)do
+import Hok
+deft saxpy float ~> float ~> float
+deff saxpy(a,b)do
     return 2*a+b
   end
   deft map_2kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
