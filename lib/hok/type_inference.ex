@@ -193,10 +193,14 @@ defmodule Hok.TypeInference do
                        end
             end
 
-          {_fun, _, args} when is_list(args)->
-            Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
-            #IO.puts "ya"
-            map
+          {fun, _, args} when is_list(args)->
+              type_fun = map[String.to_atom(fun)]
+              if( type_fun == nil) do
+                  Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
+              else
+                  #types = infer_types_args(args)
+                  Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
+              end
           number when is_integer(number) or is_float(number) -> raise "Error: number is a command"
           {str,_ ,_ } ->
             #IO.puts "yo"
