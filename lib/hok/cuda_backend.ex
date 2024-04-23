@@ -321,8 +321,8 @@ defp add_return(body) do
 end
 defp check_return([com]) do
   case com do
-        {:return,_,_} -> com
-            _ -> {:return,[],[com]}
+        {:return,_,_} -> [com]
+            _ -> [{:return,[],[com]}]
   end
 end
 defp check_return([h|t]) do
