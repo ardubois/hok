@@ -262,7 +262,10 @@ defp type_to_list({:integer,_,_}), do: [:int]
 defp type_to_list({:unit,_,_}), do: [:unit]
 defp type_to_list({:float,_,_}), do: [:float]
 defp type_to_list({:gmatrex,_,_}), do: [:matrex]
-defp type_to_list([type]), do: [ {List.last(type), List.delete_at(type, length(type)-1)}]
+defp type_to_list([type]) do
+  ltype = type_to_list(type)
+  [ {List.last(ltype), List.delete_at(ltype, length(ltype)-1)}]
+end
 defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
 defp type_to_list({x,_,_}), do: raise "Unknown type constructor #{x}"
 defp gen_para(p,:matrex) do
