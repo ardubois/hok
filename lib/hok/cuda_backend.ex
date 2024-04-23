@@ -277,7 +277,7 @@ end
 defp gen_para(p,:int) do
   "int #{p}"
 end
-defp gen_para(p, {ret,type}) when is_list(list) do
+defp gen_para(p, {ret,type}) do
   #size = length(list)
 
   #{ret,type}=List.pop_at(list,size-1)
