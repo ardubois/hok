@@ -410,7 +410,7 @@ end
 defp process_args([arg|t1],refs) do
   [arg | process_args(t1,refs)]
 end
-defp subs_lambda_ref([],_l), do: []
+defp process_args([],_l), do: []
 
 
 
