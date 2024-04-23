@@ -10,7 +10,9 @@ defmodule Hok.TypeInference do
       notinfer2 = not_infered(Map.to_list(types2))
       if (length(notinfer)==length(notinfer2)) do
         IO.inspect notinfer2
-        raise "Could not find types! Please use type annotations of the form: var x float, where x is an identifier"
+        #raise "Could not find types! Please use type annotations of the form: var x float, where x is an identifier"
+        IO.puts "Could not find types, choosing type float."
+        for {var, type} <- types, into: %{}, do: if type == :none do {var, :float} else {var,type} end
       else
         type_check(types2,body)
       end
