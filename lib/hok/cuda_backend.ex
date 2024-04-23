@@ -626,9 +626,9 @@ end
     arg = gen_arg_double(n)
     args <> arg
   end
-  def gen_args(n, [types|t]) when is_list(types) do
+  def gen_args(n, [{ret,type}|t]) do
     args = gen_args(n-1,t)
-    arg = gen_arg_fun(n,types)
+    arg = gen_arg_fun(n,ret,type)
     args <> arg
   end
   def gen_arg_matrix(narg) do
@@ -639,10 +639,10 @@ end
 
   "
   end
-  def gen_arg_fun(narg,t) do
-    size = length(t)
+  def gen_arg_fun(narg,ret,types) do
+    #size = length(t)
     #IO.inspect t
-    {ret,types}=List.pop_at(t,size-1)
+    #{ret,types}=List.pop_at(t,size-1)
     #IO.inspect size
     #IO.inspect ret
     #IO.inspect types
