@@ -394,7 +394,7 @@ def load_fun(fun) do
               #raise "hell"
               Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
 
-    _ -> raise "Hok.build: invalid kernel"
+    _ -> raise "Hok.invalid function"
   end
 end
 #####################
@@ -405,8 +405,7 @@ defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
   [matrex | process_args(t1,refs)]
 end
 defp process_args([arg|t1],refs) when is_function(arg) do
-  IO.inspect(Macro.escape(arg))
-  raise "hell"
+  [load_fun(arg)| process_args(t1,refs)]
 end
 defp process_args([arg|t1],refs) do
   [arg | process_args(t1,refs)]
