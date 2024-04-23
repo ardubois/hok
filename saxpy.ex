@@ -14,7 +14,7 @@ defmodule PMap2 do
   def map2(t1,t2,t3,size,func) do
       threadsPerBlock = 128;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&map_2kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
+      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
   end
 end
 
