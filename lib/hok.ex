@@ -398,13 +398,19 @@ def load_fun(fun) do
   end
 end
 #####################
-defp subs_lambda_ref([{:anon,_fun}|t1],[ref|t2]) do
-  [ref | subs_lambda_ref(t1,t2)]
+defp process_args([{:anon,_fun}|t1],[ref|t2]) do
+  [ref | process_args(t1,t2)]
 end
-defp subs_lambda_ref([arg|t1],refs) do
-  [arg | subs_lambda_ref(t1,refs)]
+defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
+  [matrex | process_args(t1,refs)
+end
+defp process_args([arg|t1],refs) do
+  [arg | process_args(t1,refs)]
 end
 defp subs_lambda_ref([],_l), do: []
+
+
+
 #######################
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
@@ -416,16 +422,17 @@ def spawn(k,t,b,l) when is_function(k) do
                                         end end)
   if anon_func == [] do
     k=load(k)
-    spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
+    args = process_args(l,[])
+    spawn_nif(k,t,b,args)
   else
     {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
     refs = Hok.CudaBackend.gen_lambda_ref(module, anon_func)
     k = load(k)
-    args = subs_lambda_ref(l,refs)
-    IO.inspect args
-    IO.inspect k
+    args = process_args(l,refs)
+    #IO.inspect args
+    #IO.inspect k
    # raise "hell"
-    spawn_nif(k,t,b,Enum.map(args,&get_ref/1))
+    spawn_nif(k,t,b,args)
   end
 end
 def spawn(k,t,b,l) do
