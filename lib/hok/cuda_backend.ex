@@ -190,6 +190,7 @@ end
   delta = Map.put(delta,:return,fun_type)
 
     inf_types = Hok.TypeInference.type_check(delta,body)
+    IO.puts "Finished infer types"
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
 
