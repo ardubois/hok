@@ -402,7 +402,7 @@ defp process_args([{:anon,_fun}|t1],[ref|t2]) do
   [ref | process_args(t1,t2)]
 end
 defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
-  [matrex | process_args(t1,refs)
+  [matrex | process_args(t1,refs)]
 end
 defp process_args([arg|t1],refs) do
   [arg | process_args(t1,refs)]
