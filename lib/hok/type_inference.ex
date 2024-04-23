@@ -70,10 +70,12 @@ defmodule Hok.TypeInference do
   def infer_types(map,body) do
     IO.puts "Antes"
     IO.inspect body
-    body = add_return(map,body)
+    body1 = add_return(map,body)
     IO.puts "depois"
     IO.inspect body
+    IO.inspect body == body1
     raise "hell"
+
     case body do
         {:__block__, _, _code} ->
           infer_block(map,body)
