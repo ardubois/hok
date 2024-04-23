@@ -349,7 +349,7 @@ end
                 :int  -> case t2 do
                            :int -> :int
                            :float -> :float
-                           :none -> :int
+                           :none -> :none
                            _  -> raise "Incompatible operands (#{inspect info}: op (#{inspect op}) applyed to  type #{inspect t2}"
                           end
                 :float -> :float
