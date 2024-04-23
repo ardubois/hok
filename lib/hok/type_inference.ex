@@ -67,10 +67,10 @@ defmodule Hok.TypeInference do
   defp check_return([h|t]) do
     [h|check_return t]
   end
-  def infer_types(map,body) do
+  def infer_types(map,body1) do
     #IO.puts "Antes"
     #IO.inspect body
-   # body = add_return(map,body)
+    body = add_return(map,body1)
    # IO.puts "depois"
     #IO.inspect body
     #IO.inspect body == body1
