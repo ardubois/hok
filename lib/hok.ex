@@ -404,6 +404,10 @@ end
 defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
   [matrex | process_args(t1,refs)]
 end
+defp process_args([arg|t1],refs) when is_function(arg) do
+  IO.inspect(Macro.escape(arg))
+  raise "hell"
+end
 defp process_args([arg|t1],refs) do
   [arg | process_args(t1,refs)]
 end
