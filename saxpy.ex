@@ -1,5 +1,4 @@
-import Hok
-defmodule PMap2 do
+Hok.defmodule PMap2 do
   import Hok
   deft saxpy float ~> float ~> float
   deff saxpy(a,b)do
