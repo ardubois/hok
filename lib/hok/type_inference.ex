@@ -74,6 +74,8 @@ defmodule Hok.TypeInference do
    # IO.puts "depois"
     #IO.inspect body
     IO.inspect body == body1
+    IO.inspect body
+    IO.inspect body1
     #raise "hell"
     IO.puts "Infer types!!!!!!!!!"
 
