@@ -160,6 +160,7 @@ defmodule Hok.TypeInference do
           number when is_integer(number) or is_float(number) -> raise "Error: number is a command"
           {_str,_ ,_ } ->
             #IO.puts "yo"
+            raise "Is #{str}  a command???"
             map
           #string when is_string(string)) -> string #to_string(number)
       end
