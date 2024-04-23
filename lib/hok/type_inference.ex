@@ -14,7 +14,7 @@ defmodule Hok.TypeInference do
         IO.puts "Could not find types, choosing type float."
         map =for {var, type} <- types, into: %{} do if(type == :none)do {var, :float} else {var,type}  end end
         IO.inspect map
-        raise "hell"
+        #raise "hell"
         map
       else
         type_check(types2,body)
