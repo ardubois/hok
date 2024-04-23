@@ -73,7 +73,7 @@ defmodule Hok.TypeInference do
     body = add_return(map,body1)
    # IO.puts "depois"
     #IO.inspect body
-    #IO.inspect body == body1
+    IO.inspect body == body1
     #raise "hell"
     IO.puts "Infer types!!!!!!!!!"
 
