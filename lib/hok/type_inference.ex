@@ -68,7 +68,7 @@ defmodule Hok.TypeInference do
     [h|check_return t]
   end
   def infer_types(map,body) do
-    #body = add_return(map,body)
+    body = add_return(map,body)
     case body do
         {:__block__, _, _code} ->
           infer_block(map,body)

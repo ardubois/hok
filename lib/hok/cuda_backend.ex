@@ -336,7 +336,7 @@ def gen_cuda(body,types,is_typed) do
     code
   end
   def gen_body(body) do
-    #body = add_return(body)
+    body = add_return(body)
     case body do
       {:__block__, _, _code} ->
         gen_block body
