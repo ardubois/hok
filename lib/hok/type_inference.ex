@@ -70,7 +70,7 @@ defmodule Hok.TypeInference do
   def infer_types(map,body) do
     #IO.puts "Antes"
     #IO.inspect body
-    body = add_return(map,body)
+   # body = add_return(map,body)
    # IO.puts "depois"
     #IO.inspect body
     #IO.inspect body == body1
