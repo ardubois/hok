@@ -1,5 +1,7 @@
 defmodule Hok.CudaBackend do
-
+  ########
+  #Generating a new module to be to substitute the Hok module in the Elixir program
+  ################
   def gen_new_module(header,body) do
     new_body =  case body do
           {:__block__, [], definitions} ->  gen_new_definitions(definitions)
@@ -52,6 +54,9 @@ end
         _   -> compile_definitions([body])
     end
   end
+  #############################################
+  ##### Compiling the definitions in a Hok module
+  #####################
   defp compile_definitions([]), do: ""
   defp compile_definitions([h|t]) do
     if is_type_definition(h) do
@@ -67,7 +72,7 @@ end
            {:defk, _, _ } ->   code = compile_kernel(definition,h)
                               rest_code = compile_definitions(rest)
                               code <> rest_code
-           _              -> raise "Type definition must be followed by gpu function definition or kernel #{definition}"
+           _              -> raise "Type definition must be followed by gpu function or kernel definition #{definition}"
         end
     else
         case h do
@@ -92,6 +97,11 @@ end
   end
   defp is_type_definition({:deft,_,_}), do: true
   defp is_type_definition(_v), do: false
+
+  ###########################
+  ############ Compile a kernel
+  ###################################
+
   def compile_kernel({:defk,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
     {delta,is_typed}  = if(is_tuple(type_def)) do
@@ -207,6 +217,9 @@ end
   def compile_lambda(_other, _t, _n) do
     "Cannot compile the anonymous function."
   end
+
+  #################### Compile a function
+
   def compile_function({:defh,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
     {delta,is_typed,fun_type}  = if(is_tuple(type_def)) do
@@ -249,7 +262,7 @@ defp type_to_list({:integer,_,_}), do: [:int]
 defp type_to_list({:unit,_,_}), do: [:unit]
 defp type_to_list({:float,_,_}), do: [:float]
 defp type_to_list({:gmatrex,_,_}), do: [:matrex]
-defp type_to_list([type]), do: [type_to_list(type)]
+defp type_to_list([type]), do: [ {List.last(type), List.delete_at(type, length(type)-1)}]
 defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
 defp type_to_list({x,_,_}), do: raise "Unknown type constructor #{x}"
 defp gen_para(p,:matrex) do
