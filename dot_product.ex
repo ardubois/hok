@@ -1,6 +1,6 @@
 defmodule GPUDP do
-  import GPotion
-  gpotion dot_product(ref4, a, b, n) do
+
+  defk dot_product(ref4, a, b, n) do
 
   __shared__ cache[256]
 
@@ -47,17 +47,17 @@ numberOfBlocks = blocksPerGrid
 
 prev = System.monotonic_time()
 
-kernel=GPotion.load(&GPUDP.dot_product/4)
+kernel=Hok.load(&GPUDP.dot_product/4)
 
-ref1=GPotion.new_gmatrex(vet1)
-ref2=GPotion.new_gmatrex(vet2)
-ref3=GPotion.new_gmatrex(1,blocksPerGrid)
+ref1=Hok.new_gmatrex(vet1)
+ref2=Hok.new_gmatrex(vet2)
+ref3=Hok.new_gmatrex(1,blocksPerGrid)
 
-GPotion.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
-GPotion.synchronize()
+Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
+Hok.synchronize()
 
-resultreal = GPotion.get_gmatrex(ref3)
+resultreal = Hok.get_gmatrex(ref3)
 _s = Matrex.sum(resultreal)
 next = System.monotonic_time()
 
-IO.puts "GPotion\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
