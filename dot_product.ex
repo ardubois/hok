@@ -26,10 +26,10 @@ Hok.defmodule GPUDP do
     i = i/2
   end
 
-  if (cacheIndex == 0) do
+  #if (cacheIndex == 0) do
     r#ef4[blockIdx.x] = cache[0]
     #atomicAdd(ref4,cache[0])
-  end
+  #end
 
 end
 def replicate(n, x), do: for _ <- 1..n, do: x
