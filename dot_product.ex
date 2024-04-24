@@ -32,11 +32,13 @@ Hok.defmodule GPUDP do
   end
 
 end
+def replicate(n, x), do: for _ <- 1..n, do: x
+
 end
 
 {n, _} = Integer.parse(Enum.at(System.argv, 0))
 
-list = [Enum.to_list(1..n)]
+list = [replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
@@ -61,5 +63,5 @@ Hok.synchronize()
 resultreal = Hok.get_gmatrex(ref3)
 _s = Matrex.sum(resultreal)
 next = System.monotonic_time()
-
+IO.inspect(ref3)
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
