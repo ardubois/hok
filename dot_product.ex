@@ -10,7 +10,7 @@ Hok.defmodule GPUDP do
   temp = 0.0
 
   while (tid < n) do
-    temp = a[tid] * b[tid] + temp
+    temp = a[tid]  + temp
     tid = blockDim.x * gridDim.x + tid
   end
 
