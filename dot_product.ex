@@ -38,7 +38,7 @@ end
 
 {n, _} = Integer.parse(Enum.at(System.argv, 0))
 
-list = [replicate(n,1)]
+list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
