@@ -1,7 +1,7 @@
 require Hok
 Hok.defmodule GPUDP do
 
-  defk dot_product(ref4, a, b, n) do
+  defk dot_product(ref4, a, n) do
 
   __shared__ cache[256]
 
@@ -26,10 +26,10 @@ Hok.defmodule GPUDP do
     i = i/2
   end
 
-  #if (cacheIndex == 0) do
-    r#ef4[blockIdx.x] = cache[0]
+  if (cacheIndex == 0) do
+    ef4[blockIdx.x] = cache[0]
     #atomicAdd(ref4,cache[0])
-  #end
+  end
 
 end
 def replicate(n, x), do: for _ <- 1..n, do: x
@@ -41,7 +41,7 @@ end
 list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
-vet2 = Matrex.new(list)
+#vet2 = Matrex.new(list)
 vet3 = Matrex.new([GPUDP.replicate(10,0)])
 
 threadsPerBlock = 256
@@ -54,10 +54,10 @@ prev = System.monotonic_time()
 kernel=Hok.load(&GPUDP.dot_product/4)
 
 ref1=Hok.new_gmatrex(vet1)
-ref2=Hok.new_gmatrex(vet2)
+#ref2=Hok.new_gmatrex(vet2)
 ref3=Hok.new_gmatrex(vet3)
 
-Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
+Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,n])
 Hok.synchronize()
 
 resultreal = Hok.get_gmatrex(ref3)
