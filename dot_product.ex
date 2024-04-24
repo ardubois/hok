@@ -63,5 +63,5 @@ Hok.synchronize()
 resultreal = Hok.get_gmatrex(ref3)
 _s = Matrex.sum(resultreal)
 next = System.monotonic_time()
-IO.inspect(ref3)
+IO.inspect(resultreal)
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
