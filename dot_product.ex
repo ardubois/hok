@@ -61,7 +61,8 @@ Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
 Hok.synchronize()
 
 resultreal = Hok.get_gmatrex(ref3)
-_s = Matrex.sum(resultreal)
+s = Matrex.sum(resultreal)
+IO.inspect s
 next = System.monotonic_time()
 IO.inspect(resultreal)
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
