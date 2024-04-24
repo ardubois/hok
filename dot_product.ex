@@ -42,7 +42,7 @@ list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
-
+vet3 = Matrex.new([GPUDP.replicate(10,0)])
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
@@ -55,7 +55,7 @@ kernel=Hok.load(&GPUDP.dot_product/4)
 
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
-ref3=Hok.new_gmatrex(1,blocksPerGrid)
+ref3=Hok.new_gmatrex(vet3)
 
 Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
 Hok.synchronize()
