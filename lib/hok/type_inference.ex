@@ -11,6 +11,7 @@ defmodule Hok.TypeInference do
       if (length(notinfer)==length(notinfer2)) do
         IO.inspect notinfer2
         #raise "Could not find types! Please use type annotations of the form: var x float, where x is an identifier"
+        IO.inspect types
         IO.puts "Could not find types, choosing type float."
         map =for {var, type} <- types, into: %{} do if(type == :none)do {var, :float} else {var,type}  end end
         IO.inspect map
@@ -68,17 +69,8 @@ defmodule Hok.TypeInference do
     [h|check_return t]
   end
   def infer_types(map,body1) do
-    IO.puts "Infer types!!!!!!!!!"
-    #IO.puts "Antes"
-    #IO.inspect body
-    body = add_return(map,body1)
-   # IO.puts "depois"
-    #IO.inspect body
-    IO.inspect body == body1
-    IO.inspect body
-    IO.inspect body1
-    #raise "hell"
 
+    body = add_return(map,body1)
 
     case body do
         {:__block__, _, _code} ->
@@ -138,25 +130,29 @@ defmodule Hok.TypeInference do
              map
              |> Map.put(array,:matrex)
              |> set_type_exp(:int,arg2)
+          # assignment
           {:=, _, [{{:., _, [Access, :get]}, _, [{array,_,_},acc_exp]}, exp]} ->
-            map
+            map = map
             |> Map.put(array,:matrex)
             |> set_type_exp(:int, acc_exp)
             |> set_type_exp(:float,exp)
+            map
           {:=, _, [var, exp]} ->
             var = get_var(var)
             case get_or_insert_var_type(map,var) do
               {map, :none} ->
-                type_exp = find_type_exp(map,exp)
-                if(type_exp != :none) do
-                  map
-                  |> Map.put(var,type_exp)
-                  |> set_type_exp(type_exp,exp)
-                else
-                  infer_type_fun(map,exp) #  map
-                end
+                    type_exp = find_type_exp(map,exp)
+                    if(type_exp != :none) do
+                      map
+                      |> Map.put(var,type_exp)
+                      |> set_type_exp(type_exp,exp)
+                    else
+                      infer_type_fun(map,exp) #  map
+                    end
               {map,var_type} ->
-                set_type_exp(map,var_type,exp)
+
+                  set_type_exp(map,var_type,exp)
+
             end
           {:if, _, if_com} ->
                infer_if(map,if_com)
@@ -217,7 +213,8 @@ defmodule Hok.TypeInference do
           #string when is_string(string)) -> string #to_string(number)
       end
 end
-###################  Auxiliary functions for infering type of command function call
+###################  Auxiliary functions for infering type of function call
+
 defp set_type_args(map,[],[],type), do: {map,type}
 defp set_type_args(map, [:none], a1, newtype) when is_tuple a1 do
   t=find_type_exp(map,a1)
@@ -244,12 +241,12 @@ defp set_type_args(map,[t1 | types], [a1,args], newtype ) do
   set_type_args(map,types,args, newtype ++ [t1])
 end
 defp infer_types_args(map,[],type), do: {map,type}
-defp infer_types_args(map,[h|t],type) do
+defp infer_types_args(map,[h|tail],type) do
    t=find_type_exp(map,h)
    case t do
-      :none -> infer_types_args(map,t, type ++ [:none])
+      :none -> infer_types_args(map,tail, type ++ [:none])
       nt     -> map = set_type_exp(map,nt,h)
-                infer_types_args(map,t, type ++[nt])
+                infer_types_args(map,tail, type ++[nt])
    end
 end
 ####################################################
@@ -270,7 +267,9 @@ defp get_var(id) do
       {var, _, nil} when is_atom(var) -> var
     end
 end
+
 ################## infering ifs
+
 defp infer_if(map,[bexp, [do: then]]) do
     map
     |> set_type_exp(:int, bexp)
@@ -387,7 +386,10 @@ defp set_type_exp(map,type,exp) do
           else
             case type_fun do
               :none ->      {map, infered_type}= infer_types_args(map,args,[])
-                            Map.put(map,fun, {type,infered_type})
+                            IO.inspect {map, infered_type}
+                            IO.inspect type
+                            map = Map.put(map,fun, {type,infered_type})
+                            map
               {ret,type_args} -> {map, infered_type} = set_type_args(map,type_args,args,[])
                               cond do
                                 ret == type -> Map.put(map,fun, {type, infered_type})
@@ -397,7 +399,7 @@ defp set_type_exp(map,type,exp) do
 
             end
         end
-        Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
+        #Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
       {_fun, _, _noargs} ->
         map
       float when  is_float(float) ->
@@ -477,8 +479,14 @@ end
             Map.get(map,var)
           end
 
-        {_fun, _, _args} ->
-          :none
+        {fun, _, _args} ->
+            type_fun = map[fun]
+            case type_fun do
+                nil -> :none
+                :none -> :none
+                {ret,type} -> ret
+            end
+
         float when  is_float(float) -> :float
         int   when  is_integer(int) -> :int
         string when is_binary(string)  -> :string
