@@ -64,5 +64,5 @@ resultreal = Hok.get_gmatrex(ref3)
 s = Matrex.sum(resultreal)
 IO.inspect s
 next = System.monotonic_time()
-
+IO.inspect resultreal
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
