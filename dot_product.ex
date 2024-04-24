@@ -27,7 +27,7 @@ Hok.defmodule GPUDP do
   end
 
   if (cacheIndex == 0) do
-    ef4[blockIdx.x] = cache[0]
+    #ef4[blockIdx.x] = cache[0]
     atomicAdd(ref4,cache[0])
   end
 
