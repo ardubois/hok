@@ -56,7 +56,7 @@ kernel=Hok.load(&GPUDP.dot_product/4)
 
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
-ref3=Hok.new_gmatrex(1,blocksPerGrid)
+ref3=Hok.new_gmatrex([GPUDP.relplicate(10,0)])
 
 Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
 Hok.synchronize()
