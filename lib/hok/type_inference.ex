@@ -194,12 +194,20 @@ defmodule Hok.TypeInference do
             end
 
           {fun, _, args} when is_list(args)->
-              type_fun = map[String.to_atom(fun)]
+             type_fun = map[fun]
               if( type_fun == nil) do
                   Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
               else
-                  #types = infer_types_args(args)
-                  Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
+                  case type_fun do
+                    :none ->      {map, infered_type}= infer_types_args(map,args,[])
+                                  Map.put(map,fun, {:unit,infered_type})
+                    {ret,type} -> {map, infered_type} = set_type_args(map,type,args,[])
+                                  case ret do
+                                    :none -> Map.put(map,fun, {:unit, infered_type})
+                                    :unit -> Map.put(map,fun, {:unit, infered_type})
+                                    t -> raise "Function #{fun} has return type #{t} as is being used in context :unit"
+                                  end
+                  end
               end
           number when is_integer(number) or is_float(number) -> raise "Error: number is a command"
           {str,_ ,_ } ->
@@ -209,6 +217,42 @@ defmodule Hok.TypeInference do
           #string when is_string(string)) -> string #to_string(number)
       end
 end
+###################  Auxiliary functions for infering type of command function call
+defp set_type_args(map,[],[],type), do: {map,type}
+defp set_type_args(map, [:none], a1, newtype) when is_tuple a1 do
+  t=find_type_exp(map,a1)
+   case t do
+      :none -> {map,newtype ++ [:none]}
+      nt     -> map = set_type_exp(map,nt,a1)
+                {map, newtype ++[nt]}
+   end
+end
+defp set_type_args(map,[t1 | types], a1, newtype ) when is_tuple a1 do
+  map=set_type_exp(map,t1,a1)
+  {map, newtype ++ [t1]}
+end
+defp set_type_args(map,[:none|tail],[a1 |args], newtype) do
+   t=find_type_exp(map,a1)
+   case t do
+      :none -> set_type_args(map,tail, args, newtype ++ [:none])
+      nt     -> map = set_type_exp(map,nt,a1)
+                set_type_args(map,tail, args, newtype ++[nt])
+   end
+end
+defp set_type_args(map,[t1 | types], [a1,args], newtype ) do
+  map=set_type_exp(map,t1,a1)
+  set_type_args(map,types,args, newtype ++ [t1])
+end
+defp infer_types_args(map,[],type), do: {map,type}
+defp infer_types_args(map,[h|t],type) do
+   t=find_type_exp(map,h)
+   case t do
+      :none -> infer_types_args(map,t, type ++ [:none])
+      nt     -> map = set_type_exp(map,nt,h)
+                infer_types_args(map,t, type ++[nt])
+   end
+end
+####################################################
 defp get_or_insert_var_type(map,var) do
   var_type = Map.get(map,var)
   if(var_type == nil) do
@@ -226,6 +270,7 @@ defp get_var(id) do
       {var, _, nil} when is_atom(var) -> var
     end
 end
+################## infering ifs
 defp infer_if(map,[bexp, [do: then]]) do
     map
     |> set_type_exp(:int, bexp)
@@ -237,6 +282,9 @@ defp infer_if(map,[bexp, [do: thenbranch, else: elsebranch]]) do
     |> infer_types(thenbranch)
     |> infer_types(elsebranch)
 end
+
+###################################################################
+
 defp set_type_exp(map,type,exp) do
     case exp do
       {{:., info, [Access, :get]}, _, [arg1,arg2]} ->
@@ -330,7 +378,25 @@ defp set_type_exp(map,type,exp) do
              map
            end
         end
-      {_fun, _, args} when is_list(args)->
+      {fun, _, args} when is_list(args)->
+         #IO.inspect args
+         #raise "hell"
+         type_fun = Map.get(map,fun)
+         if( type_fun == nil) do
+            Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
+          else
+            case type_fun do
+              :none ->      {map, infered_type}= infer_types_args(map,args,[])
+                            Map.put(map,fun, {type,infered_type})
+              {ret,type_args} -> {map, infered_type} = set_type_args(map,type_args,args,[])
+                              cond do
+                                ret == type -> Map.put(map,fun, {type, infered_type})
+                                ret == :none -> Map.put(map,fun, {type, infered_type})
+                                true           -> raise "Function #{fun} has return type #{ret} and is being used in an #{type} context."
+                              end
+
+            end
+        end
         Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
       {_fun, _, _noargs} ->
         map
