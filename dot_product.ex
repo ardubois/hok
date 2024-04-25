@@ -61,7 +61,7 @@ ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
 ref3=Hok.new_gmatrex(vet3)
 
-Hok.spawn(GPUDP.dot_product/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
+Hok.spawn(&GPUDP.dot_product/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
 Hok.synchronize()
 
 result_gpu = Hok.get_gmatrex(ref3)
