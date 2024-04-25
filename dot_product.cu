@@ -77,7 +77,7 @@ int main (int argc, char *argv[]) {
 		printf("vet %d = %f\n",i,partial_c[i]);
 		c += partial_c[i];
 	}
-    printf("result %d %d", c, blocksPerGrid);
+    printf("result %f %d\n", c, blocksPerGrid);
 	cudaFree(dev_a);
 	cudaFree(dev_b);
 	cudaFree(dev_partial_c);
