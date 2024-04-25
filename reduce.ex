@@ -52,7 +52,7 @@ end
 
 #list = [Enum.to_list(1..n)]
 
-list = [GPUDP.replicate(n,1)]
+list = [Reduce.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new([[0]])
