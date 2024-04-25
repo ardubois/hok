@@ -2,7 +2,7 @@ require Hok
 Hok.defmodule Reduce do
   include CAS
   defh soma(x,y) do
-    x + y
+    x * y
   end
 
   defk reduce(ref4, a, f,n) do
