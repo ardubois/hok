@@ -3,7 +3,7 @@ Hok.defmodule GPUDP do
 
   defk dot_product(ref4, a, b, n) do
 
-  type ref4 gmatrex
+  type ref4 :matrex
 
   __shared__ cache[256]
 
