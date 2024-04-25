@@ -13,6 +13,7 @@ float inc(float v)
  return v+2;
 }
 
+
 __global__
 void inc_vet(float *result, float *a, int n,float (*fun)(float))
 {
@@ -30,7 +31,7 @@ __device__ float (*fun_pointer)(float) = inc;
 int main (int argc, char *argv[]) {
 	float *a, *resp, *dev_a, *dev_resp;
 
-	float (*pfun)(float);
+	
 
 	int n = 10000;
 
@@ -55,22 +56,24 @@ int main (int argc, char *argv[]) {
     cudaMemcpy(dev_a, a, n*sizeof(float), cudaMemcpyHostToDevice);
 
 
-	CUmodule cuModule;
+	//CUmodule cuModule;
 
-    int ret = cuModuleLoad(&cuModule, "/home/dubois/hok/loadModule.ptx");
+    //int ret = cuModuleLoad(&cuModule, "/home/dubois/hok/loadModule.ptx");
 
-	printf("retorno %d\n", ret);
+	//printf("retorno %d\n", ret);
 
-	CUfunction function;
-    int funs = 0;
+	//CUfunction function;
+    //int funs = 0;
 //	ret = cuModuleGetFunctionCount(&funs,cuModule) ;
 
-	printf("retorno %d funs= %d\n", ret,funs);
+	//printf("retorno %d funs= %d\n", ret,funs);
 
 
-	ret = cuModuleGetFunction(&function, cuModule, "inc");
+//	ret = cuModuleGetFunction(&function, cuModule, "inc");
 
-	printf("retorno %d\n", ret);
+//	printf("retorno %d\n", ret);
+
+	float (*pfun)(float);
 
     cudaMemcpy((void*)pfun,(void*)inc, sizeof(float(*)(float)), cudaMemcpyDeviceToHost);
 
