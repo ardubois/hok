@@ -12,10 +12,12 @@ Hok.defmodule Reduce do
   tid = threadIdx.x + blockIdx.x * blockDim.x;
   cacheIndex = threadIdx.x
 
-  #temp = 0.0
+  temp = 0.0
 
+  if (tid < n) do
   temp = a[tid]
   tid = blockDim.x * gridDim.x + tid
+  end
 
   while (tid < n) do
     temp = f(a[tid], temp)
