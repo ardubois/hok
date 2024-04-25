@@ -45,32 +45,31 @@ list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
-
+vet3 = Matrex.new([0])
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
 numberOfBlocks = blocksPerGrid
 IO.puts blocksPerGrid
 
-vet3 = Matrex.new([GPUDP.replicate(blocksPerGrid,0)])
 
-IO.puts "vet3"
-IO.inspect vet3
 
 prev = System.monotonic_time()
 
-kernel=Hok.load(&GPUDP.dot_product/4)
 
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
 ref3=Hok.new_gmatrex(vet3)
 
-Hok.spawn(kernel,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
+Hok.spawn(GPUDP.dot_product/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
 Hok.synchronize()
 
-resultreal = Hok.get_gmatrex(ref3)
-s = Matrex.sum(resultreal)
-IO.inspect s
+result_gpu = Hok.get_gmatrex(ref3)
+result = result_gpu[1]
+
 next = System.monotonic_time()
-IO.inspect resultreal
+
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+
+result_elixir = Matrex.dot(ref1,ref2)
+IO.puts "Resultado Elixir: #{result_elixir}, resultado Hok: #{result}"
