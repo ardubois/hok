@@ -1,15 +1,15 @@
 require Hok
 Hok.defmodule GPUDP do
 
-  defh atomic_apply(arr,new_value) do
-    current_value = arr[0]
-    while(!(current_value == atomicCAS(arr,current_value,new_value+current_value))) do
-      current_value = arr[0]
-    end
-  end
+  #defh atomic_apply(arr,new_value) do
+  #  current_value = arr[0]
+  #  while(!(current_value == atomicCAS(arr,current_value,new_value+current_value))) do
+  #    current_value = arr[0]
+  #  end
+  #end
   defk dot_product(ref4, a, b, n) do
 
-  type ref4 :matrex
+  #type ref4 :matrex
 
   __shared__ cache[256]
 
@@ -35,9 +35,10 @@ Hok.defmodule GPUDP do
   end
 
   if (cacheIndex == 0) do
-    #ref4[blockIdx.x] = cache[0]
-    #atomicAdd(ref4,cache[0])
-    atomic_apply(ref4,cache[0])
+    current_value = ref4[0]
+    while(!(current_value == atomicCAS(ref4,current_value,new_value+current_value))) do
+      current_value = ref4[0]
+
   end
 
 end
