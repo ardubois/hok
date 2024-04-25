@@ -71,5 +71,5 @@ next = System.monotonic_time()
 
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result_elixir = Matrex.dot(ref1,ref2)
+result_elixir = Matrex.dot(vet1,vet2)
 IO.puts "Resultado Elixir: #{result_elixir}, resultado Hok: #{result}"
