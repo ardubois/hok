@@ -33,9 +33,10 @@ Hok.defmodule Reduce do
   end
 
   if (cacheIndex == 0) do
-    current_value = ref4[0]
-    while(!(current_value == atomic_cas(ref4,current_value,f(cache[0],current_value)))) do
-      current_value = ref4[0]
+    #current_value = ref4[0]
+    #while(!(current_value == atomic_cas(ref4,current_value,f(cache[0],current_value)))) do
+    #  current_value = ref4[0]
+    atomic_cas(ref4)
     end
   end
 
