@@ -4,11 +4,7 @@ Hok.defmodule Reduce do
   defh soma(x,y) do
     x + y
   end
-  defh atomic_cas(arr,new) do
-    current_value = arr[0]
-    while( current_value != atomicCAS(arr,current_value,new)) do
-      current_value = ref4[0]
-  end
+
   defk reduce(ref4, a, f,n) do
 
   #type ref4 :matrex
