@@ -42,7 +42,7 @@ int main (int argc, char *argv[]) {
 	int N = atoi(argv[1]);
    
 
-	int blocksPerGrid =  (N+threadsPerBlock-1) / threadsPerBlock);
+	int blocksPerGrid =  (N+threadsPerBlock-1) / threadsPerBlock;
 
 	a = (float*)malloc(N*sizeof(float));
 	b = (float*)malloc(N*sizeof(float));
