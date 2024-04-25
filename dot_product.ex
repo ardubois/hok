@@ -48,7 +48,7 @@ vet2 = Matrex.new(list)
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
 numberOfBlocks = blocksPerGrid
-
+IO.puts blocksPerGrid
 
 prev = System.monotonic_time()
 
