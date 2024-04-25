@@ -32,7 +32,8 @@ __global__ void dot(float* a, float* b, float* c, int N) {
 	}
 
 	if (cacheIndex == 0)
-		c[blockIdx.x] = cache[0];
+		//c[blockIdx.x] = cache[0];
+		atomicAdd(c,cache[0]);
 }
 
 int main (int argc, char *argv[]) {
