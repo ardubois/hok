@@ -24,7 +24,7 @@ Hok.defmodule Reduce do
   i = blockDim.x/2
   while (i != 0) do
     if (cacheIndex < i) do
-      cache[cacheIndex] = cache[cacheIndex + i] + cache[cacheIndex]
+      cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
     end
     __syncthreads()
     i = i/2
