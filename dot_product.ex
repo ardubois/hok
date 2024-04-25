@@ -43,15 +43,17 @@ list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
-vet3 = Matrex.new([GPUDP.replicate(blocksPerGrid,0)])
 
-IO.puts "vet3"
-IO.inspect vet3
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
 numberOfBlocks = blocksPerGrid
 IO.puts blocksPerGrid
+
+vet3 = Matrex.new([GPUDP.replicate(blocksPerGrid,0)])
+
+IO.puts "vet3"
+IO.inspect vet3
 
 prev = System.monotonic_time()
 
