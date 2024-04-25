@@ -50,8 +50,8 @@ int main (int argc, char *argv[]) {
 	partial_c = (float*)malloc(blocksPerGrid*sizeof(float));
 
 	for(int i=0; i<N; i++) {
-		a[i] = i;
-		b[i] = i;
+		a[i] = 1;
+		b[i] = 1;
 	}
 
 	float time;
@@ -75,7 +75,7 @@ int main (int argc, char *argv[]) {
 	for(int i=0; i<blocksPerGrid; i++) {
 		c += partial_c[i];
 	}
-
+    printf("result %d %d", c, blocksPerGrid);
 	cudaFree(dev_a);
 	cudaFree(dev_b);
 	cudaFree(dev_partial_c);
