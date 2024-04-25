@@ -1,7 +1,7 @@
 require Hok
 Hok.defmodule GPUDP do
 
-  deff atomic_apply(arr,new_value) do
+  defh atomic_apply(arr,new_value) do
     current_value = arr[0]
     while(!(current_value == atomicCAS(arr,current_value,new_value+current_value))) do
       current_value = arr[0]
