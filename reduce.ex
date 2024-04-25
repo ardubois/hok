@@ -1,5 +1,5 @@
 require Hok
-Hok.defmodule GPUDP do
+Hok.defmodule Reduce do
 
   #defh atomic_apply(arr,new_value) do
   #  current_value = arr[0]
@@ -7,7 +7,10 @@ Hok.defmodule GPUDP do
   #    current_value = arr[0]
   #  end
   #end
-  defk dot_product(ref4, a, b, n) do
+  defh soma(x,y) do
+    x + y
+  end
+  defk reduce(ref4, a, f,n) do
 
   #type ref4 :matrex
 
@@ -18,7 +21,7 @@ Hok.defmodule GPUDP do
   temp = 0.0
 
   while (tid < n) do
-    temp = a[tid] * b[tid] + temp
+    temp = f(a[tid], temp)
     tid = blockDim.x * gridDim.x + tid
   end
 
@@ -36,7 +39,7 @@ Hok.defmodule GPUDP do
 
   if (cacheIndex == 0) do
     current_value = ref4[0]
-    while(!(current_value == atomicCAS(ref4,current_value,cache[0]+current_value))) do
+    while(!(current_value == atomicCAS(ref4,current_value,f(cache[0],current_value)))) do
       current_value = ref4[0]
     end
   end
@@ -52,8 +55,7 @@ end
 list = [GPUDP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
-vet2 = Matrex.new(list)
-vet3 = Matrex.new([[0]])
+vet2 = Matrex.new([[0]])
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
@@ -67,17 +69,16 @@ prev = System.monotonic_time()
 
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
-ref3=Hok.new_gmatrex(vet3)
 
-Hok.spawn(&GPUDP.dot_product/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3, ref1,ref2,n])
+Hok.spawn(&Reduce.reduce/3,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, &Reduce.soma/2,n])
 Hok.synchronize()
 
-result_gpu = Hok.get_gmatrex(ref3)
+result_gpu = Hok.get_gmatrex(ref2)
 result = result_gpu[1]
 
 next = System.monotonic_time()
 
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result_elixir = Matrex.sum(Matrex.multiply(vet1,vet2))
+result_elixir = Matrex.sum(vet1)
 IO.puts "Resultado Elixir: #{result_elixir}, resultado Hok: #{result}"
