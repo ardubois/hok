@@ -28,7 +28,9 @@ Hok.defmodule Reduce do
   __syncthreads()
 
   i = blockDim.x/2
-  while (i != 0) do
+  tid = threadIdx.x + blockIdx.x * blockDim.x;
+  while (i != 0 && tid < n) do
+    tid = blockDim.x * gridDim.x + tid
     if (cacheIndex < i) do
       cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
     end
