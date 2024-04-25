@@ -36,7 +36,7 @@ Hok.defmodule GPUDP do
 
   if (cacheIndex == 0) do
     current_value = ref4[0]
-    while(!(current_value == atomicCAS(ref4,current_value,new_value+current_value))) do
+    while(!(current_value == atomicCAS(ref4,current_value,cache[0]+current_value))) do
       current_value = ref4[0]
     end
   end
