@@ -2,18 +2,16 @@ require Hok
 Hok.defmodule Reduce do
   include CAS
   defh soma(x,y) do
-    x + y
+    x * y
   end
 
   defk reduce(ref4, a, f,n) do
-
-  #type ref4 :matrex
 
   __shared__ cache[256]
 
   tid = threadIdx.x + blockIdx.x * blockDim.x;
   cacheIndex = threadIdx.x
-  temp = 0.0
+  temp = 1 #0.0
 
   while (tid < n) do
     temp = f(a[tid], temp)
