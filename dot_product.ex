@@ -3,6 +3,8 @@ Hok.defmodule GPUDP do
 
   defk dot_product(ref4, a, b, n) do
 
+  type ref4 gmatrex
+
   __shared__ cache[256]
 
   tid = threadIdx.x + blockIdx.x * blockDim.x;
