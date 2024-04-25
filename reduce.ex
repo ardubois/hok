@@ -11,7 +11,7 @@ Hok.defmodule Reduce do
 
   tid = threadIdx.x + blockIdx.x * blockDim.x;
   cacheIndex = threadIdx.x
-  temp = 1.0 #0.0
+  temp = 0.0
 
   while (tid < n) do
     temp = f(a[tid], temp)
@@ -48,7 +48,7 @@ end
 list = [Reduce.replicate(n,1)]
 
 vet1 = Matrex.new(list)
-vet2 = Matrex.new([[1]])
+vet2 = Matrex.new([[0]])
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
