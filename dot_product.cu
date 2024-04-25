@@ -3,7 +3,7 @@
 
 #define imin(a,b) (a<b?a:b)
 
-
+const int threadsPerBlock = 256;
 
 
 
@@ -41,7 +41,7 @@ int main (int argc, char *argv[]) {
 	
 	int N = atoi(argv[1]);
    
-const int threadsPerBlock = 256;
+
 
 	int blocksPerGrid =  (N+threadsPerBlock-1) / threadsPerBlock;
 
