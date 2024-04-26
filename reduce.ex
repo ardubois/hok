@@ -4,7 +4,7 @@ Hok.defmodule Reduce do
   defh soma(x,y) do
     x + y
   end
-  defh max (x,y) do
+  defh max(x,y) do
     if x > y do
       return x
     else
