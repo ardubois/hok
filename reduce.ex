@@ -2,41 +2,42 @@ require Hok
 Hok.defmodule Reduce do
   include CAS
   defh soma(x,y) do
-    x * y
+    x + y
   end
 
   defk reduce(ref4, a, f,n) do
 
-  __shared__ cache[256]
+    __shared__ cache[256]
 
-  tid = threadIdx.x + blockIdx.x * blockDim.x;
-  cacheIndex = threadIdx.x
+    tid = threadIdx.x + blockIdx.x * blockDim.x;
+    cacheIndex = threadIdx.x
 
-  temp =0.0
+    temp =0.0
 
-  if (tid < n) do
-  temp = a[tid]
-  tid = blockDim.x * gridDim.x + tid
-  end
-
-  while (tid < n) do
-    temp = f(a[tid], temp)
-    tid = blockDim.x * gridDim.x + tid
-  end
-
-  cache[cacheIndex] = temp
-  __syncthreads()
-
-  i = blockDim.x/2
-  tid = threadIdx.x + blockIdx.x * blockDim.x;
-  while (i != 0 && tid < n) do
-    tid = blockDim.x * gridDim.x + tid
-    if (cacheIndex < i) do
-      cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
+    if (tid < n) do
+      temp = a[tid]
+      tid = blockDim.x * gridDim.x + tid
     end
+
+    while (tid < n) do
+      temp = f(a[tid], temp)
+      tid = blockDim.x * gridDim.x + tid
+    end
+
+    cache[cacheIndex] = temp
+      __syncthreads()
+
+    i = blockDim.x/2
+    #tid = threadIdx.x + blockIdx.x * blockDim.x;
+    while (i != 0 ) do  ###&& tid < n) do
+      #tid = blockDim.x * gridDim.x + tid
+      if (cacheIndex < i) do
+        cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
+      end
+
     __syncthreads()
     i = i/2
-  end
+    end
 
   if (cacheIndex == 0) do
     current_value = ref4[0]

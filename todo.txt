@@ -1,2 +1,3 @@
 * function of type void
 * testar o numero de argumentos das funcoes antes de compilar (quantos tipos e quantos argumentos)
+*
