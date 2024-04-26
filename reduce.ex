@@ -6,8 +6,10 @@ Hok.defmodule Reduce do
   end
   defh max(x,y) do
     if x > y do
+      var z int
       return x
     else
+      var c int
       return y
     end
   end
