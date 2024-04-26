@@ -53,7 +53,7 @@ Hok.defmodule Reduce do
   end
 
 end
-def replicate(n, x), do: for _ <- 1..n, do: x
+def replicate(n, x), do: (for _ <- 1..n, do: x)
 end
 
 {n, _} = Integer.parse(Enum.at(System.argv, 0))
