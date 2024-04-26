@@ -1,6 +1,10 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
+   # IO.inspect map
+   # IO.inspect body
     types = infer_types(map,body)
+   # IO.inspect types
+    #raise "hell"
     notinfer = not_infered(Map.to_list(types))
     if(length(notinfer)>0) do
       IO.puts "Not infered:"
@@ -370,19 +374,35 @@ defp set_type_exp(map,type,exp) do
         t1 = find_type_exp(map,arg1)
         t2 = find_type_exp(map, arg2)
         case t1 do
-          :none ->
-            map = set_type_exp(map,type,arg1)
-            case t2 do
-               :none -> set_type_exp(map,type,arg2)
-               _     -> set_type_exp(map,t2,arg2)
-            end
-          _->
-            map = set_type_exp(map,t1,arg1)
-            case t2 do
-              :none -> set_type_exp(map,type,arg2)
-              _     -> set_type_exp(map,t2,arg2)
-            end
+          :none -> case t2 do
+                      :none ->  map
+                      ntype ->  set_type_exp(map,ntype,arg1)
+                                set_type_exp(map,ntype,arg2)
+                    end
+          ntype ->  set_type_exp(map,ntype,arg1)
+                    case t2 do
+                        :none -> set_type_exp(map,ntype,arg2)
+                        ntype2 -> if ntype != ntype2 do
+                                      raise "Operator #{op} (#{info}) is applyed to type #{t1} and type #{t2}."
+                                  else
+                                      set_type_exp(map,ntype2,arg2)
+                                  end
+                    end
         end
+        #case t1 do
+        #  :none ->
+        #    map = set_type_exp(map,type,arg1)
+        #    case t2 do
+        #       :none -> set_type_exp(map,type,arg2)
+        #       _     -> set_type_exp(map,t2,arg2)
+        #    end
+        #  _->
+        #    map = set_type_exp(map,t1,arg1)
+        #    case t2 do
+        #      :none -> set_type_exp(map,type,arg2)
+        #      _     -> set_type_exp(map,t2,arg2)
+        #    end
+        #end
       {:!, info, [arg]} ->
           if (type != :int) do
             raise "Operator (!) (#{inspect info}) is being used in a context #{inspect type}"
