@@ -41,6 +41,9 @@ defmodule Hok.TypeInference do
    IO.inspect nmap
    :ok
   end
+
+  ########################### adds return statement to functions that return an expression
+
   defp add_return(map,body) do
     if map[:return] == nil do
       body
@@ -53,21 +56,55 @@ defmodule Hok.TypeInference do
         {:do, exp} ->
             case exp do
               {:return,_,_} -> {:do, exp}
-              _ -> {:do, {:return,[],[exp]}}
+              _ ->  if is_exp?(exp) do
+                      {:do, {:return,[],[exp]}}
+                    else
+                      {:do, exp}
+                    end
             end
-        {_,_,_} -> {:return,[],[body]}
+        {_,_,_} ->  if (is_exp?(body)) do
+                      {:return,[],[body]}
+                    else
+                      body
+                    end
+
       end
     end
   end
   defp check_return([com]) do
     case com do
           {:return,_,_} -> [com]
-              _ -> [{:return,[],[com]}]
+              _ -> if is_exp?(com) do
+                      [{:return,[],[com]}]
+                  else
+                    [com]
+                  end
     end
   end
   defp check_return([h|t]) do
     [h|check_return t]
   end
+  defp is_exp?(exp) do
+    case exp do
+      {{:., info, [Access, :get]}, _, [arg1,arg2]} -> true
+      {{:., _, [{_struct, _, nil}, _field]},_,[]} -> true
+      {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} -> true
+      {op, info, args} when op in [:+, :-, :/, :*] -> true
+      {op, info, [arg1,arg2]} when op in [ :<=, :<, :>, :>=, :!=,:==] -> true
+      {:!, info, [arg]} -> true
+      {op, inf, args} when op in [ :&&, :||] -> true
+      {var, info, nil} when is_atom(var) -> true
+      #{fun, _, args} when is_list(args)-> true
+      #{_fun, _, _noargs} ->
+      float when  is_float(float) -> true
+      int   when  is_integer(int) -> true
+      string when is_binary(string)  -> true
+      _                              -> false
+
+   end
+  end
+#######################################################33
+
   def infer_types(map,body1) do
 
     body = add_return(map,body1)
@@ -480,6 +517,8 @@ end
           end
 
         {fun, _, _args} ->
+            #IO.puts "aqui"
+            #raise "hell"
             type_fun = map[fun]
             case type_fun do
                 nil -> :none

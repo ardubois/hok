@@ -315,6 +315,9 @@ end
 def gen_function(name,para,body,type) do
     "__device__\n#{type} #{name}(#{para})\n{\n#{body}\n}"
 end
+
+########################## ADDING RETURN WHEN FUNCTION RETURNS AN EXPRESSION
+
 defp add_return(body) do
   send(:types_server,{:check_return, self()})
   resp = receive do
@@ -331,21 +334,57 @@ defp add_return(body) do
       {:do, exp} ->
           case exp do
             {:return,_,_} -> {:do, exp}
-            _ -> {:do, {:return,[],[exp]}}
+            _ ->  if is_exp?(exp) do
+                    {:do, {:return,[],[exp]}}
+                  else
+                    {:do, exp}
+                  end
           end
-      {_,_,_} -> {:return,[],[body]}
+      {_,_,_} ->  if (is_exp?(body)) do
+                    {:return,[],[body]}
+                  else
+                    body
+                  end
+
     end
   end
 end
 defp check_return([com]) do
   case com do
         {:return,_,_} -> [com]
-            _ -> [{:return,[],[com]}]
+            _ -> if is_exp?(com) do
+                    [{:return,[],[com]}]
+                else
+                  [com]
+                end
   end
 end
 defp check_return([h|t]) do
   [h|check_return t]
 end
+defp is_exp?(exp) do
+  case exp do
+    {{:., info, [Access, :get]}, _, [arg1,arg2]} -> true
+    {{:., _, [{_struct, _, nil}, _field]},_,[]} -> true
+    {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} -> true
+    {op, info, args} when op in [:+, :-, :/, :*] -> true
+    {op, info, [arg1,arg2]} when op in [ :<=, :<, :>, :>=, :!=,:==] -> true
+    {:!, info, [arg]} -> true
+    {op, inf, args} when op in [ :&&, :||] -> true
+    {var, info, nil} when is_atom(var) -> true
+    #{fun, _, args} when is_list(args)-> true
+    #{_fun, _, _noargs} ->
+    float when  is_float(float) -> true
+    int   when  is_integer(int) -> true
+    string when is_binary(string)  -> true
+    _                              -> false
+
+ end
+end
+
+#############################
+
+
 def gen_cuda(body,types,is_typed) do
     pid = spawn_link(fn -> types_server([],types,is_typed) end)
     Process.register(pid, :types_server)
@@ -355,7 +394,10 @@ def gen_cuda(body,types,is_typed) do
     code
   end
   def gen_body(body) do
-    #body = add_return(body)
+    #IO.inspect body
+    body = add_return(body)
+    #IO.inspect(body)
+    #raise "hell"
     case body do
       {:__block__, _, _code} ->
         gen_block body
