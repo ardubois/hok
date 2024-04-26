@@ -523,7 +523,7 @@ end
             case type_fun do
                 nil -> :none
                 :none -> :none
-                {ret,type} -> ret
+                {ret,_type} -> ret
             end
 
         float when  is_float(float) -> :float
