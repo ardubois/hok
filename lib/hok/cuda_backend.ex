@@ -222,6 +222,8 @@ end
 
   def compile_function({:defh,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
+    IO.inspect body
+    #raise "hell"
     {delta,is_typed,fun_type}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
         [fun_type|_] = Enum.reverse(types)
@@ -353,7 +355,7 @@ def gen_cuda(body,types,is_typed) do
     code
   end
   def gen_body(body) do
-    body = add_return(body)
+    #body = add_return(body)
     case body do
       {:__block__, _, _code} ->
         gen_block body
@@ -481,9 +483,12 @@ def gen_cuda(body,types,is_typed) do
 
     end
     defp genIf([bexp, [do: then]]) do
+      #raise "hell"
+
         gen_then([bexp, [do: then]])
     end
     defp genIf([bexp, [do: thenbranch, else: elsebranch]]) do
+        # raise "hell"
          gen_then([bexp, [do: thenbranch]])
          <>
          "else{\n" <>

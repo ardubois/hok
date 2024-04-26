@@ -1,16 +1,12 @@
 require Hok
 Hok.defmodule Reduce do
   include CAS
-  defh soma(x,y) do
-    x + y
-  end
-  defh max(x,y) do
+  #defh soma(x,y) do
+  #  x + y
+  #end
+  defh maxi(x,y) do
     if x > y do
-      var z int
       return x
-    else
-      var c int
-      return y
     end
   end
   defk reduce(ref4, a, f,n) do
