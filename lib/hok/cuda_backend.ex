@@ -364,7 +364,7 @@ defp check_return([h|t]) do
 end
 defp is_exp?(exp) do
   case exp do
-    {{:., info, [Access, :get]}, _, [_arg1,_arg2]} -> true
+    {{:., _info, [Access, :get]}, _, [_arg1,_arg2]} -> true
     {{:., _, [{_struct, _, nil}, _field]},_,[]} -> true
     {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} -> true
     {op, _info, _args} when op in [:+, :-, :/, :*] -> true
