@@ -86,14 +86,14 @@ defmodule Hok.TypeInference do
   end
   defp is_exp?(exp) do
     case exp do
-      {{:., info, [Access, :get]}, _, [arg1,arg2]} -> true
+      {{:., info, [Access, :get]}, _, [_arg1,_arg2]} -> true
       {{:., _, [{_struct, _, nil}, _field]},_,[]} -> true
       {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} -> true
-      {op, info, args} when op in [:+, :-, :/, :*] -> true
-      {op, info, [arg1,arg2]} when op in [ :<=, :<, :>, :>=, :!=,:==] -> true
-      {:!, info, [arg]} -> true
-      {op, inf, args} when op in [ :&&, :||] -> true
-      {var, info, nil} when is_atom(var) -> true
+      {op, _info, _args} when op in [:+, :-, :/, :*] -> true
+      {op, _info, [_arg1,_arg2]} when op in [ :<=, :<, :>, :>=, :!=,:==] -> true
+      {:!, _info, [_arg]} -> true
+      {op, _inf, _args} when op in [ :&&, :||] -> true
+      {var, _info, nil} when is_atom(var) -> true
       #{fun, _, args} when is_list(args)-> true
       #{_fun, _, _noargs} ->
       float when  is_float(float) -> true
