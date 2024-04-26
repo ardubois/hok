@@ -261,7 +261,7 @@ defp set_type_args(map, [:none], a1, newtype) when is_tuple a1 do
                 {map, newtype ++[nt]}
    end
 end
-defp set_type_args(map,[t1 | types], a1, newtype ) when is_tuple a1 do
+defp set_type_args(map,[t1 | _types], a1, newtype ) when is_tuple a1 do
   map=set_type_exp(map,t1,a1)
   {map, newtype ++ [t1]}
 end
