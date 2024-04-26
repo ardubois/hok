@@ -57,7 +57,7 @@ end
 list = [Reduce.replicate(n,1)]
 
 vet1 = Matrex.new(list)
-vet2 = Matrex.new([[1]])
+vet2 = Matrex.new([[0]])
 
 threadsPerBlock = 256
 blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
