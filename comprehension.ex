@@ -38,7 +38,7 @@ array = Matrex.new([Comp.replicate(size,1)])
 
 prev = System.monotonic_time()
 
-result = Comp.comp(array, Hok.hok fn a ->  a + 10 end)
+result = Comp.comp(array, Hok.hok fn a ->  a + 10.0 end)
 
 next = System.monotonic_time()
 
