@@ -22,7 +22,7 @@ Hok.defmodule Comp do
 
     indices_gpu = Hok.new_gmatrex(Matrex.new([Enum.to_list(0..(size-1))]))
 
-    result_gpu =Hok.new_gmatrex(size)
+    result_gpu =Hok.new_gmatrex(1,size)
     array_gpu = Hok.new_gmatrex(array)
 
     Comp.map2(array_gpu, indices_gpu, result_gpu,func)
