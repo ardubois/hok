@@ -11,7 +11,7 @@ defmodule Hok do
   end
 
 
-    defmacro gpufor(h,b)  do
+    defmacro gpufor(h,do: b)  do
       IO.inspect h
       #IO.inspect b
       IO.inspect "###############"
