@@ -35,7 +35,7 @@ end
 
 size = 10000
 
-array = Hok.new_gmatrex(Matrex.new([Comp.replicate(size,1)]))
+array = Matrex.new([Comp.replicate(size,1)])
 
 
 prev = System.monotonic_time()
