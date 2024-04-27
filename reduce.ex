@@ -6,9 +6,9 @@ Hok.defmodule Reduce do
   #end
   defh maxi(x,y) do
     if x > y do
-      return x
+      x
     else
-      return y
+      y
     end
   end
   defk reduce(ref4, a, f,n) do
