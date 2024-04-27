@@ -5,27 +5,25 @@ Hok.defmodule Comp do
   #  x + y
   #end
 
-  defk map_2kernel(a1,a2,a3,size,f) do
-    var id int = blockIdx.x * blockDim.x + threadIdx.x
+  defk map_kernel(a1,r,size,f) do
+    id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
-      a3[id] = f(a1[id],a2[id])
+      r [id] = f(a1[id])
     end
   end
-  def map2(t1,t2,t3,size,func) do
+  def map(t1,t2,size,func) do
       threadsPerBlock = 128;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
+      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,size,func])
   end
 
   def comp(array,func) do
-    {l,size} = Matrex.size(array)
-
-    indices_gpu = Hok.new_gmatrex(Matrex.new([Enum.to_list(0..(size-1))]))
+    {_l,size} = Matrex.size(array)
 
     result_gpu =Hok.new_gmatrex(1,size)
     array_gpu = Hok.new_gmatrex(array)
 
-    Comp.map2(array_gpu, indices_gpu, result_gpu, size,func)
+    Comp.map(array_gpu, result_gpu, size,func)
 
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
@@ -40,7 +38,7 @@ array = Matrex.new([Comp.replicate(size,1)])
 
 prev = System.monotonic_time()
 
-result = Comp.comp(array, Hok.hok fn (a,i) -> type i int; a[i] + i end)
+result = Comp.comp(array, Hok.hok fn a ->  a + 10 end)
 
 next = System.monotonic_time()
 
