@@ -376,7 +376,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 
-  printf("function name %s \nlib name %s \n", func_name, lib_name);
+ // printf("function name %s \nlib name %s \n", func_name, lib_name);
 
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
@@ -390,7 +390,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
   void* ptr = fn();
 
-  printf("function pointer %p\n",ptr);
+  ///printf("function pointer %p\n",ptr);
 
   void** kernel_res = (void**) enif_alloc_resource(KERNEL_TYPE, sizeof(void *));
 
@@ -398,15 +398,15 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   
   *kernel_res = ptr;
 
-  printf("kernel resource %p\n", *kernel_res);
-  printf("erlang resource %p\n", kernel_res);
+ // printf("kernel resource %p\n", *kernel_res);
+ // printf("erlang resource %p\n", kernel_res);
   
   // We can now make the Erlang term that holds the resource...
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
   enif_release_resource(kernel_res);
  
-  printf("term %p\n", term);
+  //printf("term %p\n", term);
   return term;
 }
 
