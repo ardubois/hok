@@ -4,8 +4,8 @@ Hok.defmodule Reduce do
   #defh soma(x,y) do
   #  x + y
   #end
-  defh maxi(x,y) do
-    if x > y do
+  defh min(x,y) do
+    if x < y do
       x
     else
       y
@@ -78,7 +78,7 @@ prev = System.monotonic_time()
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
 
-Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, &Reduce.maxi/2,n])
+Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, &Reduce.min/2,n])
 Hok.synchronize()
 
 result_gpu = Hok.get_gmatrex(ref2)
