@@ -28,13 +28,11 @@ Hok.defmodule Comp do
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
   end
-defmacro gpufor(h,b)  do
-  IO.inspect h
-  IO.inspect b
-  raise "hell"
-end
+
 def replicate(n, x), do: (for _ <- 1..n, do: x)
 end
+
+
 
 size = 10000
 
@@ -45,7 +43,7 @@ prev = System.monotonic_time()
 
 #result = Comp.comp(array, Hok.hok (fn (a) ->  a + 10.0 end))
 
-Hok.gpufor x <- array, do: x + 10
+result = Hok.gpufor x<- array,  do: x + 10
 
 next = System.monotonic_time()
 

@@ -11,6 +11,15 @@ defmodule Hok do
   end
 
 
+    defmacro gpufor(h,b)  do
+      IO.inspect h
+      #IO.inspect b
+      IO.inspect "###############"
+      #raise "hell"
+      case h do
+        {:<-, _ ,[var,tensor]} -> IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
+      end
+    end
 
   defmacro defmodule(header,do: body) do
     IO.inspect header
