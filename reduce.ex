@@ -35,7 +35,8 @@ Hok.defmodule Reduce do
 
     i = blockDim.x/2
     #tid = threadIdx.x + blockIdx.x * blockDim.x;
-    while (i != 0 &&  (cacheIndex + blockDim.x * gridDim.x *256) < n) do  ###&& tid < n) do
+    up = blockDim.x * gridDim.x *256
+    while (i != 0 &&  (cacheIndex + up)< n) do  ###&& tid < n) do
       #tid = blockDim.x * gridDim.x + tid
       if (cacheIndex < i) do
         cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
