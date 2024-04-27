@@ -58,9 +58,9 @@ end
 
 {n, _} = Integer.parse(Enum.at(System.argv, 0))
 
-#list = [Enum.to_list(1..n)]
+list = [Enum.to_list(1..n)]
 
-list = [Reduce.replicate(n,1)]
+#list = [Reduce.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new([[0]])
