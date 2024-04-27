@@ -14,7 +14,7 @@ Hok.defmodule Comp do
   def map(t1,t2,size,func) do
       threadsPerBlock = 128;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,size,func])
+      Hok.spawn(&Comp.map_2kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,size,func])
   end
 
   def comp(array,func) do
