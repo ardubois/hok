@@ -20,7 +20,7 @@ Hok.defmodule Comp do
   def comp(array,func) do
     {l,size} = Matrex.size(array)
 
-    indices_gpu = Hok.new_gmatrex(Matrex.new([0..(size-1)]))
+    indices_gpu = Hok.new_gmatrex(Matrex.new([[0..(size-1)]]))
 
     result_gpu =Hok.new_gmatrex(size)
     array_gpu = Hok.new_gmatrex(array)
