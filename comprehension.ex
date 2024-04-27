@@ -8,7 +8,7 @@ Hok.defmodule Comp do
   defk map_kernel(a1,r,size,f) do
     id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
-      r [id] = f(a1[id])
+      r[id] = f(a1[id])
     end
   end
   def map(t1,t2,size,func) do
