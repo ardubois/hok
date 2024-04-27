@@ -78,8 +78,8 @@ defmodule Hok.TypeInference do
   defp check_return([com]) do
     case com do
           {:return,_,_} -> [com]
-          {:if, info, [ exp,[:do block]]} -> {:if, info, [ exp,[:do check_return block]]}
-          {:if, info, [ exp,[:do block, :else belse ]]} -> {:if, info, [ exp,[:do check_return block, :else check_return belse ]]}
+          {:if, info, [ exp,[do: block]]} -> {:if, info, [ exp,[do: check_return block]]}
+          {:if, info, [ exp,[do: block, else: belse ]]} -> {:if, info, [ exp,[do: check_return(block), else: check_return(belse) ]]}
               _ -> if is_exp?(com) do
                       [{:return,[],[com]}]
                   else
