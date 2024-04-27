@@ -25,7 +25,7 @@ Hok.defmodule Comp do
     result_gpu =Hok.new_gmatrex(1,size)
     array_gpu = Hok.new_gmatrex(array)
 
-    Comp.map2(array_gpu, indices_gpu, result_gpu,func)
+    Comp.map2(array_gpu, indices_gpu, result_gpu, size,func)
 
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
