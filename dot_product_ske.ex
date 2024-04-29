@@ -16,11 +16,12 @@ defh mult(a,b)do
   end
   def map2(t1,t2,func) do
 
+
+      {_l,size} = Matrex.size(t1)
+      result_gpu =Hok.new_gmatrex(1,size)
+
       threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-
-      {_l,size} = Matrex.size(array)
-      result_gpu =Hok.new_gmatrex(1,size)
 
       Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,result_gpu,size,func])
 
@@ -96,6 +97,8 @@ prev = System.monotonic_time()
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> a*b end))
 
+IO.inspect ref1
+raise "hell"
 result_gpu = ref1
     |> DP.map2(ref2, &DP.mult/2)
 
