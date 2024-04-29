@@ -40,7 +40,7 @@ defh sum(a,b), do: a+ b
       threadsPerBlock = 256
       blocksPerGrid = div(size + threadsPerBlock - 1, threadsPerBlock)
       numberOfBlocks = blocksPerGrid
-      Hok.spawn(&DP.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
+      Hok.spawn(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
       result_gpu
   end
   defk reduce_ske(ref4, a, f,n) do
