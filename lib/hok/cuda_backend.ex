@@ -147,7 +147,7 @@ end
     name = gen_lambda_name()
     code = compile_lambda(lambda,[], name);
     file = File.open!("c_src/#{module}.cu", [:append])
-    IO.write(file, code)
+    IO.write(file, "#############################\n\n" <> code)
     File.close(file)
     {result, errcode} = System.cmd("nvcc",
         [ "--shared",
