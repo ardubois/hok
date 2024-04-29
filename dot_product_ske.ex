@@ -34,7 +34,7 @@ defh sum(a,b), do: a+ b
   def reduce(ref4,  f) do
 
       {_r,{_l,size}} = ref4
-      result_gpu =Hok.new_gmatrex(1,Matrex.new[[0]])
+      result_gpu =Hok.new_gmatrex(1,Matrex.new([[0]]))
 
 
       threadsPerBlock = 256
