@@ -28,12 +28,12 @@ defh mult(a,b)do
 
       result_gpu
   end
-  def reduce(ref4, a , f, n) do
-      threadsPerBlock = 256
-      blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
-      numberOfBlocks = blocksPerGrid
-      Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, f,n])
-  end
+  #def reduce(ref4, a , f, n) do
+  #    threadsPerBlock = 256
+  #    blocksPerGrid = div(n + threadsPerBlock - 1, threadsPerBlock)
+  #    numberOfBlocks = blocksPerGrid
+  #    Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, f,n])
+  #end
   defk reduce_ske(ref4, a, f,n) do
 
     __shared__ cache[256]
