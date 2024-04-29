@@ -10,8 +10,8 @@ defmodule Hok do
      #resp
     fname = Hok.CudaBackend.gen_lambda("Elixir.App",function)
     result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname)
-    IO.inspect result
-    raise "hell"
+    #IO.inspect result
+   # raise "hell"
     result
   end
 
@@ -437,6 +437,8 @@ def spawn(k,t,b,l) when is_function(k) do
   #if anon_func == [] do
     k=load(k)
     args = process_args(l,[])
+    IO.inspect args
+    raise "hell"
     spawn_nif(k,t,b,args)
  # else
   #  {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
