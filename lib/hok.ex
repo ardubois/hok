@@ -57,8 +57,12 @@ defmodule Hok do
                 |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
 
     file = File.open!("c_src/Elixir.App.cu", [:write])
-    Enum.map(includes, fn module ->   text = File.read!("c_src/Elixir.#{module}.cu")
-                                      IO.write(file, text)  end)
+    Enum.map(includes, fn module ->   code = File.read!("c_src/Elixir.#{module}.cu")
+                                      code = File.read!("c_src/Elixir.#{name}.cu")
+                                          |>  String.split("\n")
+                                          |>  Enum.drop(1)
+                                          |> Enum.join("\n")
+                                      IO.write(file, code)  end)
     File.close(file)
 
 

@@ -1,5 +1,7 @@
-#require Hok
+defmodule MyModule do
+  @after_compile __MODULE__
 
-IO.inspect Enum.map([1,2,3,4], fn x -> x = x+x
-                                       IO.inspect x
-                                       x+x end)
+  def __after_compile__(env, _bytecode) do
+    IO.inspect(env)
+  end
+end
