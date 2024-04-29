@@ -9,7 +9,10 @@ defmodule Hok do
      #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
     fname = Hok.CudaBackend.gen_lambda("Elixir.App",function)
-    quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname)
+    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname)
+    IO.inspect result
+    raise "hell"
+    result
   end
 
 
