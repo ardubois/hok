@@ -146,7 +146,7 @@ end
   def gen_lambda(module,lambda) do
     name = gen_lambda_name()
     code = compile_lambda(lambda,[], name);
-    file = File.open!("c_src/Elixir.#{module}.cu", [:append])
+    file = File.open!("c_src/#{module}.cu", [:append])
     IO.write(file, code)
     File.close(file)
     {result, errcode} = System.cmd("nvcc",
