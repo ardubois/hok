@@ -8,7 +8,7 @@ defmodule Hok do
   defmacro hok(function) do
      #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
-    fname CudaBackend.gen_lambda("App",function)
+    fname = CudaBackend.gen_lambda("App",function)
     quote do: Hok.load_fun(unquote fname)
   end
 
