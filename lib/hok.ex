@@ -6,15 +6,17 @@ defmodule Hok do
   end
 
   defmacro hok(function) do
-     resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
-     resp
+     #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
+     #resp
+    fname CudaBackend.gen_lambda("App",function)
+    quote Hok.load_fun(unquote fname)
   end
 
 
     defmacro gpufor(h,do: b)  do
-      IO.inspect h
+      #IO.inspect h
       #IO.inspect b
-      IO.inspect "###############"
+      #IO.inspect "###############"
       #raise "hell"
       case h do
         {:<-, _ ,[var,tensor]} -> IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
