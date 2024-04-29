@@ -57,6 +57,7 @@ defmodule Hok do
                 |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
 
     file = File.open!("c_src/Elixir.App.cu", [:write])
+    IO.write(file, "#include \"erl_nif.h\"\n\n")
     Enum.map(includes, fn module ->   code = File.read!("c_src/Elixir.#{module}.cu")
                                           |>  String.split("\n")
                                           |>  Enum.drop(1)
