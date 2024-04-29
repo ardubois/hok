@@ -20,7 +20,7 @@ defh sum(a,b), do: a+ b
 
 
       {_r,{_l,size}} = t1
-      result_gpu =Hok.new_gmatrex(1,Matrex.new([[0]]))
+      result_gpu =Hok.new_gmatrex(1,size)
 
       threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
@@ -31,16 +31,16 @@ defh sum(a,b), do: a+ b
 
       result_gpu
   end
-  def reduce(ref4, f) do
+  def reduce(ref4,  f) do
 
       {_r,{_l,size}} = ref4
-      result_gpu =Hok.new_gmatrex(1,size)
+      result_gpu =Hok.new_gmatrex(1,Matrex.new[[0]])
 
 
       threadsPerBlock = 256
       blocksPerGrid = div(size + threadsPerBlock - 1, threadsPerBlock)
       numberOfBlocks = blocksPerGrid
-      Hok.spawn(&DP.reduce_ske/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
+      Hok.spawn(&DP.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
       result_gpu
   end
   defk reduce_ske(ref4, a, f,n) do
