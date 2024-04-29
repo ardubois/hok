@@ -435,16 +435,16 @@ def spawn(k,t,b,l) when is_function(k) do
     k=load(k)
     args = process_args(l,[])
     spawn_nif(k,t,b,args)
-  else
+ # else
   #  {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
   #  refs = Hok.CudaBackend.gen_lambda_ref(module, anon_func)
-    k = load(k)
-    args = process_args(l,[])
+  #  k = load(k)
+   # args = process_args(l,[])
     #IO.inspect args
     #IO.inspect k
    # raise "hell"
-    spawn_nif(k,t,b,args)
-  end
+   # spawn_nif(k,t,b,args)
+  #end
 end
 def spawn(k,t,b,l) do
   spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
