@@ -117,7 +117,7 @@ prev = System.monotonic_time()
 
 result_gpu = ref1
     |> DP.map2(ref2, Hok.hok fn (a,b) -> a * b end)
-    |> DP.reduce(&DP.sum/2) #Hok.hok fn (a,b) -> a + b end)
+    |> DP.reduce(Hok.hok fn (a,b) -> a + b end)
 
 
 
