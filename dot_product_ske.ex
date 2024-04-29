@@ -1,7 +1,6 @@
 require Hok
 
 Hok.defmodule DP do
-import Hok
 include CAS
 #deft saxpy float ~> float ~> float
 defh mult(a,b)do
