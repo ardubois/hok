@@ -436,7 +436,7 @@ def spawn(k,t,b,l) when is_function(k) do
   #                                      end end)
   #if anon_func == [] do
     k=load(k)
-    IO.inspect args
+    IO.inspect l
 
     args = process_args(l,[])
     IO.inspect args
