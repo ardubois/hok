@@ -403,7 +403,7 @@ def load_fun(fun) do
   end
 end
 def load_lambda(module,lambda) do
-  Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
+  Hok.load_fun_nif(to_charlist(module),to_charlist(lambda))
 end
 #####################
 defp process_args([{:anon,_fun}|t1],[ref|t2]) do
