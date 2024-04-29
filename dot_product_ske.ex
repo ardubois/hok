@@ -120,7 +120,7 @@ IO.puts "aqui........"
 
 result_gpu = ref1
     |> DP.map2(ref2, Hok.hok fn (a,b) -> a * b end)
-   # |> DP.reduce(Hok.hok fn (a,b) -> a + b end)
+    |> DP.reduce(Hok.hok fn (a,b) -> a + b end)
 
 
 
