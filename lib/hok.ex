@@ -427,13 +427,13 @@ def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
 def spawn(k,t,b,l) when is_function(k) do
-  anon_func = Enum.filter(l, fn arg -> case arg do
-                                        {:anon,_} -> true
-                                         _ -> false
-                                        end end)
-  if anon_func == [] do
-    k=load(k)
-    args = process_args(l,[])
+  #anon_func = Enum.filter(l, fn arg -> case arg do
+  #                                      {:anon,_} -> true
+  #                                       _ -> false
+  #                                      end end)
+  #if anon_func == [] do
+  #  k=load(k)
+  #  args = process_args(l,[])
     spawn_nif(k,t,b,args)
   else
     {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
