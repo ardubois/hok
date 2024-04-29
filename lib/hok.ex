@@ -432,14 +432,14 @@ def spawn(k,t,b,l) when is_function(k) do
   #                                       _ -> false
   #                                      end end)
   #if anon_func == [] do
-  #  k=load(k)
-  #  args = process_args(l,[])
+    k=load(k)
+    args = process_args(l,[])
     spawn_nif(k,t,b,args)
   else
-    {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
-    refs = Hok.CudaBackend.gen_lambda_ref(module, anon_func)
+  #  {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
+  #  refs = Hok.CudaBackend.gen_lambda_ref(module, anon_func)
     k = load(k)
-    args = process_args(l,refs)
+    args = process_args(l,[])
     #IO.inspect args
     #IO.inspect k
    # raise "hell"
