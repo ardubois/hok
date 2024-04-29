@@ -1,6 +1,6 @@
 require Hok
 
-Hok.defmodule PMap2 do
+Hok.defmodule DP do
 import Hok
 include CAS
 #deft saxpy float ~> float ~> float
@@ -14,10 +14,19 @@ defh mult(a,b)do
       a3[id] = f(a1[id],a2[id])
     end
   end
-  def map2(t1,t2,t3,size,func) do
-      threadsPerBlock = 128;
+  def map2(t1,t2,func) do
+
+      threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
+
+      {_l,size} = Matrex.size(array)
+      result_gpu =Hok.new_gmatrex(1,size)
+
+      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,result_gpu,size,func])
+
+      Hok.synchronize()
+
+      result_gpu
   end
   def reduce(ref4, a , f, n) do
       threadsPerBlock = 256
@@ -79,19 +88,21 @@ vet2 = Matrex.new(list)
 
 ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
-ref3= Hok.new_gmatrex(1,n)
 
 
 prev = System.monotonic_time()
 
 #PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
-PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> a*b end))
+#PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> a*b end))
 
-#Hok.synchronize()
+  resutl_gpu = ref1
+    |> DP.map2(ref2, &DP.mult/2)
+
+result = Hok.get_gmatrex(ref3)
+
 
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref3)
 IO.inspect result
