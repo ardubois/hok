@@ -110,9 +110,16 @@ prev = System.monotonic_time()
 
 #IO.inspect ref1
 #raise "hell"
+
+#result_gpu = ref1
+#    |> DP.map2(ref2, &DP.mult/2)
+#    |> DP.reduce(&DP.sum/2)
+
 result_gpu = ref1
-    |> DP.map2(ref2, &DP.mult/2)
-    |> DP.reduce(&DP.sum/2)
+    |> DP.map2(ref2, Hok.hok fn (a,b) -> a * b end)
+    |> DP.reduce(Hok.hok fn (a,b) -> a + b end)
+
+
 
 result = Hok.get_gmatrex(result_gpu)
 
