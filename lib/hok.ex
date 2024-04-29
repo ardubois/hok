@@ -53,7 +53,7 @@ defmodule Hok do
 
   defmacro include(inc_list) do
     includes = inc_list
-                Enum.map(fn {_,_,module} -> to_string(module) end)
+                |> Enum.map(fn {_,_,module} -> to_string(module) end)
 
 
     imp_module = includes
