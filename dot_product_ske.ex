@@ -96,10 +96,10 @@ prev = System.monotonic_time()
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> a*b end))
 
-  resutl_gpu = ref1
+resutl_gpu = ref1
     |> DP.map2(ref2, &DP.mult/2)
 
-result = Hok.get_gmatrex(ref3)
+result = Hok.get_gmatrex(result_gpu)
 
 
 next = System.monotonic_time()
