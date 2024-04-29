@@ -17,7 +17,7 @@ defh mult(a,b)do
   def map2(t1,t2,func) do
 
 
-      {_l,size} = Matrex.size(t1)
+      {_r,{_l,size}} = t1
       result_gpu =Hok.new_gmatrex(1,size)
 
       threadsPerBlock = 256;
