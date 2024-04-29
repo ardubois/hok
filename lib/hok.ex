@@ -52,6 +52,7 @@ defmodule Hok do
   end
 
   defmacro include({_, _, list}) do
+    imp_module = to_string(list)
     IO.inspect list
     caller_st = __CALLER__
     #IO.inspect caller_st
