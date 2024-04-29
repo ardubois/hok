@@ -20,7 +20,7 @@ defh sum(a,b), do: a+ b
 
 
       {_r,{_l,size}} = t1
-      result_gpu =Hok.new_gmatrex(1,[[0]])
+      result_gpu =Hok.new_gmatrex(1,Matrex.new([[0]]))
 
       threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
