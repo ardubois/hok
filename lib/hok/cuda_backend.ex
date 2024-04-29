@@ -203,7 +203,7 @@ end
   end
   def compile_lambda({:fn, _, [{:->, _ , [para,body]}] }, type, name) do
 #    IO.puts "Compile lambda!!!!!!!!!!!!!!!!!!!!!!!!!!!!11"
- #   fname = "anonymous_#{name}"
+    fname = "anonymous_#{name}"
 
     {delta,is_typed,fun_type}  = if(!(type == [])) do
         [fun_type|_] = Enum.reverse(type)
