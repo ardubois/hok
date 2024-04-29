@@ -5,8 +5,10 @@ import Hok
 include CAS
 #deft saxpy float ~> float ~> float
 defh mult(a,b)do
-    return a*b
+    a*b
   end
+defh sum(a,b), do: a+ b
+end
   #deft map_2kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
   defk map_2kernel(a1,a2,a3,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
