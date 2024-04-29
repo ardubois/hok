@@ -51,9 +51,13 @@ defmodule Hok do
     #quote do: IO.puts "ok"
   end
 
-  defmacro include(include) do
-    imp_module = to_string(include)
-    IO.inspect include
+  defmacro include(inc_list) do
+    includes = inc_list
+                Enum.map(fn {_,_,module} -> to_string(module) end)
+
+
+    imp_module = includes
+    IO.inspect includes
     caller_st = __CALLER__
     #IO.inspect caller_st
     raise "hell"
