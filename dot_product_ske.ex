@@ -23,7 +23,7 @@ defh sum(a,b), do: a+ b
 
       threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-
+      IO.puts "Aqui!!!!!!!!!!!!!!!!!!!!!!!!!!"
       Hok.spawn(&DP.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,result_gpu,size,func])
 
       Hok.synchronize()
