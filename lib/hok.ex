@@ -56,11 +56,10 @@ defmodule Hok do
     includes = inc_list
                 |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
 
-      file = File.open!("c_src/Elixir.App.cu", [:write])
-      Enum.map(includes, fn module ->   file = File.read!("c_src/Elixir.#{module}.cu");
-                                        text = File.read!("c_src/Elixir.#{imp_module}_gp.cu");
-                                        IO.write(file, text)  end)
-      File.close(file)
+    file = File.open!("c_src/Elixir.App.cu", [:write])
+    Enum.map(includes, fn module ->   text = File.read!("c_src/Elixir.#{module}.cu")
+                                      IO.write(file, text)  end)
+    File.close(file)
     end
 
   end
