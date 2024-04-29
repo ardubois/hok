@@ -32,7 +32,7 @@ Hok.defmodule Comp do
 def replicate(n, x), do: (for _ <- 1..n, do: x)
 end
 
-include [Comp]
+Hok.include [Comp]
 
 
 size = 10000
