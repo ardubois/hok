@@ -42,7 +42,7 @@ defh sum(a,b), do: a+ b
       Hok.spawn(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
       result_gpu
   end
-  defk reduce_ske(ref4, a, f,n) do
+  defk reduce_kernel(ref4, a, f,n) do
 
     __shared__ cache[256]
 
@@ -106,9 +106,11 @@ prev = System.monotonic_time()
 
 #IO.inspect ref1
 #raise "hell"
+#result_gpu = ref1
+#    |> DP.map2(ref2, &DP.mult/2)
+
 result_gpu = ref1
-    |> DP.map2(ref2, &DP.mult/2)
-  #  |> DP.reduce(&DP.sum/2)
+    |> DP.reduce(&DP.sum/2)
 
 result = Hok.get_gmatrex(result_gpu)
 
