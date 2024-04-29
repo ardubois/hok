@@ -85,11 +85,15 @@ defh sum(a,b), do: a+ b
   end
 
   end
+  def replicate(n, x), do: (for _ <- 1..n, do: x)
 end
+
 
 n = 10000000
 
-list = [Enum.to_list(1..n)]
+#list = [Enum.to_list(1..n)]
+
+list = [DP.relicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
