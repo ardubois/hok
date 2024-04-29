@@ -441,7 +441,7 @@ def spawn(k,t,b,l) when is_function(k) do
 
     args = process_args(l,[])
     IO.inspect args
-    raise "hell"
+    #raise "hell"
     spawn_nif(k,t,b,args)
  # else
   #  {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
