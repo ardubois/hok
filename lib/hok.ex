@@ -54,6 +54,8 @@ defmodule Hok do
   defmacro include({_, _, [imp_module]}) do
     imp_module = to_string(imp_module)
     caller_st = __CALLER__
+    IO.inspect caller_st
+    raise "hell"
     module_name = to_string caller_st.module
 
     if(File.exists?("c_src/#{module_name}.cu")) do
