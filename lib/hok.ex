@@ -9,7 +9,7 @@ defmodule Hok do
      #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
     fname = Hok.CudaBackend.gen_lambda("Elixir.App",function)
-    quote do: Hok.load_fun(unquote fname)
+    quote do: Hok.load_lambda(unquote "Elixir.App", unquote fname)
   end
 
 
@@ -401,6 +401,9 @@ def load_fun(fun) do
 
     _ -> raise "Hok.invalid function"
   end
+end
+def load_lambda(module,lambda) do
+  Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
 end
 #####################
 defp process_args([{:anon,_fun}|t1],[ref|t2]) do
