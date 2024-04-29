@@ -51,10 +51,10 @@ defmodule Hok do
     #quote do: IO.puts "ok"
   end
 
-  defmacro include({_, _, [imp_module]}) do
-    imp_module = to_string(imp_module)
+  defmacro include({_, _, list}) do
+    IO.inspect list
     caller_st = __CALLER__
-    IO.inspect caller_st
+    #IO.inspect caller_st
     raise "hell"
     module_name = to_string caller_st.module
 

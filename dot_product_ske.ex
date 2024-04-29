@@ -88,7 +88,7 @@ defh sum(a,b), do: a+ b
   def replicate(n, x), do: (for _ <- 1..n, do: x)
 end
 
-Hok.include DP
+Hok.include DP, Ske
 
 n = 10000000
 
