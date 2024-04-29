@@ -56,27 +56,10 @@ defmodule Hok do
     includes = inc_list
                 |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
 
-
-    imp_module = includes
-    IO.inspect includes
-    caller_st = __CALLER__
-    #IO.inspect caller_st
-    raise "hell"
-    module_name = to_string caller_st.module
-
-    if(File.exists?("c_src/#{module_name}.cu")) do
-      file = File.open!("c_src/#{module_name}.cu", [:append])
-      file2 =
-      File.read!("c_src/Elixir.#{imp_module}_gp.cu")
-      |>  String.split("\n")
-      |>  Enum.drop(1)
-      |> Enum.join("\n")
-    IO.write(file, "\n\n//MODULE #Elixir.#{imp_module} \n\n" <> file2)
-    File.close(file)
-    else
-      file = File.open!("c_src/#{module_name}.cu", [:write])
-      file2 = File.read!("c_src/Elixir.#{imp_module}_gp.cu")
-      IO.write(file, file2)
+      file = File.open!("c_src/Elixir.App.cu", [:write])
+      Enum.map(includes, fn module -> file = File.read!("c_src/Elixir.#{module}.cu"
+                                                        text = File.read!("c_src/Elixir.#{imp_module}_gp.cu")
+                                                        IO.write(file, text) end)
       File.close(file)
     end
 
