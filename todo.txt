@@ -1,4 +1,4 @@
 * infer comand, quando acha o tipo de um return, tem que forçar esse tipo na expressão
 * function of type void
 * testar o numero de argumentos das funcoes antes de compilar (quantos tipos e quantos argumentos)
-* adicionar lista de tipos de funções em C
+* adicionar lista de tipos de funções em C para carregar e usar no type checking
