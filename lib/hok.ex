@@ -59,7 +59,7 @@ defmodule Hok do
       file = File.open!("c_src/Elixir.App.cu", [:write])
       Enum.map(includes, fn module -> do file = File.read!("c_src/Elixir.#{module}.cu")
                                          text = File.read!("c_src/Elixir.#{imp_module}_gp.cu")
-                                         IO.write(file, text)  end))
+                                         IO.write(file, text)  end)
       File.close(file)
     end
 
