@@ -42,7 +42,7 @@ defh sum(a,b), do: a+ b
       Hok.spawn(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
       result_gpu
   end
-  defk reduce_kernel(ref4, a, f,n) do
+  defk reduce_kernel(a, ref4, f,n) do
 
     __shared__ cache[256]
 
