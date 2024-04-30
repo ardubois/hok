@@ -1,4 +1,5 @@
 require Hok
+
 Hok.defmodule GPUDP do
 
   defk dot_product(ref4, a, b, n) do

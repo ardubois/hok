@@ -17,6 +17,8 @@ defk mm(a,b,c,m,n,k) do
 end
 end
 
+import [MM]
+
 [arg] = System.argv()
 
 m = String.to_integer(arg)
