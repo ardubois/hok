@@ -21,7 +21,7 @@ defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   type arr2 matrex
 
   if(col < size && row < size) do
-    c[row * size + col] = f(arr1,arr2,row,col)
+    resp[row * size + col] = f(arr1,arr2,row,col)
   end
 end
 def map2xy2D(arr1,arr2,resp,size,f) do
