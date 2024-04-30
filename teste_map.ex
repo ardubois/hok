@@ -24,7 +24,7 @@ Hok.defmodule PMap do
  # end
 end
 
-include [PMAP]
+Hok.include [PMAP]
 
 n = 10000000
 
