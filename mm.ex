@@ -2,17 +2,7 @@
 require Hok
 
 Hok.defmodule MM do
-#  defk mm(a,b,c,m,n,k) do
-#    row  = blockIdx.y * blockDim.y + threadIdx.y
-#    col = blockIdx.x * blockDim.x + threadIdx.x
-#    sum  = 0.0
-#    if(col < k && row < m) do
-#      for i in range(0,n,1) do
-#        sum = sum + a[row * n + i] * b[i * k + col]
-#      end
-#      c[row * k + col] = sum
-#    end
-#  end
+
 defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x
@@ -69,21 +59,14 @@ mat2 = Matrex.apply(mat,f)
 
 prev = System.monotonic_time()
 
-#result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
-#           type mat1 matrex
-#           type mat2 matrex
-#           type x int
-#           type y int
-#           10.0
-#          end)
 
-result = Hok.gpufor x <- 0 .. 1000, mat1, y <- 0 .. 1000, mat2 do
+
+result = Hok.gpufor x <- 0..1000, mat1, y <- 0..1000, mat2 do
             sum = 0.0
             for i in range(0,1000,1) do
                   sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
             end
             sum
-          end
           end
 result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
                                       sum = 0.0
