@@ -69,20 +69,20 @@ mat2 = Matrex.apply(mat,f)
 
 prev = System.monotonic_time()
 
-result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
-           type mat1 matrex
-           type mat2 matrex
-           type x int
-           type y int
-           10.0
-          end)
-
 #result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
-#                                      sum = 0.0
-#                                      for i in range(0,1000,1) do
-#                                              sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
-#                                      end
-#                                      sum end)
+#           type mat1 matrex
+#           type mat2 matrex
+#           type x int
+#           type y int
+#           10.0
+#          end)
+
+result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
+                                      sum = 0.0
+                                      for i in range(0,1000,1) do
+                                              sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
+                                      end
+                                      sum end)
 
 next = System.monotonic_time()
 #IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
