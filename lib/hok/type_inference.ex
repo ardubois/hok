@@ -1,11 +1,12 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
-    #IO.puts "begin type "
-    #IO.inspect map
-   # IO.inspect body
+   # IO.puts "begin type "
+   # IO.inspect map
+    #IO.inspect body
     types = infer_types(map,body)
-    #IO.inspect types
-    #raise "hell"
+   # IO.puts "infered"
+   # IO.inspect types
+   # raise "hell"
     notinfer = not_infered(Map.to_list(types))
     if(length(notinfer)>0) do
       IO.puts "Not infered:"
@@ -456,8 +457,8 @@ defp set_type_exp(map,type,exp) do
           else
             case type_fun do
               :none ->      {map, infered_type}= infer_types_args(map,args,[])
-                            IO.inspect {map, infered_type}
-                            IO.inspect type
+                          #  IO.inspect {map, infered_type}
+                           # IO.inspect type
                             map = Map.put(map,fun, {type,infered_type})
                             map
               {ret,type_args} -> {map, infered_type} = set_type_args(map,type_args,args,[])
