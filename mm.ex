@@ -44,11 +44,14 @@ end
 
 Hok.include [MM]
 
-[arg] = System.argv()
+#[arg] = System.argv()
 
-m = String.to_integer(arg)
+#m = String.to_integer(arg)
+
+m = 1000
 n = m
 k=m
+
 
 
 
@@ -71,7 +74,7 @@ MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
                                       for i in range(0,n,1) do
                                               sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
                                       end
-                                      sum end))
+                                      sum end)
 
 _result = Hok.get_gmatrex(c)
 
