@@ -46,6 +46,8 @@ prev = System.monotonic_time()
 
 result = Hok.gpufor x<- array,  do: x + 10.0
 
+#result = Hok.gpufor x<- array,  do: x + 10.0
+
 next = System.monotonic_time()
 
 IO.puts "Hok\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
