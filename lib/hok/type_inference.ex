@@ -112,9 +112,13 @@ defmodule Hok.TypeInference do
 #######################################################33
 
   def infer_types(map,body1) do
-
+    IO.puts "#####"
+    IO.inspect body
     body = add_return(map,body1)
 
+    IO.inspect body
+    IO.puts "####"
+    raise "hell"
     case body do
         {:__block__, _, _code} ->
           infer_block(map,body)

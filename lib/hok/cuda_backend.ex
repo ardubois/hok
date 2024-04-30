@@ -221,8 +221,8 @@ end
 
   delta = Map.put(delta,:return,fun_type)
 
-  IO.inspect delta
-  raise "hell"
+ # IO.inspect delta
+ # raise "hell"
 
     inf_types = Hok.TypeInference.type_check(delta,body)
     IO.puts "Finished infer types"
