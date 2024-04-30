@@ -70,7 +70,7 @@ mat2 = Matrex.apply(mat,f)
 prev = System.monotonic_time()
 
 result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
-           10
+           10+10
           end)
 
 #result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
