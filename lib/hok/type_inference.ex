@@ -1,9 +1,10 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
-   # IO.inspect map
+    #IO.puts "begin type "
+    #IO.inspect map
    # IO.inspect body
     types = infer_types(map,body)
-   # IO.inspect types
+    #IO.inspect types
     #raise "hell"
     notinfer = not_infered(Map.to_list(types))
     if(length(notinfer)>0) do
@@ -112,13 +113,13 @@ defmodule Hok.TypeInference do
 #######################################################33
 
   def infer_types(map,body1) do
-    IO.puts "#####"
-    IO.inspect body1
+    #IO.puts "#####"
+    #IO.inspect body1
     body = add_return(map,body1)
 
-    IO.inspect body
-    IO.puts "####"
-    raise "hell"
+    #IO.inspect body
+    #IO.puts "####"
+    #raise "hell"
     case body do
         {:__block__, _, _code} ->
           infer_block(map,body)
@@ -231,8 +232,14 @@ defmodule Hok.TypeInference do
               :none -> map
               _     -> current_type = Map.get(map,:return)
                        case current_type do
-                            :none -> Map.put(map,:return,inf_type)
-                            _     -> if inf_type == current_type do map else raise "Found two return types for function #{current_type} and #{inf_type}"end
+                            :none -> map = set_type_exp(map,inf_type,arg)
+                                     Map.put(map,:return,inf_type)
+                            _     -> if inf_type == current_type do
+                                            map = set_type_exp(map,inf_type,arg)
+                                            map
+                                     else
+                                          raise "Found two return types for function #{current_type} and #{inf_type}"
+                                     end
                        end
             end
 
