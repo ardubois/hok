@@ -213,10 +213,19 @@ end
           |> Map.new()
         {delta,true,fun_type}
   else
-        delta=para
-        |> Enum.map(fn({p, _, _}) -> p end)
-        |> Map.new(fn x -> {x,:none} end)
-        {delta,false,:none}
+      if para == [] do
+         {%{}, false, :none}
+      else
+        case hd para of
+          {p,_,_} ->   delta=para
+                          |> Enum.map(fn({p, _, _}) -> p end)
+                          |> Map.new(fn x -> {x,:none} end)
+                        {delta,false,:none}
+          _       -> delta = para
+                        |> Map.new(fn x -> {x,:none} end)
+                        {delta,false,:none}
+        end
+      end
   end
 
   delta = Map.put(delta,:return,fun_type)
