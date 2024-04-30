@@ -19,7 +19,7 @@ defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   col = blockIdx.x * blockDim.x + threadIdx.x
 
   if(col < size && row < size) do
-    c[row * k + col] = f(arr1,arr2,row,col)
+    c[row * size + col] = f(arr1,arr2,row,col)
   end
 end
 defh map2xy2D(arr1,arr2,size,f) do
