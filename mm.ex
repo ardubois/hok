@@ -71,8 +71,7 @@ prev = System.monotonic_time()
 
 result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
            mat1[x * 1000 + i] * mat2[i * 1000 + y]
-  end
-  sum end)
+          end)
 
 #result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
 #                                      sum = 0.0
