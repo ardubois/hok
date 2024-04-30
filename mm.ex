@@ -18,8 +18,8 @@ defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x
 
-  type arr1 gmatrex
-  type arr2 gmatrex
+  type arr1 matrex
+  type arr2 matrex
 
   if(col < size && row < size) do
     c[row * size + col] = f(arr1,arr2,row,col)
