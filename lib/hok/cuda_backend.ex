@@ -216,7 +216,7 @@ end
       if para == [] do
          {%{}, false, :none}
       else
-        case hd para of
+        case hd para do
           {p,_,_} ->   delta=para
                           |> Enum.map(fn({p, _, _}) -> p end)
                           |> Map.new(fn x -> {x,:none} end)
