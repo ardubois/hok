@@ -113,7 +113,7 @@ defmodule Hok.TypeInference do
 
   def infer_types(map,body1) do
     IO.puts "#####"
-    IO.inspect body
+    IO.inspect body1
     body = add_return(map,body1)
 
     IO.inspect body
