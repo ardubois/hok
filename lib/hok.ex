@@ -16,9 +16,9 @@ defmodule Hok do
   end
 
 
-    defmacro gpufor(h,do: b)  do
-      #IO.inspect h
-      #IO.inspect b
+    defmacro gpufor(h,  b)  do
+      IO.inspect h
+      IO.inspect b
       IO.inspect "###############"
       raise "hell"
       case h do
