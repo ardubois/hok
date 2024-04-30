@@ -36,8 +36,8 @@ ref3= Hok.new_gmatrex(1,n)
 
 prev = System.monotonic_time()
 
-#PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
-PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
+PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
+#PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> 2*a+b end))
 
 #Hok.synchronize()
