@@ -91,6 +91,6 @@ IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} 
 m1 = Matrex.reshape(mat1,m,m)
 m2 = Matrex.reshape(mat2,m,m)
 res_cpu = Matrex.dot(m1,m2)
-IO.inspect res_cpu
-IO.inspect result
+IO.inspect Matrex.sum(res_cpu)
+IO.inspect Matrex.sum(result)
 #IO.puts GPU.Backend.gen_c_kernel('addVectors',4,[])
