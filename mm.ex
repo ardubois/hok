@@ -74,7 +74,7 @@ result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
            type mat2 matrex
            type x int
            type y int
-           10+10
+           10.0
           end)
 
 #result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
