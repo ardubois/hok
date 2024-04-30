@@ -31,7 +31,7 @@ def map2xy2D(arr1,arr2,resp,size,f) do
 
   Hok.spawn(&MM.map2xy2D_kernel/5,{grid_rows,grid_cols,1},{block_size,block_size,1},[arr1,arr2,resp,size,f])
 end
-def comp2xy2d(arr1,arr2,size1,size2,f) do
+def comp2xy2D(arr1,arr2,size1,size2,f) do
 
     result_gpu = Hok.new_gmatrex(1,size1*size2)
     arr1_gpu = Hok.new_gmatrex(arr1)
