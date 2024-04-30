@@ -21,7 +21,7 @@ defmodule Hok do
       IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
       end
 
-   defmacro gpufor({:<-,_, [{var1, _, nil}, {:..,_, [b1, e1]}]}, {arr1,_,nil}, {:<-,_, [{var2, _, nil}, {:..,_, [b2, e2]}]},{arr2,_,nil},body) do
+   defmacro gpufor({:<-,_, [{var1, _, nil}, {:..,_, [b1, e1]}]}, {arr1,_,nil}, {:<-,_, [{var2, _, nil}, {:..,_, [b2, e2]}]},{arr2,_,nil},do: body) do
        r=      quote do: Comp.MM.comp2xy2D(unquote(arr1), unquote(arr2), unquote(e1), unquote(e2),
                                           Hok.hok (fn (unquote(arr1), unquote(arr2), unquote(var1), unquote(var2)) -> (unquote body) end))
        IO.inspect r
