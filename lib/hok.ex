@@ -16,15 +16,19 @@ defmodule Hok do
   end
 
 
-    defmacro gpufor(h,  b)  do
-      IO.inspect h
-      IO.inspect b
-      IO.inspect "###############"
-      raise "hell"
-      case h do
-        {:<-, _ ,[var,tensor]} -> IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
+    defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
+      IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
       end
-    end
+   defmacro gpufor(a,b,c) do
+    IO.inspect a
+    IO.inspect b
+    IO.inspect c
+    raise "hell"
+   end
+   defmacro gpufor({:<-,_, [{var1, _, nil}, {:..,_, [b1, e1]}]}, {arr1,_,nil}, {:<-,_, [{var2, _, nil}, {:..,_, [b2, e2]}]},{arr2,_,nil},body) do
+
+   end
+
 
   defmacro defmodule(header,do: body) do
     IO.inspect header

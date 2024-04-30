@@ -36,7 +36,7 @@ mat1 = Matrex.apply(mat,f)
 mat2 = Matrex.apply(mat,f)
 
 
-block_size = 16
+block_size = 256
 grid_rows = trunc ((m + block_size - 1) / block_size)
 grid_cols = trunc ((k + block_size - 1) / block_size)
 

@@ -2,18 +2,39 @@
 require Hok
 
 Hok.defmodule MM do
+  defk mm(a,b,c,m,n,k) do
+    row  = blockIdx.y * blockDim.y + threadIdx.y
+    col = blockIdx.x * blockDim.x + threadIdx.x
+    sum  = 0.0
+    if(col < k && row < m) do
+      for i in range(0,n,1) do
+        sum = sum + a[row * n + i] * b[i * k + col]
+      end
+      c[row * k + col] = sum
+    end
 
-defk mm(a,b,c,m,n,k) do
+  end
+defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x
-  sum  = 0.0
-  if(col < k && row < m) do
-    for i in range(0,n,1) do
-      sum = sum + a[row * n + i] * b[i * k + col]
-    end
-    c[row * k + col] = sum
-  end
 
+  if(col < size && row < size) do
+    c[row * k + col] = f(arr1,arr2,row,col)
+  end
+end
+defh map2xy2D(arr1,arr2,size,f) do
+  block_size = 256
+  grid_rows = trunc ((size + block_size - 1) / block_size)
+  grid_cols = trunc ((size + block_size - 1) / block_size)
+end
+def comp22d(arr1,arr2,size1,size2) do
+    result_gpu = Hok.new_gmatrex(1,size1*size2)
+    array_gpu = Hok.new_gmatrex(array)
+
+    MM.map2xy2D(arr1, arr2, result_gpu, size,func)
+
+    r_gpu = Hok.get_gmatrex(result_gpu)
+    r_gpu
 end
 end
 
