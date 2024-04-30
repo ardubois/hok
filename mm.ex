@@ -22,7 +22,7 @@ defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
     c[row * size + col] = f(arr1,arr2,row,col)
   end
 end
-defh map2xy2D(arr1,arr2,size,f) do
+def map2xy2D(arr1,arr2,size,f) do
   block_size = 256
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
