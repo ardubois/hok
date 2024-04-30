@@ -20,7 +20,7 @@ defh saxpy(a,b)do
   end
 end
 
-Hok.include[PMap2]
+Hok.include [PMap2]
 
 n = 10000000
 
