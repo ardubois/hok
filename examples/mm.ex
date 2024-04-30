@@ -17,7 +17,7 @@ defk mm(a,b,c,m,n,k) do
 end
 end
 
-Hok.import [MM]
+Hok.include [MM]
 
 [arg] = System.argv()
 
