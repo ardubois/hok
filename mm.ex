@@ -2,18 +2,17 @@
 require Hok
 
 Hok.defmodule MM do
-  defk mm(a,b,c,m,n,k) do
-    row  = blockIdx.y * blockDim.y + threadIdx.y
-    col = blockIdx.x * blockDim.x + threadIdx.x
-    sum  = 0.0
-    if(col < k && row < m) do
-      for i in range(0,n,1) do
-        sum = sum + a[row * n + i] * b[i * k + col]
-      end
-      c[row * k + col] = sum
-    end
-
-  end
+#  defk mm(a,b,c,m,n,k) do
+#    row  = blockIdx.y * blockDim.y + threadIdx.y
+#    col = blockIdx.x * blockDim.x + threadIdx.x
+#    sum  = 0.0
+#    if(col < k && row < m) do
+#      for i in range(0,n,1) do
+#        sum = sum + a[row * n + i] * b[i * k + col]
+#      end
+#      c[row * k + col] = sum
+#    end
+#  end
 defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x

@@ -1,16 +1,16 @@
 require Hok
 Hok.defmodule PMap do
-  deft inc float ~> float
-  defh inc(a)do
-    return 5*a
-  end
-  deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
-  defk map(a1,a2,size,f) do
-    var id int = blockIdx.x * blockDim.x + threadIdx.x
-    if(id < size) do
-      a2[id] = f(a1[id])
-    end
-  end
+#  deft inc float ~> float
+#  defh inc(a)do
+#    return 5*a
+#  end
+#  deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
+#  defk map(a1,a2,size,f) do
+#    var id int = blockIdx.x * blockDim.x + threadIdx.x
+#    if(id < size) do
+#      a2[id] = f(a1[id])
+#    end
+#  end
   deft sum float ~> float ~> float
   defh sum(a,b)do
     return a+b
