@@ -1,9 +1,9 @@
 require Hok
 Hok.defmodule PMap do
-  deft inc float ~> float
-  defh inc(a)do
-    return 5*a
-  end
+  #deft inc float ~> float
+  #defh inc(a)do
+  #  return 5*a
+  #end
   deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk map(a1,a2,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
@@ -22,7 +22,7 @@ Hok.defmodule PMap do
  #     a3[id] = f(a1[id],a2[id])
  #   end
  # end
-#end
+end
 
 
 n = 10000000

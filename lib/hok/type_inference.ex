@@ -279,7 +279,7 @@ defp set_type_args(map,[:none|tail],[a1 |args], newtype) do
                 set_type_args(map,tail, args, newtype ++[nt])
    end
 end
-defp set_type_args(map,[t1 | types], [a1,args], newtype ) do
+defp set_type_args(map,[t1 | types], [a1|args], newtype ) do
   map=set_type_exp(map,t1,a1)
   set_type_args(map,types,args, newtype ++ [t1])
 end
