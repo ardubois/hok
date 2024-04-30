@@ -25,7 +25,7 @@ defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
   end
 end
 def map2xy2D(arr1,arr2,resp,size,f) do
-  block_size = 256
+  block_size = 16
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
 
