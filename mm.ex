@@ -88,5 +88,7 @@ next = System.monotonic_time()
 #IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
+res_cpu = Matrex.dot(mat1,mat2)
+IO.inspect res_cpu
 IO.inspect result
 #IO.puts GPU.Backend.gen_c_kernel('addVectors',4,[])
