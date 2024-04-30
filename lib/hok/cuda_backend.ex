@@ -316,6 +316,12 @@ defp gen_para(p, {ret,type}) do
   r
 
 end
+defp to_arg_list([:matrex]) do
+  "float*"
+end
+defp to_arg_list([:matrex|t]) do
+  "float*," <> to_arg_list(t)
+end
 defp to_arg_list([t]) do
   "#{t}"
 end
