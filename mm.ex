@@ -37,7 +37,7 @@ def comp2xy2d(arr1,arr2,size1,size2,f) do
     arr1_gpu = Hok.new_gmatrex(arr1)
     arr2_gpu = Hok.new_gmatrex(arr2)
 
-    MM.map2xy2D(arr1_gpu, arr2_gpu, result_gpu, size,f)
+    MM.map2xy2D(arr1_gpu, arr2_gpu, result_gpu, size1,f)
 
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
