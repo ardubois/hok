@@ -26,12 +26,16 @@ defh map2xy2D(arr1,arr2,size,f) do
   block_size = 256
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
-end
-def comp22d(arr1,arr2,size1,size2) do
-    result_gpu = Hok.new_gmatrex(1,size1*size2)
-    array_gpu = Hok.new_gmatrex(array)
 
-    MM.map2xy2D(arr1, arr2, result_gpu, size,func)
+  Hok.spawn(&MM.map2xy2D_kernel/5,{grid_rows,grid_cols,1},{block_size,block_size,1},[arr1,arr2,resp,size,f])
+end
+def comp2xy2d(arr1,arr2,size1,size2,f) do
+
+    result_gpu = Hok.new_gmatrex(1,size1*size2)
+    arr1_gpu = Hok.new_gmatrex(arr1)
+    arr2_gpu = Hok.new_gmatrex(arr2)
+
+    MM.map2xy2D(arr1_gpu, arr2_gpu, result_gpu, size,f)
 
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
@@ -57,19 +61,17 @@ mat1 = Matrex.apply(mat,f)
 mat2 = Matrex.apply(mat,f)
 
 
-block_size = 16
-grid_rows = trunc ((m + block_size - 1) / block_size)
-grid_cols = trunc ((k + block_size - 1) / block_size)
-
 
 prev = System.monotonic_time()
-ker=Hok.load(&MM.mm/6)
-a=Hok.new_gmatrex(mat1)
-b=Hok.new_gmatrex(mat2)
-c=Hok.new_gmatrex(1,m*k)
 
-Hok.spawn(ker,{grid_rows,grid_cols,1},{block_size,block_size,1},[a,b,c,m,n,k])
-Hok.synchronize()
+
+
+MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
+                                      sum = 0.0
+                                      for i in range(0,n,1) do
+                                              sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
+                                      end
+                                      sum end))
 
 _result = Hok.get_gmatrex(c)
 
