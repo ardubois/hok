@@ -1,9 +1,9 @@
 require Hok
 Hok.defmodule PMap do
-  #deft inc float ~> float
-  #defh inc(a)do
-  #  return 5*a
-  #end
+  deft inc float ~> float
+  defh inc(a)do
+    return 5*a
+  end
   deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk map(a1,a2,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
@@ -11,17 +11,17 @@ Hok.defmodule PMap do
       a2[id] = f(a1[id])
     end
   end
- # deft sum float ~> float ~> float
- # defh sum(a,b)do
- #   return a+b
- # end
- # deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
- # defk map2(a1,a2,a3,size,f) do
- #   var id int = blockIdx.x * blockDim.x + threadIdx.x
- #   if(id < size) do
- #     a3[id] = f(a1[id],a2[id])
- #   end
- # end
+  deft sum float ~> float ~> float
+  defh sum(a,b)do
+    return a+b
+  end
+  deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
+  defk map2(a1,a2,a3,size,f) do
+    var id int = blockIdx.x * blockDim.x + threadIdx.x
+    if(id < size) do
+      a3[id] = f(a1[id],a2[id])
+    end
+  end
 end
 
 Hok.include [PMap]
@@ -44,7 +44,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, Hok.load_fun(&PMap.sum/2)])
+Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, &PMap.sum/2])
 #Hok.synchronize()
 
 next = System.monotonic_time()
