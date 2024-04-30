@@ -73,7 +73,7 @@ defmodule Hok.TypeInference do
                     else
                       body
                     end
-        [b] -> add_return(map,b)
+
 
       end
     end

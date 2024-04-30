@@ -1,3 +1,7 @@
 require Hok
 
-result = fn(x,y) -> do x + y end end
+
+
+result = Hok.hok fn(x,y) -> teste = x + y
+                    v = teste * x
+                    v end
