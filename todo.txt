@@ -4,3 +4,4 @@
 * função anônima que retorna um número não funciona
 * verificar o código do dlopen para dar mensagens de erro melhores
 * por que a compilacao do cuda as vezes nao retorna erro?
+* verificar como deve ser o bloco de uma funcao anônima
