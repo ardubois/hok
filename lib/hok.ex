@@ -9,11 +9,11 @@ defmodule Hok do
      #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
     IO.inspect function
-    raise "hell"
+    #raise "hell"
     fname = Hok.CudaBackend.gen_lambda("Elixir.App",function)
     result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname)
     IO.inspect result
-    raise "hell"
+    #raise "hell"
     result
   end
 
@@ -24,7 +24,10 @@ defmodule Hok do
 
    defmacro gpufor({:<-,_, [{var1, _, nil}, {:..,_, [b1, e1]}]}, {arr1,_,nil}, {:<-,_, [{var2, _, nil}, {:..,_, [b2, e2]}]},{arr2,_,nil},do: body) do
        r=      quote do: Comp.MM.comp2xy2D(unquote(arr1), unquote(arr2), unquote(e1), unquote(e2),
-                                          Hok.hok (fn (unquote(arr1), unquote(arr2), unquote(var1), unquote(var2)) -> (unquote body) end))
+                                          Hok.hok (fn (unquote({arr1,[],nil}),
+                                                       unquote({arr2,[],nil}),
+                                                       unquote({var1,[],nil}),
+                                                       unquote({var2,[],nil})) -> (unquote body) end))
        IO.inspect r
        r
    end
