@@ -28,8 +28,8 @@ defmodule Hok do
                                                        unquote(arr2),
                                                        unquote(var1),
                                                        unquote(var2)) -> (unquote body) end))
-       IO.inspect r
-       raise "hell"
+       #IO.inspect r
+       #raise "hell"
        r
    end
 
