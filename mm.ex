@@ -64,7 +64,7 @@ prev = System.monotonic_time()
 #          z
 #          end
 
-result = Hok.gpufor x <- 0..1000, mat1, y <- 0..1000, mat2 do
+result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
             sum = 0.0
             for i in range(0,1000,1) do
                   sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
