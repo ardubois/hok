@@ -22,13 +22,14 @@ defmodule Hok do
       IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
       end
 
-   defmacro gpufor({:<-,_, [{var1, _, nil}, {:..,_, [b1, e1]}]}, {arr1,ia1,nil}, {:<-,_, [{var2, _, nil}, {:..,_, [b2, e2]}]},{arr2,ia2,nil},do: body) do
-       r=      quote do: MM.comp2xy2D(unquote({arr1,ia1,nil}), unquote({arr2,ia2,nil}), unquote(e1), unquote(e2),
-                                          Hok.hok (fn (unquote({arr1,[],nil}),
-                                                       unquote({arr2,[],nil}),
-                                                       unquote({var1,[],nil}),
-                                                       unquote({var2,[],nil})) -> (unquote body) end))
+   defmacro gpufor({:<-,_, [var1, {:..,_, [b1, e1]}]}, arr1, {:<-,_, [var2, {:..,_, [b2, e2]}]},arr2,do: body) do
+       r=      quote do: MM.comp2xy2D(unquote(arr1), unquote(arr2), unquote(e1), unquote(e2),
+                                          Hok.hok (fn (unquote(arr1),
+                                                       unquote(arr2),
+                                                       unquote(var1),
+                                                       unquote(var2)) -> (unquote body) end))
        IO.inspect r
+       raise "hell"
        r
    end
 
