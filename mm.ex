@@ -60,7 +60,7 @@ mat2 = Matrex.apply(mat,f)
 prev = System.monotonic_time()
 
 result = Hok.gpufor x <- 0..1000, mat1, y <- 0..1000, mat2 do
-          1000.0
+          x+y
           end
 
 #result = Hok.gpufor x <- 0..1000, mat1, y <- 0..1000, mat2 do
