@@ -61,8 +61,8 @@ Hok.defmodule NN do
   end
   deft euclid gmatrex ~> float ~> float ~> float
   defh euclid(d_locations, lat, lng) do
-    return 1.0
-     # return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
+    return d_locations[0]
+      return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
     end
 
 
