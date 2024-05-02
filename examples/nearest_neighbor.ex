@@ -63,7 +63,7 @@ Hok.defmodule NN do
 
 end
 
-include [NN]
+Hok.include [NN]
 
 [arg] = System.argv()
 
