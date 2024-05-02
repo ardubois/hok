@@ -354,7 +354,7 @@ defp set_type_exp(map,type,exp) do
         map
       {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} ->
         map
-      {op, info, [a1,a2]} when op in [:+, :-] when type == :matrex ->
+      {op, info, [a1,a2]} when op in [:+, :-] and type == :matrex ->
         t1 = find_type_exp(map,a1)
         t2 = find_type_exp(map,a2)
         case t1 do
