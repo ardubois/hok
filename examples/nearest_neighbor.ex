@@ -80,7 +80,7 @@ prev = System.monotonic_time()
 locations = GPotion.new_gmatrex(m1)
 distances = GPotion.new_gmatrex(1,size)
 
-GPotion.spawn(ker,{size,1,1},{1,1,1},[locations,distances,size,0,0])
+GPotion.spawn(&NN.map_step_2para_1resp_kernel,{size,1,1},{1,1,1},[locations,distances,size,0,0])
 
 _dist_result = GPotion.get_gmatrex(distances)
 
