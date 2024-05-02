@@ -354,7 +354,21 @@ defp set_type_exp(map,type,exp) do
         map
       {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} ->
         map
-      {op, info, [a1,a2]} when op in [:+, :-, :/, :*] when type == :matrex -> raise "hell"
+      {op, info, [a1,a2]} when op in [:+, :-] when type == :matrex -> raise "hell"
+        t1 = find_type_exp(map,a1)
+        t2 = find_type_exp(map,a2)
+        case t1 do
+          :none ->  case t2 do
+                      :none -> map
+                      :int  -> set_type_exp(map,:matrex,a1)
+                      :matrex -> set_type_exp(map,:int,a1)
+                    end
+          :int ->
+              set_type_exp(mat,:int,a1)
+              set_type_exp(map,:matrex,a2)
+          :matrex ->  set_type_exp(mat,:matrex,a1)
+                      set_type_exp(map,:int,a2)
+        end
       {op, info, args} when op in [:+, :-, :/, :*] ->
           case args do
            [a1] ->
