@@ -1,14 +1,15 @@
 require Hok
 Hok.defmodule Ex1 do
-  deft inc float ~> float
+  #deft inc float ~> float
   defh inc(a)do
     return 1+a
   end
-  deft transform_kernel gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
-  defk transform_kernel(a1,a2,size,f) do
-    var id int = blockIdx.x * blockDim.x + threadIdx.x
-    if(id < size) do
-      a2[id] = f(a1[id])
+  #deft transform_kernel gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
+  defk transform_kernel(a,r,size,f) do
+   # var id int = blockIdx.x * blockDim.x + threadIdx.x
+   id = blockIdx.x * blockDim.x + threadIdx.x
+   if(id < size) do
+      r[id] = f(a[id])
     end
   end
 
