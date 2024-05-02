@@ -92,7 +92,7 @@ dist_result = Hok.get_gmatrex(distances_device)
 next = System.monotonic_time()
 IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result_elixir = euclid_seq(list_data_set,0.0,0.0)
+result_elixir = NN.euclid_seq(list_data_set,0.0,0.0)
 
 IO.inspect(dist_result)
 IO.inspect result_elixir
