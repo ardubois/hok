@@ -363,7 +363,7 @@ defp set_type_exp(map,type,exp) do
             set_type_exp(map,type,a1)
            [a1,a2] ->
             if(type != :int && type != :float) do
-              raise "Operaotr (#{inspect op}) (#{inspect info}) is being used in a context #{inspect type}"
+              raise "Operaotr11 (#{inspect op}) (#{inspect info}) is being used in a context #{inspect type}"
             end
             t1 = find_type_exp(map,a1)
             t2 = find_type_exp(map,a2)
