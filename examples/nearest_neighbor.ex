@@ -67,10 +67,10 @@ Hok.include [NN]
 
 [arg] = System.argv()
 
-usr_size = String.to_integer(arg)
+size = String.to_integer(arg)
 
 
-list_data_set = DataSet.gen_data_set[usr_size]
+list_data_set = DataSet.gen_data_set[size]
 
 data_set_host = Matrex.new([list_data_set])
 
@@ -79,7 +79,7 @@ data_set_device = Hok.new_gmatrex (data_set_host)
 
 prev = System.monotonic_time()
 
-distances_device = GPotion.new_gmatrex(1,usr_size)
+distances_device = GPotion.new_gmatrex(1,size)
 
 GPotion.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,size,0,0])
 
