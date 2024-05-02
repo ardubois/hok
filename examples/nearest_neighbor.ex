@@ -48,8 +48,13 @@ Hok.defmodule NN do
     data
   end
   defk map_step_2para_1resp_kernel(d_array, d_result, step,  par1, par2,size,f) do
+    type d_array matrex
+    type par1 int
+    type par2 int
     globalId = blockDim.x * ( gridDim.x * blockIdx.y + blockIdx.x ) + threadIdx.x
+
     var id int = step * globalId
+
     if (globalId < size) do
       d_result[globalId] = f(d_array+id, par1,par2)
     end
