@@ -79,7 +79,7 @@ data_set_device = Hok.new_gmatrex (data_set_host)
 
 prev = System.monotonic_time()
 
-distances_device = GPotion.new_gmatrex(1,size)
+distances_device = GPotion.new_gmatrex(1,usr_size)
 
 GPotion.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,size,0,0])
 
