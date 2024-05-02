@@ -38,5 +38,5 @@ Hok.spawn(&Ex1.transform_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ve
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(result_gpu)
+result = Hok.get_gmatrex(resp_gpu)
 IO.inspect result
