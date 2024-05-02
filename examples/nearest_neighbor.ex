@@ -74,7 +74,6 @@ size = usr_size
 
 m1 = Matrex.new(1,2*usr_size,&DataSet.gen_lat_long/2)
 
-ker=GPotion.load(&NN.euclid/5)
 
 prev = System.monotonic_time()
 
