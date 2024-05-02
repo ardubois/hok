@@ -368,7 +368,7 @@ defp set_type_exp(map,type,exp) do
               set_type_exp(map,:matrex,a2)
           :matrex ->  map=set_type_exp(map,:matrex,a1)
                       set_type_exp(map,:int,a2)
-          tt     -> raise "Exp  (#{IO.inspect info}) has type #{tt} and should have type :gmatrex or :int."
+          _   -> raise "Exp (#{inspect info}) has type #{tt} and should have type :gmatrex or :int"
         end
       {op, info, args} when op in [:+, :-, :/, :*] ->
           case args do
