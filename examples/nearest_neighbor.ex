@@ -92,12 +92,12 @@ dist_result = Hok.get_gmatrex(distances_device)
 next = System.monotonic_time()
 IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result_elixir = NN.euclid_seq(list_data_set,0.0,0.0)
+result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
 v1 = data_set_host[1]
 v2 = data_set_host[2]
 
-IO.inspect Enum.reverse NN.euclid_seq([v1,v2],0.0,0.0)
+IO.inspect NN.euclid_seq([v1,v2],0.0,0.0)
 
 IO.inspect(dist_result[1])
 
