@@ -85,12 +85,14 @@ prev = System.monotonic_time()
 
 distances_device = Hok.new_gmatrex(1,size)
 
-Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,2,0,0,size,&NN.euclid/3])
+Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,2,0.0,0.0,size,&NN.euclid/3])
 
 dist_result = Hok.get_gmatrex(distances_device)
 
 next = System.monotonic_time()
 IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
+result_elixir = euclid_seq(list_data_set,0.0,0.0)
 
 IO.inspect(dist_result)
+IO.inspect result_elixir
