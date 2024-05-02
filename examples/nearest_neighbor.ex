@@ -86,7 +86,7 @@ GPotion.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_dev
 dist_result = GPotion.get_gmatrex(distances_device)
 
 next = System.monotonic_time()
-IO.puts "GPotion\t#{usr_size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 
 IO.inspect(dist_result)
