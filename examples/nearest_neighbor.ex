@@ -94,5 +94,11 @@ IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millise
 
 result_elixir = NN.euclid_seq(list_data_set,0.0,0.0)
 
+v1 = data_set_host[1]
+v2 = data_set_host[2]
+
+IO.inspect euclid_set([v1,v2],0.0,0.0,[])
+
 IO.inspect(dist_result[1])
+
 IO.inspect result_elixir
