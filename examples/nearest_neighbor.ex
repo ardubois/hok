@@ -104,7 +104,7 @@ v2 = data_set_host[2]
 IO.puts "v1 = #{v1}"
 IO.puts "v2 = #{v2}"
 
-IO.inspect(dist_result[1])
+IO.inspect(dist_result)
 
 IO.inspect NN.euclid_seq([v1,v2],0.0,0.0)
 
