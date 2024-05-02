@@ -1,13 +1,12 @@
 require Hok
 Hok.defmodule Ex1 do
-  #deft inc float ~> float
+  deft inc float ~> float
   defh inc(a)do
      1+a
   end
-  #deft transform_kernel gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
-  defk transform_kernel(a,r,size,f) do
-   # var id int = blockIdx.x * blockDim.x + threadIdx.x
-   id = blockIdx.x * blockDim.x + threadIdx.x
+  deft transform_kernel gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
+  defk apply_k(a,r,size,f) do
+   var id int = blockIdx.x * blockDim.x + threadIdx.x
    if(id < size) do
       r[id] = f(a[id])
     end
@@ -33,7 +32,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(&Ex1.transform_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[vet1_gpu,resp_gpu,n, &Ex1.inc/1])
+Hok.spawn(&Ex1.apply_k/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[vet1_gpu,resp_gpu,n, &Ex1.inc/1])
 #Hok.synchronize()
 
 next = System.monotonic_time()
