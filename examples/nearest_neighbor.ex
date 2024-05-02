@@ -70,7 +70,7 @@ Hok.include [NN]
 usr_size = String.to_integer(arg)
 
 
-list_data_set = DataSet.gen_data_set[user_size]
+list_data_set = DataSet.gen_data_set[usr_size]
 
 data_set_host = Matrex.new([list_data_set])
 
