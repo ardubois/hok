@@ -78,7 +78,7 @@ list_data_set = DataSet.gen_data_set(2*size)
 
 data_set_host = Matrex.new([list_data_set])
 
-data_set_device = Hok.new_gmatrex (data_set_host)
+data_set_device = Hok.new_gmatrex(data_set_host)
 
 
 prev = System.monotonic_time()
