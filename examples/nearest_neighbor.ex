@@ -58,7 +58,7 @@ Hok.defmodule NN do
       d_result[globalId] = f(d_array+id, par1,par2)
     end
   end
-
+  deft euclid gmatrex ~> float ~> float ~> float
   defh euclid(d_locations, lat, lng) do
       sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
     end
