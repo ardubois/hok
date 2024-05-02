@@ -2,7 +2,7 @@ require Hok
 Hok.defmodule Ex1 do
   #deft inc float ~> float
   defh inc(a)do
-    return 1+a
+     1+a
   end
   #deft transform_kernel gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk transform_kernel(a,r,size,f) do
