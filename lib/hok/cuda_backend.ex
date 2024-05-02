@@ -553,7 +553,7 @@ def gen_cuda(body,types,is_typed) do
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
           #"(*#{fun})(#{nargs})"
-          "*#{fun}(#{nargs})
+          "*#{fun}(#{nargs})""
         number when is_integer(number) or is_float(number) -> to_string(number)
         string when is_binary(string)  -> "\"#{string}\""
       end
