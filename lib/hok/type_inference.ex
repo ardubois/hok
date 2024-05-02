@@ -354,6 +354,7 @@ defp set_type_exp(map,type,exp) do
         map
       {{:., _, [{:__aliases__, _, [_struct]}, _field]}, _, []} ->
         map
+      {op, info, [a1,a2]} when op in [:+, :-, :/, :*] && type == :matrex -> raise "hell"
       {op, info, args} when op in [:+, :-, :/, :*] ->
           case args do
            [a1] ->
