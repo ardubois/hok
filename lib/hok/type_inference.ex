@@ -364,9 +364,9 @@ defp set_type_exp(map,type,exp) do
                       :matrex -> set_type_exp(map,:int,a1)
                     end
           :int ->
-              set_type_exp(mat,:int,a1)
+              map=set_type_exp(map,:int,a1)
               set_type_exp(map,:matrex,a2)
-          :matrex ->  set_type_exp(mat,:matrex,a1)
+          :matrex ->  map=set_type_exp(map,:matrex,a1)
                       set_type_exp(map,:int,a2)
         end
       {op, info, args} when op in [:+, :-, :/, :*] ->
