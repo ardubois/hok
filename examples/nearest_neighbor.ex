@@ -18,11 +18,13 @@ defmodule DataSet do
     |> Enum.map(fn line -> words = String.split(line, " ", trim: true)
                            [ elem(Float.parse(Enum.at(words, 6)),0), elem(Float.parse(Enum.at(words,7)), 0) ] end  )
   end
-  def gen_data_set(0), do: []
-  def gen_data_set(n) do
+  def gen_data_set(n), do: gen_data_set_(n,[])
+  def gen_data_set_(0,data), do: data
+  def gen_data_set_(n,data) do
     lat = (7 + Enum.random(0..63)) + :rand.uniform();
       lon = (Enum.random(0..358)) + :rand.uniform();
-      [lat,lon|gen_data_set(n-1)]
+      gen_data_set_(n-1, [lat,lon|data])
+
   end
   def gen_lat_long(_l,c) do
     if(Integer.is_even(c)) do
@@ -33,15 +35,17 @@ defmodule DataSet do
   end
 end
 
+
 Hok.defmodule NN do
-  def euclid_seq([],_lat,_lng) do
-    []
-  end
-  def euclid_seq(array,lat,lng) do
-     m_lat = Enum.at(array,0)
-     m_lng = Enum.at(array,1)
+  def euclid_seq(l,lat,lng), do: euclid_seq_(l,lat,lng,[])
+  def euclid_seq_([m_lat,m_lng|array],lat,lng,data) do
+    # m_lat = Enum.at(array,0)
+     #m_lng = Enum.at(array,1)
      value = :math.sqrt((lat-m_lat)*(lat-m_lat)+(lng-m_lng)*(lng-m_lng))
-     [value|euclid_seq(Enum.drop(array,2),lat,lng)]
+     euclid_seq_(array,lat,lng,[value|data])
+  end
+  def euclid_seq_([],_lat,_lng, data) do
+    data
   end
   defk map_step_2para_1resp_kernel(d_array, d_result, step,  par1, par2,size,f) do
     globalId = blockDim.x * ( gridDim.x * blockIdx.y + blockIdx.x ) + threadIdx.x
@@ -58,34 +62,31 @@ Hok.defmodule NN do
 
 
 end
- #d1 = DataSet.open_data_set("files")
-#IO.inspect(d1)
 
-#d1 = DataSet.gen_data_set(100000000)
-#d1 = DataSet.gen_data_set(1000000)
+include [NN]
 
 [arg] = System.argv()
 
 usr_size = String.to_integer(arg)
-#d1 = DataSet.gen_data_set(usr_size)
 
 
-size = usr_size
+list_data_set = DataSet.gen_data_set[user_size]
 
-m1 = Matrex.new(1,2*usr_size,&DataSet.gen_lat_long/2)
+data_set_host = Matrex.new([list_data_set])
+
+data_set_device = Hok.new_gmatrex (data_set_host)
 
 
 prev = System.monotonic_time()
 
-locations = GPotion.new_gmatrex(m1)
-distances = GPotion.new_gmatrex(1,size)
+distances_device = GPotion.new_gmatrex(1,size)
 
-GPotion.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[locations,distances,size,0,0])
+GPotion.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,size,0,0])
 
-_dist_result = GPotion.get_gmatrex(distances)
+dist_result = GPotion.get_gmatrex(distances_device)
 
 next = System.monotonic_time()
 IO.puts "GPotion\t#{usr_size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 
-#IO.inspect(m1)
+IO.inspect(dist_result)
