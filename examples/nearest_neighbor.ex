@@ -42,7 +42,7 @@ Hok.defmodule NN do
     # m_lat = Enum.at(array,0)
      #m_lng = Enum.at(array,1)
 
-     value = (lat-m_lat)*(lat-m_lat)
+     value = (lat-m_lat)*(lat-m_lat)+(lng-m_lng)*(lng-m_lng)
      #value = :math.sqrt((lat-m_lat)*(lat-m_lat)+(lng-m_lng)*(lng-m_lng))
      euclid_seq_(array,lat,lng,[value|data])
   end
@@ -63,7 +63,7 @@ Hok.defmodule NN do
   end
   deft euclid gmatrex ~> float ~> float ~> float
   defh euclid(d_locations, lat, lng) do
-    return (lat-d_locations[0])*(lat-d_locations[0])
+    return (lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1])
       #return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
     end
 
