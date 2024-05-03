@@ -169,7 +169,7 @@ result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
 
 
-IO.puts("NN = #{nn[0]}")
+IO.puts("NN = #{nn[1]}")
 
 
 IO.inspect result_elixir
