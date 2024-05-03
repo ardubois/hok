@@ -130,7 +130,7 @@ end
 
   deft menor float ~> float ~> float
   defh menor(x,y) do
-    if y == 0 do
+    if y == 0.0 do
       x
     else
      if (x<y) do
