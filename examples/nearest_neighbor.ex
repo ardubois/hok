@@ -105,10 +105,10 @@ result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
 
 
-IO.inspect(dist_result[0])
 IO.inspect(dist_result[1])
 IO.inspect(dist_result[2])
 IO.inspect(dist_result[3])
+IO.inspect(dist_result[4])
 
 
 
