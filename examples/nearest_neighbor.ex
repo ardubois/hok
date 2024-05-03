@@ -49,6 +49,61 @@ Hok.defmodule NN do
   def euclid_seq_([],_lat,_lng, data) do
     data
   end
+  def reduce(ref4,  f) do
+
+    {_r,{_l,size}} = ref4
+    result_gpu =Hok.new_gmatrex(Matrex.new([[0]]))
+
+
+    threadsPerBlock = 256
+    blocksPerGrid = div(size + threadsPerBlock - 1, threadsPerBlock)
+    numberOfBlocks = blocksPerGrid
+    Hok.spawn(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
+    result_gpu
+end
+defk reduce_kernel(a, ref4, f,n) do
+
+  __shared__ cache[256]
+
+  tid = threadIdx.x + blockIdx.x * blockDim.x;
+  cacheIndex = threadIdx.x
+
+  temp =0.0
+
+  if (tid < n) do
+    temp = a[tid]
+    tid = blockDim.x * gridDim.x + tid
+  end
+
+  while (tid < n) do
+    temp = f(a[tid], temp)
+    tid = blockDim.x * gridDim.x + tid
+  end
+
+  cache[cacheIndex] = temp
+    __syncthreads()
+
+  i = blockDim.x/2
+  #tid = threadIdx.x + blockIdx.x * blockDim.x;
+  up = blockDim.x * gridDim.x *256
+  while (i != 0 &&  (cacheIndex + up)< n) do  ###&& tid < n) do
+    #tid = blockDim.x * gridDim.x + tid
+    if (cacheIndex < i) do
+      cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
+    end
+
+  __syncthreads()
+  i = i/2
+  end
+
+if (cacheIndex == 0) do
+  current_value = ref4[0]
+  while(!(current_value == atomic_cas(ref4,current_value,f(cache[0],current_value)))) do
+    current_value = ref4[0]
+  end
+end
+
+end
   deft map_step_2para_1resp_kernel gmatrex ~> gmatrex ~> integer ~> float ~> float ~> integer ~> [gmatrex ~> float ~> float ~> float] ~> unit
   defk map_step_2para_1resp_kernel(d_array, d_result, step,  par1, par2,size,f) do
 
@@ -92,7 +147,8 @@ data_set_device = Hok.new_gmatrex(data_set_host)
 
 prev = System.monotonic_time()
 
-distances_device=NN.map_step_2para_1resp(data_set_device,2,0.0,0.0,size, &NN.euclid/3)
+distances_device= data_set_device
+      |> NN.map_step_2para_1resp(2,0.0,0.0,size, &NN.euclid/3)
 
 Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,2,0.0,0.0,size,&NN.euclid/3])
 
