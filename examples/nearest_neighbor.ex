@@ -128,14 +128,17 @@ end
       #return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
     end
 
-  deft maior float ~> float ~> float
-  defh maior(x,y) do
-    if (x>y)do
+  deft menor float ~> float ~> float
+  defh menor(x,y) do
+    if y == 0 do
       x
     else
+     if (x<y) do
+      x
+     else
       y
+     end
     end
-  end
 
 end
 
