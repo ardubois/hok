@@ -61,6 +61,11 @@ Hok.defmodule NN do
       d_result[globalId] = f(d_array+id, par1,par2)
     end
   end
+  def map_step_2para_1resp(d_array,step, par1, par2, size, f) do
+      distances_device = Hok.new_gmatrex(1,size)
+      Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[d_array,distances_device,step,par1,par2,size,f])
+      Hok.get_gmatrex(distances_device)
+  end
   deft euclid gmatrex ~> float ~> float ~> float
   defh euclid(d_locations, lat, lng) do
     return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
@@ -87,7 +92,7 @@ data_set_device = Hok.new_gmatrex(data_set_host)
 
 prev = System.monotonic_time()
 
-distances_device = Hok.new_gmatrex(1,size)
+distances_device=NN.map_step_2para_1resp(data_set_device,2,0.0,0.0,size, &NN.euclid/3)
 
 Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,2,0.0,0.0,size,&NN.euclid/3])
 
