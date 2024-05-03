@@ -64,7 +64,7 @@ Hok.defmodule NN do
   def map_step_2para_1resp(d_array,step, par1, par2, size, f) do
       distances_device = Hok.new_gmatrex(1,size)
       Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[d_array,distances_device,step,par1,par2,size,f])
-      Hok.get_gmatrex(distances_device)
+      distances_device
   end
   deft euclid gmatrex ~> float ~> float ~> float
   defh euclid(d_locations, lat, lng) do
