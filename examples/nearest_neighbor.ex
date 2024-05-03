@@ -112,7 +112,7 @@ end
 
     var id int = step * globalId
 
-
+   ss()
     if (globalId < size) do
       d_result[globalId] = f(d_array+id, par1,par2)
     end
@@ -168,11 +168,11 @@ nn = Hok.get_gmatrex(nn_d)
 next = System.monotonic_time()
 IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
+#result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
 
 
-IO.puts("NN = #{nn[1]}")
+#IO.puts("NN = #{nn[1]}")
 
 
-IO.inspect (Enum.reduce(result_elixir,0, fn (x,y)-> if y == 0 do x else if x<y do x else y end end end))
+#IO.inspect (Enum.reduce(result_elixir,0, fn (x,y)-> if y == 0 do x else if x<y do x else y end end end))
