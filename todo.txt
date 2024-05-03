@@ -5,3 +5,4 @@
 * verificar o código do dlopen para dar mensagens de erro melhores
 * por que a compilacao do cuda as vezes nao retorna erro?
 * verificar como deve ser o bloco de uma funcao anônima
+* Pode-se permitr a compilação de lambdas de maneira dinâmica para que eles possam conter valores de tempo de execução?
