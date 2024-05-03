@@ -111,7 +111,7 @@ end
     var globalId int = blockDim.x * ( gridDim.x * blockIdx.y + blockIdx.x ) + threadIdx.x
 
     var id int = step * globalId
-    x = a
+    f(id,id)
     if (globalId < size) do
       d_result[globalId] = f(d_array+id, par1,par2)
     end
