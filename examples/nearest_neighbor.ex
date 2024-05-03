@@ -103,13 +103,12 @@ IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millise
 
 result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
-v1 = data_set_host[1]
-v2 = data_set_host[2]
 
-IO.puts "v1 = #{v1}"
-IO.puts "v2 = #{v2}"
 
-IO.inspect(dist_result)
+IO.inspect(dist_result[0])
+IO.inspect(dist_result[1])
+IO.inspect(dist_result[2])
+IO.inspect(dist_result[3])
 
 IO.inspect NN.euclid_seq([v1,v2],0.0,0.0)
 
