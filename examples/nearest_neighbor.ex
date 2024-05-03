@@ -110,7 +110,6 @@ IO.inspect(dist_result[1])
 IO.inspect(dist_result[2])
 IO.inspect(dist_result[3])
 
-IO.inspect NN.euclid_seq([v1,v2],0.0,0.0)
 
 
 
