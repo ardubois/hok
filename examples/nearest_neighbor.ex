@@ -127,7 +127,14 @@ end
       #return sqrt((lat-d_locations[0])*(lat-d_locations[0])+(lng-d_locations[1])*(lng-d_locations[1]))
     end
 
-
+  deft maior float ~> float ~> float
+  defh maior(x,y) do
+    if (x>y)do
+      x
+    else
+      y
+    end
+  end
 
 end
 
@@ -147,12 +154,12 @@ data_set_device = Hok.new_gmatrex(data_set_host)
 
 prev = System.monotonic_time()
 
-distances_device= data_set_device
+nn_d = data_set_device
       |> NN.map_step_2para_1resp(2,0.0,0.0,size, &NN.euclid/3)
+      |> DP.reduce(&NN.maior/2)
 
-Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[data_set_device,distances_device,2,0.0,0.0,size,&NN.euclid/3])
 
-dist_result = Hok.get_gmatrex(distances_device)
+nn = Hok.get_gmatrex(nn_d)
 
 next = System.monotonic_time()
 IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
@@ -161,12 +168,7 @@ result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 
 
 
-IO.inspect(dist_result[1])
-IO.inspect(dist_result[2])
-IO.inspect(dist_result[3])
-IO.inspect(dist_result[4])
-
-
+IO.puts("NN = #{nn[0]}")
 
 
 IO.inspect result_elixir
