@@ -172,4 +172,4 @@ result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 IO.puts("NN = #{nn[1]}")
 
 
-IO.inspect result_elixir
+IO.inspect (Enum.reduce(result_elixir,0, fn (x,y)-> if x>y do x else y end end)
