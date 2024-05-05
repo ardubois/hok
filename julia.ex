@@ -21,8 +21,8 @@ Hok.defmodule Julia do
     end
     return 1
   end
-  deft julia_kernel gmatrex ~> integer ~> integer ~> integer ~> integer
-  defh julia_kernel(ptr,x,y,dim) do
+  deft julia_function gmatrex ~> integer ~> integer ~> integer ~> integer
+  defh julia_function(ptr,x,y,dim) do
     var offset int = x + y * dim # gridDim.x
     var juliaValue float = julia(x,y,dim)
 
@@ -63,7 +63,7 @@ dim = m
 
 prev = System.monotonic_time()
 
-ref = Julia.mapgen2D_xy_1para_noret(dim,dim, &Julia.julia_kernel/4)
+ref = Julia.mapgen2D_xy_1para_noret(dim,dim, &Julia.julia_function/4)
 
 _image = GPotion.get_gmatrex(ref)
 next = System.monotonic_time()

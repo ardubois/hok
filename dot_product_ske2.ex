@@ -57,11 +57,6 @@ end
 
     temp =0.0
 
-    if (tid < n) do
-      temp = a[tid]
-      tid = blockDim.x * gridDim.x + tid
-    end
-
     while (tid < n) do
       temp = f(a[tid], temp)
       tid = blockDim.x * gridDim.x + tid
@@ -71,9 +66,8 @@ end
       __syncthreads()
 
     i = blockDim.x/2
-    #tid = threadIdx.x + blockIdx.x * blockDim.x;
-    up = blockDim.x * gridDim.x *256
-    while (i != 0 &&  (cacheIndex + up)< n) do  ###&& tid < n) do
+
+    while (i != 0 ) do  ###&& tid < n) do
       #tid = blockDim.x * gridDim.x + tid
       if (cacheIndex < i) do
         cache[cacheIndex] = f(cache[cacheIndex + i] , cache[cacheIndex])
