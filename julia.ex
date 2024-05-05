@@ -2,7 +2,7 @@ require Hok
 Hok.defmodule Julia do
   deft julia integer ~> integer ~> integer ~> integer
   defh julia(x,y,dim) do
-    scale = 0.1
+    var scale float = 0.1
     var jx float = scale * (dim - x)/dim
     var jy float = scale * (dim - y)/dim
 
