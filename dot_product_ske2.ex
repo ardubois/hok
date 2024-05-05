@@ -105,12 +105,7 @@ ref2 = Hok.new_gmatrex(vet2)
 
 prev = System.monotonic_time()
 
-#PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
-#PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
-#PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> a*b end))
 
-#IO.inspect ref1
-#raise "hell"
 
 #result_gpu = ref1
 #    |> DP.map2(ref2, &DP.mult/2)
