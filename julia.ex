@@ -53,7 +53,7 @@ Hok.defmodule Julia do
   end
 end
 
-include [Julia]
+Hok.include [Julia]
 
 [arg] = System.argv()
 m = String.to_integer(arg)
