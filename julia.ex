@@ -13,7 +13,7 @@ Hok.defmodule Julia do
     for i in range(0,200) do
         nar = (ar*ar - ai*ai) + cr
         nai = (ai*ar + ar*ai) + ci
-        if ((nar * nar)+(nai * nai ) > 1000) do
+        if ((nar * nar)+(nai * nai ) > 1000.0) do
           return 0
         end
         ar = nar
