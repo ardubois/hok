@@ -36,11 +36,11 @@ Hok.defmodule Julia do
 
   deft mapgen2D_xy_1para_noret_ker gmatrex ~> integer ~> integer ~>[gmatrex ~> integer ~> integer~> integer ~> integer] ~> unit
   defk mapgen2D_xy_1para_noret_ker(resp,arg1,size,f)do
-    x = blockIdx.x * blockDim.x + threadIdx.x
-    y  = blockIdx.y * blockDim.y + threadIdx.y
+    var x int= blockIdx.x * blockDim.x + threadIdx.x
+    var y int  = blockIdx.y * blockDim.y + threadIdx.y
 
     if(x < size && y < size) do
-      v=f(resp,x,y,arg1)
+      var v int=f(resp,x,y,arg1)
     end
   end
   def mapgen2D_xy_1para_noret(arg1, size,f) do
