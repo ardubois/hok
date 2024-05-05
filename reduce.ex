@@ -36,10 +36,10 @@ end
 
       result_gpu
   end
-  def reduce(ref4,  f) do
+  def reduce(ref4, acc, f) do
 
       {_r,{_l,size}} = ref4
-      result_gpu =Hok.new_gmatrex(Matrex.new([[0]]))
+      result_gpu =Hok.new_gmatrex(Matrex.new([[acc]]))
 
 
       threadsPerBlock = 256
@@ -107,7 +107,7 @@ ref2 = Hok.new_gmatrex(vet2)
 prev = System.monotonic_time()
 
 
-result_gpu = DP.reduce(ref1,Hok.hok fn (a,b) -> if (a<b) do a else b end end)
+result_gpu = DP.reduce(ref1,100000000.0, Hok.hok fn (a,b) -> if (a<b) do a else b end end)
 
 
 
