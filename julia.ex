@@ -3,13 +3,13 @@ Hok.defmodule Julia do
   deft julia integer ~> integer ~> integer ~> integer
   defh julia(x,y,dim) do
     scale = 0.1
-    jx = scale * (dim - x)/dim
-    jy = scale * (dim - y)/dim
+    var jx float = scale * (dim - x)/dim
+    var jy float = scale * (dim - y)/dim
 
-    cr = -0.8
-    ci = 0.156
-    ar = jx
-    ai = jy
+    var cr float = -0.8
+    var ci float = 0.156
+    var ar float = jx
+    var ai float = jy
     for i in range(0,200) do
         nar = (ar*ar - ai*ai) + cr
         nai = (ai*ar + ar*ai) + ci
