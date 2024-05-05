@@ -40,7 +40,7 @@ Hok.defmodule Julia do
     y  = blockIdx.y * blockDim.y + threadIdx.y
 
     if(x < size && y < size) do
-      f(resp,x,y,arg1)
+      v=f(resp,x,y,arg1)
     end
   end
   def mapgen2D_xy_1para_noret(arg1, size,f) do
