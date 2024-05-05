@@ -79,7 +79,7 @@ prev = System.monotonic_time()
 ref1=Hok.new_gmatrex(vet1)
 ref2=Hok.new_gmatrex(vet2)
 
-Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, &Reduce.mini/2,n])
+Hok.spawn(&Reduce.reduce/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref2, ref1, &Reduce.maxi/2,n])
 Hok.synchronize()
 
 result_gpu = Hok.get_gmatrex(ref2)
