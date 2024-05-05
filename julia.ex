@@ -11,8 +11,8 @@ Hok.defmodule Julia do
     var ar float = jx
     var ai float = jy
     for i in range(0,200) do
-        nar = (ar*ar - ai*ai) + cr
-        nai = (ai*ar + ar*ai) + ci
+        var nar float = (ar*ar - ai*ai) + cr
+        var nai float = (ai*ar + ar*ai) + ci
         if ((nar * nar)+(nai * nai ) > 1000.0) do
           return 0
         end
