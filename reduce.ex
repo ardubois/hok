@@ -106,16 +106,6 @@ ref2 = Hok.new_gmatrex(vet2)
 prev = System.monotonic_time()
 
 
-
-#result_gpu = ref1
-#    |> DP.map2(ref2, &DP.mult/2)
-#    |> DP.reduce(&DP.sum/2)
-
-#IO.puts "aqui........"
-
-#result_gpu = ref1
-#    |> DP.map2(ref2, Hok.hok fn (a,b) -> a * b end)
-    |>
 gpu_result = DP.reduce(ref1,Hok.hok fn (a,b) -> if (a>b) do a else b end end)
 
 
