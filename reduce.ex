@@ -85,7 +85,7 @@ end
 
 Hok.include [DP]
 
-n = 1000000
+n = 100000
 
 #list = [Enum.to_list(1..n)]
 
