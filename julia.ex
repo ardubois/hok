@@ -34,7 +34,7 @@ Hok.defmodule Julia do
   end
 
 
-  deft mapgen2D_xy_1para_noret_ker gmatrex ~> integer ~> integer ~>integer ~> [gmatrex ~> integer ~> integer~> integer~> integer] ~> unit
+  deft mapgen2D_xy_1para_noret_ker gmatrex ~> integer ~> integer ~>[gmatrex ~> integer ~> integer~> integer ~> integer] ~> unit
   defk mapgen2D_xy_1para_noret_ker(resp,arg1,size,f)do
     x = blockIdx.x * blockDim.x + threadIdx.x
     y  = blockIdx.y * blockDim.y + threadIdx.y
