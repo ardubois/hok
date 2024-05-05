@@ -42,6 +42,7 @@ Hok.defmodule Julia do
     if(x < size && y < size) do
       f(resp,x,y,arg1)
     end
+  end
   def mapgen2D_xy_1para_noret(arg1, size,f) do
 
     result_gpu = Hok.new_gmatrex(1,size*size)
