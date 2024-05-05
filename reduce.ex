@@ -103,7 +103,7 @@ prev = System.monotonic_time()
 
 #result_gpu = DP.reduce(ref1,10000.0, Hok.hok fn (a,b) -> if (a<b) do a else b end end)
 
-result_gpu = DP.reduce(ref1,1.0, Hok.hok fn (a,b) -> a*b end)
+result_gpu = DP.reduce(ref1,0.0, Hok.hok fn (a,b) -> a+b end)
 
 
 result = Hok.get_gmatrex(result_gpu)
