@@ -32,7 +32,7 @@ Hok.defmodule Julia do
     ptr[offset*4 + 3] = 255;
     return 1
   end
-  end
+
 
   deft mapgen2D_xy_1para_noret_ker gmatrex ~> integer ~> integer ~>integer ~> [gmatrex ~> integer ~> integer~> integer~> void] ~> void
   defk mapgen2D_xy_1para_noret_ker(resp,arg1,size,f)do
