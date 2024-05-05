@@ -107,7 +107,7 @@ ref2 = Hok.new_gmatrex(vet2)
 prev = System.monotonic_time()
 
 
-result_gpu = DP.reduce(ref1,100000000.0, Hok.hok fn (a,b) -> if (a<b) do a else b end end)
+result_gpu = DP.reduce(ref1,100000000.0, Hok.hok fn (a,b) -> if (a>b) do a else b end end)
 
 
 
