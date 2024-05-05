@@ -63,7 +63,7 @@ dim = m
 
 prev = System.monotonic_time()
 
-ref = mapgen2D_xy_1para_noret(dim,dim, &Julia.julia_kernel/4)
+ref = Julia.mapgen2D_xy_1para_noret(dim,dim, &Julia.julia_kernel/4)
 
 _image = GPotion.get_gmatrex(ref)
 next = System.monotonic_time()
