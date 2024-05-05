@@ -8,12 +8,6 @@ defh mult(a,b)do
   end
 defh sum(a,b), do: a+ b
 
-def dot_product(arr1,arr2) do
-  arr1
-    |> DP.map2(arr2, Hok.hok fn (a,b) -> a * b end)
-    |> DP.reduce(Hok.hok,0.0, fn (a,b) -> a + b end)
-
-end
   #deft map_2kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
   defk map_2kernel(a1,a2,a3,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
