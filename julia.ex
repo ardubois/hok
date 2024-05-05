@@ -23,8 +23,8 @@ Hok.defmodule Julia do
   end
   deft julia_kernel gmatrex ~> integer ~> integer ~> integer ~> integer
   defh julia_kernel(ptr,x,y,dim) do
-    offset = x + y * dim # gridDim.x
-    juliaValue = julia(x,y,dim)
+    var offset int = x + y * dim # gridDim.x
+    var juliaValue float = julia(x,y,dim)
 
     ptr[offset*4 + 0] = 255 * juliaValue;
     ptr[offset*4 + 1] = 0;
