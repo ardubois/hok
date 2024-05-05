@@ -49,7 +49,7 @@ defh sum(a,b), do: a+ b
     tid = threadIdx.x + blockIdx.x * blockDim.x;
     cacheIndex = threadIdx.x
 
-    temp = 1.0 #0.0 #ref4[0]
+    temp = 0.0 #ref4[0]
     __syncthreads()
 
     while (tid < n) do
