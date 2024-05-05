@@ -87,9 +87,9 @@ Hok.include [DP]
 
 n = 1000000
 
-list = [Enum.to_list(1..n)]
+#list = [Enum.to_list(1..n)]
 
-#list = [DP.replicate(n,1)]
+list = [DP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
