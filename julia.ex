@@ -32,7 +32,7 @@ Hok.defmodule Julia do
         ar = nar
         ai = nai
     end
-    return 1
+    1
   end
   deft julia_function gmatrex ~> integer ~> integer ~> integer ~> integer
   defh julia_function(ptr,x,y,dim) do
