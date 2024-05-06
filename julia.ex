@@ -1,4 +1,17 @@
 require Hok
+defmodule BMP do
+  @on_load :load_nifs
+  def load_nifs do
+      :erlang.load_nif('./priv/bmp_nifs', 0)
+  end
+  def gen_bmp_nif(_string,_dim,_mat) do
+      raise "gen_bmp_nif not implemented"
+  end
+  def gen_bmp(string,dim,%Matrex{data: matrix} = _a) do
+    gen_bmp_nif(string,dim,matrix)
+  end
+end
+
 Hok.defmodule Julia do
   deft julia integer ~> integer ~> integer ~> integer
   defh julia(x,y,dim) do
@@ -65,7 +78,9 @@ prev = System.monotonic_time()
 
 ref = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
 
-_image = GPotion.get_gmatrex(ref)
+image = GPotion.get_gmatrex(ref)
 next = System.monotonic_time()
 
 IO.puts "GPotion\t#{dim}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+
+BMP.gen_bmp('julia2gpotion.bmp',dim,image)
