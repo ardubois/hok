@@ -1,8 +1,3 @@
-require Hok
+le = [1,2,3,4,5]
 
-result = Hok.hok fn(x,y) -> sum = 0.0 end
-
-
-#result = Hok.hok fn(x,y) -> teste = x + y
-#                    v = teste * x
-#                    v end
+ln = for x <- list, do: x*x

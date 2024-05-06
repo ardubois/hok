@@ -43,11 +43,11 @@ Hok.defmodule Julia do
       var v int=f(resp,x,y,arg1)
     end
   end
-  def mapgen2D_xy_1para_noret(arg1, size,f) do
+  def mapgen2D_step_xy_1para_noret(step, arg1, size,f) do
 
-    result_gpu = Hok.new_gmatrex(1,size*size)
+    result_gpu = Hok.new_gmatrex(1,step*size*size)
 
-    Hok.spawn(&Julia.mapgen2D_xy_1para_noret_ker/5,{size,size,1},{1,1,1},[result_gpu,arg1,size,f])
+    Hok.spawn(&Julia.mapgen2D_xy_1para_noret_ker/4,{size,size,1},{1,1,1},[result_gpu,arg1,size,f])
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
   end
@@ -63,7 +63,7 @@ dim = m
 
 prev = System.monotonic_time()
 
-ref = Julia.mapgen2D_xy_1para_noret(dim,dim, &Julia.julia_function/4)
+ref = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
 
 _image = GPotion.get_gmatrex(ref)
 next = System.monotonic_time()
