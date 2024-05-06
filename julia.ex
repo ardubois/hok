@@ -78,7 +78,7 @@ prev = System.monotonic_time()
 
 ref = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
 
-image = GPotion.get_gmatrex(ref)
+image = Hok.get_gmatrex(ref)
 next = System.monotonic_time()
 
 IO.puts "GPotion\t#{dim}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
