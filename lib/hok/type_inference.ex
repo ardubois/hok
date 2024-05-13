@@ -1,12 +1,7 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
-    IO.puts "begin type "
-    #IO.inspect map
-    #IO.inspect body
+
     types = infer_types(map,body)
-    #IO.puts "infered"
-    #IO.inspect types
-    #raise "hell"
     notinfer = not_infered(Map.to_list(types))
     if(length(notinfer)>0) do
       IO.puts "Not infered:"
