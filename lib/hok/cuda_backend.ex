@@ -60,7 +60,7 @@ end
     end
 
     #send(pid,{:kill})
-    Process.unregister(:function_types_server)
+    #Process.unregister(:function_types_server)
   end
 
   def function_types_server(map) do
