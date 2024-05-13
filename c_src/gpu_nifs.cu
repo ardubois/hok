@@ -313,14 +313,26 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
   void * m_handle = dlopen(lib_name, RTLD_NOW);
   if(m_handle== NULL)  
       { char message[200];
-        strcpy(message,"Error opening dll!! ");
+        strcpy(message,"Error opening shared library for the programa. It was not found.\n");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+        return enif_make_int(env, 0);
       }
 
 
 
   void (*fn)();
   fn= (void (*)())dlsym( m_handle, func_name);
+
+   if(fn == NULL)  
+        { 
+          
+          char message[200];
+        strcpy(message,"Error opening .so file: ");
+        strcat(message, kernel_name);
+        strcat(message, " was not found!");
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+        return enif_make_int(env, 0);
+      }
   
   void (**kernel_res)() = (void (**)()) enif_alloc_resource(KERNEL_TYPE, sizeof(void *));
 
@@ -370,9 +382,9 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   void * m_handle = dlopen(lib_name, RTLD_NOW);
   if(m_handle== NULL)  
       { char message[200];
-        strcpy(message,"Error opening .so: ");
-        
+        strcpy(message,"Error opening shared library for the programa. It was not found.");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+        return enif_make_int(env, 0);
       }
 
 
@@ -384,7 +396,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   
  // printf("pointer function a %p %li\n",fn, (long int) fn);
 
-  if(fn == 0)  
+  if(fn == NULL)  
         { 
           
           char message[200];
