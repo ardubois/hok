@@ -390,7 +390,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
       }
 
 
-  void* ptr = fn;
+  void* ptr = (void*)fn;
 
   ///printf("function pointer %p\n",ptr);
 
@@ -398,7 +398,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
   // Let's create conn and let the resource point to it
   
-  *kernel_res = (void*) ptr;
+  *kernel_res = ptr;
 
  // printf("kernel resource %p\n", *kernel_res);
  // printf("erlang resource %p\n", kernel_res);
