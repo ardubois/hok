@@ -421,8 +421,8 @@ def load_fun(fun) do
 
               #IO.puts module
               #raise "hell"
-              #Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
-              Hok.load_fun_nif(to_charlist(:App),to_charlist(funname))
+              Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
+              #Hok.load_fun_nif(to_charlist(:App),to_charlist(funname))
     _ -> raise "Hok.invalid function"
   end
 end
