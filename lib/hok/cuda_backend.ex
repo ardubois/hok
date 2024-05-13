@@ -167,7 +167,7 @@ end
     "\n" <> k <> "\n\n" <> accessfunc
   end
 
-  save_type_info(name,return, types) do
+  def save_type_info(name,return, types) do
 
 
     send(:function_types_server,{:add_type,name,{return,types}})
