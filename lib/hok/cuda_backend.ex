@@ -71,6 +71,7 @@ end
             function_types_server(map)
        {:kill} ->
              :ok
+       end
   end
 
   #############################################
