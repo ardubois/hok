@@ -39,6 +39,9 @@ defmodule Hok do
     #IO.inspect body
     {:__aliases__, _, [module_name]} = header
 
+    IO.inspect module_name
+    raise "hell"
+
     code = Hok.CudaBackend.compile_module(body)
 
     file = File.open!("c_src/Elixir.#{module_name}.cu", [:write])
