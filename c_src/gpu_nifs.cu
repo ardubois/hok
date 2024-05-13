@@ -362,11 +362,9 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   strcat(func_name,"_ptr");
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
- // strcat(func_name,"_call");
   strcat(lib_name,".so");
 
-  //strcpy(func_name, "print");
-
+ 
  // printf("libname %s\n",lib_name);
   
   void * m_handle = dlopen(lib_name, RTLD_NOW);
@@ -378,7 +376,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 
- // printf("function name %s \nlib name %s \n", func_name, lib_name);
+  printf("function name %s \nlib name %s pointer %p\n", func_name, lib_name, m_handle);
 
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
