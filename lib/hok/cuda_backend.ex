@@ -59,7 +59,15 @@ end
         _   -> compile_definitions(module_name,[body])
     end
 
+    send(pid,{:get_map,self()})
     send(pid,{:kill})
+    map = receive do
+      {:map,map} -> map
+      _     -> raise "unknown message for function type server."
+    end
+    file = File.open!("c_src/#{module_name}.types", [:write])
+    IO.write(file, erlang.term_to_binary(map))
+    File.close(file)
     Process.unregister(:function_types_server)
     code
   end
@@ -68,7 +76,7 @@ end
      receive do
        {:add_type,fun, type} ->
            function_types_server(Map.put(map,fun,type))
-       {:get_map,pid} ->  send(pid, map)
+       {:get_map,pid} ->  send(pid, {:map,map})
             function_types_server(map)
        {:kill} ->
              :ok
