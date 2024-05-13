@@ -52,7 +52,7 @@ end
   ############ Compile Hok Module
   def compile_module(module_name,body) do
     pid = spawn_link(fn -> function_types_server(%{}) end)
-    #Process.register(pid, :function_types_server)
+    Process.register(pid, :function_types_server)
 
     case body do
         {:__block__, [], definitions} ->  compile_definitions(module_name,definitions)
