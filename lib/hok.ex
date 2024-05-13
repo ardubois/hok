@@ -410,7 +410,7 @@ def load(kernel) do
 
              # IO.puts module
               #raise "hell"
-              module_name=String.slice(module,7..-1//1)
+              module_name=String.slice("#{module}",7..-1//1)
               Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
