@@ -13,7 +13,7 @@ Hok.defmodule PMap do
   end
 end
 
-import [PMap]
+include [PMap]
 
 n = 10000000
 
