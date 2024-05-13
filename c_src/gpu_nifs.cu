@@ -381,6 +381,8 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
   
+  printf("pointer function %p\n",fn);
+
   if(fn == NULL)  
       { char message[200];
         strcpy(message,"Error opening function from dll!!!");
