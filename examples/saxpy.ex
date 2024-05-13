@@ -1,7 +1,6 @@
 require Hok
 
 Hok.defmodule PMap2 do
-import Hok
 #deft saxpy float ~> float ~> float
 defh saxpy(a,b)do
     return 2*a+b
