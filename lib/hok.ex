@@ -410,7 +410,7 @@ def load(kernel) do
 
              # IO.puts module
               #raise "hell"
-              module_name=String.slice("#{module}",7..-1//1)
+              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
               Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
@@ -420,9 +420,9 @@ def load_fun(fun) do
   case Macro.escape(fun) do
     {:&, [],[{:/, [], [{{:., [], [module, funname]}, [no_parens: true], []}, _nargs]}]} ->
 
+              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-
-              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module}_#{funname}"))
+              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{funname}"))
     _ -> raise "Hok.invalid function"
   end
 end
