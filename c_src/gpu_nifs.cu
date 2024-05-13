@@ -407,7 +407,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
   enif_release_resource(kernel_res);
- 
+  printf("saiu\n");
   //printf("term %p\n", term);
   return term;
 }
