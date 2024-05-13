@@ -372,7 +372,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
       { char message[200];
         strcpy(message,"Error opening .so: ");
         strcat(message, func_name);
-        strcat(message, " was not found!")
+        strcat(message, " was not found!");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
       }
 
@@ -383,7 +383,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
   
-  printf("pointer function a %p %li\n",fn, (long int) fn);
+ // printf("pointer function a %p %li\n",fn, (long int) fn);
 
   if(fn == 0)  
         { 
@@ -412,7 +412,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
   enif_release_resource(kernel_res);
-  printf("saiu\n");
+ // printf("saiu\n");
   //printf("term %p\n", term);
   return term;
 }
