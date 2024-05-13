@@ -158,10 +158,20 @@ end
     #raise "hell"
 
     fname = "#{module_name}_#{fname}"
+
+    save_type_info(fname,:unit,types_para)
+
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
     k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
-    accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
+    accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(para),Enum.reverse(types_para))
     "\n" <> k <> "\n\n" <> accessfunc
+  end
+
+  save_type_info(name,return, types) do
+
+
+    send(:function_types_server,{:add_type,name,{return,types}})
+
   end
 
   ##################### Compiling Lambdas ########################
@@ -298,8 +308,12 @@ end
       |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
       |> Enum.join(", ")
 
+    types_para = para
+      |>  Enum.map(fn {p, _, _}-> Map.get(inf_types,p) end)
+
 
     fname = "#{module_name}_#{fname}"
+    save_type_info(fname, Map.get(inf_types, :return),types_para)
 
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
     k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
