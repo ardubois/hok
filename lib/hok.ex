@@ -425,7 +425,7 @@ def load_fun(fun) do
               #raise "hell"
               #Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
               #IO.puts "load fun #{module} #{funname}"
-              module_name =  String.slice(module, 7..-1//1) # remove: Elixir.
+              #module_name =  String.slice(module, 7..-1//1) # remove: Elixir.
               Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{funname}"))
     _ -> raise "Hok.invalid function"
   end
