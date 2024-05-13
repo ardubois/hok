@@ -408,10 +408,10 @@ def load(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
 
 
-              IO.puts module
-              raise "hell"
-              #module_name =  String.slice(module, 7..-1//1) # remove: Elixir.
-              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module}_#{kernelname}"))
+             # IO.puts module
+              #raise "hell"
+              module_name=String.slice(module,7..-1//1)
+              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
   end
@@ -421,11 +421,7 @@ def load_fun(fun) do
     {:&, [],[{:/, [], [{{:., [], [module, funname]}, [no_parens: true], []}, _nargs]}]} ->
 
 
-              #IO.puts module
-              #raise "hell"
-              #Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
-              #IO.puts "load fun #{module} #{funname}"
-              #module_name =  String.slice(module, 7..-1//1) # remove: Elixir.
+
               Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module}_#{funname}"))
     _ -> raise "Hok.invalid function"
   end
