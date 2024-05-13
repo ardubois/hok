@@ -390,7 +390,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
       }
 
 
-  void* ptr = (void*) *fn;
+  void* ptr = fn();
 
   ///printf("function pointer %p\n",ptr);
 
