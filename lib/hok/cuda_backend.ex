@@ -54,13 +54,14 @@ end
     pid = spawn_link(fn -> function_types_server(%{}) end)
     Process.register(pid, :function_types_server)
 
-    case body do
+    code = case body do
         {:__block__, [], definitions} ->  compile_definitions(module_name,definitions)
         _   -> compile_definitions(module_name,[body])
     end
 
-    #send(pid,{:kill})
-    #Process.unregister(:function_types_server)
+    send(pid,{:kill})
+    Process.unregister(:function_types_server)
+    code
   end
 
   def function_types_server(map) do
