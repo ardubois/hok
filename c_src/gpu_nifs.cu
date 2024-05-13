@@ -371,8 +371,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   if(m_handle== NULL)  
       { char message[200];
         strcpy(message,"Error opening .so: ");
-        strcat(message, func_name);
-        strcat(message, " was not found!");
+        
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
       }
 
@@ -389,7 +388,9 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
         { 
           
           char message[200];
-        strcpy(message,"Error opening function from dll!!!");
+        strcpy(message,"Error opening .so file:");
+        strcat(message, func_name);
+        strcat(message, " was not found!");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
         return enif_make_int(env, 0);
       }
