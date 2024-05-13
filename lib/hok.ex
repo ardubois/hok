@@ -410,7 +410,7 @@ def load(kernel) do
 
               #IO.puts module
               #raise "hell"
-              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist(kernelname))
+              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
   end
@@ -424,7 +424,7 @@ def load_fun(fun) do
               #raise "hell"
               #Hok.load_fun_nif(to_charlist(module),to_charlist(funname))
               IO.puts "load fun #{module} #{funname}"
-              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist(funname))
+              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module}_#{funname}""))
     _ -> raise "Hok.invalid function"
   end
 end
@@ -458,7 +458,7 @@ def spawn(k,t,b,l) when is_function(k) do
   #                                       _ -> false
   #                                      end end)
   #if anon_func == [] do
-    IO.puts "spawn!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
     k=load(k)
     IO.inspect l
 
