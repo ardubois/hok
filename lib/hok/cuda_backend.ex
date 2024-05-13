@@ -59,7 +59,7 @@ end
         _   -> compile_definitions(module_name,[body])
     end
 
-    #send(pid,{:kill})
+    send(pid,{:kill})
     #Process.unregister(:function_types_server)
   end
 
