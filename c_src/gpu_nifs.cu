@@ -383,7 +383,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   
   printf("pointer function a %p %li\n",fn, (long int) fn);
 
-  if(fn == NULL)  
+  if(fn == 0)  
       { char message[200];
         strcpy(message,"Error opening function from dll!!!");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
