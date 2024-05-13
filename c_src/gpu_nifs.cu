@@ -376,7 +376,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
 
 
 
-  printf("function name %s \nlib name %s pointer %p\n", func_name, lib_name, m_handle);
+  //printf("function name %s \nlib name %s pointer %p\n", func_name, lib_name, m_handle);
 
   void* (*fn)();
   fn= (void* (*)())dlsym( m_handle, func_name);
@@ -390,7 +390,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
       }
 
 
-  void* ptr = fn();
+  void* ptr = fn;
 
   ///printf("function pointer %p\n",ptr);
 
