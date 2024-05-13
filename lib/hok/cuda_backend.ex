@@ -48,17 +48,17 @@ end
   defp gen_new_definitions([h | t]) do
       [h | gen_new_definitions(t)]
   end
-  def compile_module(body) do
+  def compile_module(module_name,body) do
     case body do
-        {:__block__, [], definitions} ->  compile_definitions(definitions)
-        _   -> compile_definitions([body])
+        {:__block__, [], definitions} ->  compile_definitions(module_name,definitions)
+        _   -> compile_definitions(module_name,[body])
     end
   end
   #############################################
   ##### Compiling the definitions in a Hok module
   #####################
-  defp compile_definitions([]), do: ""
-  defp compile_definitions([h|t]) do
+  defp compile_definitions(_module_name, []), do: ""
+  defp compile_definitions(module_name,[h|t]) do
     if is_type_definition(h) do
         if t == [] do
           {:deft,_,[{fname,_,_}]} = h
@@ -66,30 +66,30 @@ end
         end
         [definition | rest ] = t
         case definition do
-           {:defh , _, _ } ->   code = compile_function(definition,h)
-                                rest_code = compile_definitions(rest)
+           {:defh , _, _ } ->   code = compile_function(module_name,definition,h)
+                                rest_code = compile_definitions(module_name,rest)
                                 code <> rest_code
-           {:defk, _, _ } ->   code = compile_kernel(definition,h)
-                              rest_code = compile_definitions(rest)
+           {:defk, _, _ } ->   code = compile_kernel(module_name,definition,h)
+                              rest_code = compile_definitions(module_name,rest)
                               code <> rest_code
            _              -> raise "Type definition must be followed by gpu function or kernel definition #{definition}"
         end
     else
         case h do
-          {:defk, _, _ } ->   code = compile_kernel(h, :none)
-                            rest_code = compile_definitions(t)
+          {:defk, _, _ } ->   code = compile_kernel(module_name,h, :none)
+                            rest_code = compile_definitions(module_name,t)
                             code <> rest_code
-          {:defh , _, _ } -> code = compile_function(h, :none)
-                            rest_code = compile_definitions(t)
+          {:defh , _, _ } -> code = compile_function(module_name,h, :none)
+                            rest_code = compile_definitions(module_name,t)
                             code <> rest_code
           {:include, _, [{_,_,[name]}]} -> #IO.inspect(name)
                                             code = File.read!("c_src/Elixir.#{name}.cu")
                                               |>  String.split("\n")
                                               |>  Enum.drop(1)
                                               |> Enum.join("\n")
-                                            rest_code = compile_definitions(t)
+                                            rest_code = compile_definitions(module_name,t)
                                             code <> rest_code
-          _               -> compile_definitions(t)
+          _               -> compile_definitions(module_name,t)
 
 
         end
@@ -102,7 +102,7 @@ end
   ############ Compile a kernel
   ###################################
 
-  def compile_kernel({:defk,_,[header,[body]]}, type_def) do
+  def compile_kernel(module_name,{:defk,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
     {delta,is_typed}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
@@ -135,6 +135,8 @@ end
     inf_types = if is_typed do %{} else inf_types end
     #IO.inspect inf_types
     #raise "hell"
+
+    fname = "#{module_name}_#{fname}"
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
     k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
     accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(types_para),Enum.reverse(types_para))
@@ -246,7 +248,7 @@ end
 
   #################### Compile a function
 
-  def compile_function({:defh,_,[header,[body]]}, type_def) do
+  def compile_function(module_name,{:defh,_,[header,[body]]}, type_def) do
     {fname, _, para} = header
     IO.inspect body
     #raise "hell"
@@ -274,6 +276,9 @@ end
     param_list = para
       |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
       |> Enum.join(", ")
+
+
+    fname = "#{module_name}_#{fname}"
 
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
     k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
