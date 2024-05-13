@@ -48,12 +48,31 @@ end
   defp gen_new_definitions([h | t]) do
       [h | gen_new_definitions(t)]
   end
+
+  ############ Compile Hok Module
   def compile_module(module_name,body) do
+    pid = spawn_link(fn -> function_types_server(%{}) end)
+    Process.register(pid, :function_types_server)
+
     case body do
         {:__block__, [], definitions} ->  compile_definitions(module_name,definitions)
         _   -> compile_definitions(module_name,[body])
     end
+
+    send(pid,{:kill})
+    Process.unregister(:function_types_server)
   end
+
+  def function_types_server(map) do
+     receive do
+       {:add_type,fun, type} ->
+           function_types_server(Map.put(map,fun,type))
+       {:get_map,pid} ->  send(pid, map)
+            function_types_server(map)
+       {:kill} ->
+             :ok
+  end
+
   #############################################
   ##### Compiling the definitions in a Hok module
   #####################
