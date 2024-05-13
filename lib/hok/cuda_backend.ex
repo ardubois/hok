@@ -234,6 +234,12 @@ end
       |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
       |> Enum.join(", ")
 
+    types_para = para
+      |>  Enum.map(fn {p, _, _}-> Map.get(inf_types,p) end)
+
+
+    save_type_info(fname, Map.get(inf_types, :return),types_para)
+
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
     k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
     ptr =      Hok.CudaBackend.gen_function_ptr(fname)
