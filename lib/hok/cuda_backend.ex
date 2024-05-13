@@ -59,8 +59,8 @@ end
         _   -> compile_definitions(module_name,[body])
     end
 
-    _r = send(pid,{:kill})
-    #Process.unregister(:function_types_server)
+    #send(pid,{:kill})
+    Process.unregister(:function_types_server)
   end
 
   def function_types_server(map) do
