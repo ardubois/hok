@@ -147,6 +147,10 @@ end
         |> Map.new(fn x -> {x,:none} end)
     {delta,false}
     end
+
+    IO.inspect delta
+    raise "hell"
+
     inf_types = Hok.TypeInference.type_check(delta,body)
 
     #IO.inspect inf_types
