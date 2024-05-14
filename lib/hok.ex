@@ -467,7 +467,7 @@ def spawn_nif(_k,_t,_b,_l) do
 end
 def spawn(k,t,b,l) when is_function(k) do
 
-    k=load(k)
+    pk=load(k)
 
     tk = load_type(k)
     IO.inspect tk
@@ -475,7 +475,7 @@ def spawn(k,t,b,l) when is_function(k) do
 
     args = process_args(l)
 
-    spawn_nif(k,t,b,args)
+    spawn_nif(pk,t,b,args)
 
   end
 def spawn(k,t,b,l) do
