@@ -60,7 +60,7 @@ end
     end
 
     send(pid,{:get_map,self()})
-    send(pid,{:kill})
+
     map = receive do
       {:map,map} -> map
       _     -> raise "unknown message for function type server."
@@ -68,6 +68,7 @@ end
 
     #File.write!("c_src/Elixir.#{module_name}.types", :erlang.term_to_binary(map))
     Process.unregister(:function_types_server)
+    send(pid,{:kill})
     code
   end
 
