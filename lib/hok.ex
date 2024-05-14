@@ -512,7 +512,7 @@ def spawn(k,t,b,l) when is_function(k) do
 
     pk=load(k)
 
-    tk = load_type(k)
+    {:unit,tk} = load_type(k)
 
     type_check_args(f_name,1,tk,l)
     args = process_args(l)
