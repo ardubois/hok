@@ -497,7 +497,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(
     end
 end
 def type_check_args(_k,_narg,[],[]), do: []
-def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}."
+def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
 
 #######################
 def spawn_nif(_k,_t,_b,_l) do
