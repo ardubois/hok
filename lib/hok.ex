@@ -8,11 +8,11 @@ defmodule Hok do
   defmacro hok(function) do
      #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
-    IO.inspect function
+    #IO.inspect function
     #raise "hell"
-    fname = Hok.CudaBackend.gen_lambda("Elixir.App",function)
-    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname)
-    IO.inspect result
+    {fname,type} = Hok.CudaBackend.gen_lambda("Elixir.App",function)
+    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname, unquote type)
+    #IO.inspect result
     #raise "hell"
     result
   end
@@ -426,13 +426,13 @@ def load_fun(fun) do
     _ -> raise "Hok.invalid function"
   end
 end
-def load_lambda(module,lambda) do
-  Hok.load_fun_nif(to_charlist(module),to_charlist(lambda))
+def load_lambda(module,lambda,type) do
+  {:anon, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
 #####################
-defp process_args([{:anon,_fun}|t1],[ref|t2]) do
-  [ref | process_args(t1,t2)]
-end
+#defp process_args([{:anon,_fun}|t1],[ref|t2]) do
+#  [ref | process_args(t1,t2)]
+#end
 defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
   [matrex | process_args(t1,refs)]
 end
@@ -458,10 +458,10 @@ def spawn(k,t,b,l) when is_function(k) do
   #if anon_func == [] do
 
     k=load(k)
-    IO.inspect l
+ #   IO.inspect l
 
     args = process_args(l,[])
-    IO.inspect args
+   # IO.inspect args
     #raise "hell"
     spawn_nif(k,t,b,args)
  # else
@@ -476,7 +476,8 @@ def spawn(k,t,b,l) when is_function(k) do
   #end
 end
 def spawn(k,t,b,l) do
-  spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
+  raise "First argument of spawn must be a function."
+  #spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
 end
 def get_ref({ref,{_rows,_cols}}) do
   ref
