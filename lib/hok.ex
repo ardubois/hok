@@ -403,7 +403,7 @@ end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
-def load_types(kernel) do
+def load_type(kernel) do
   case Macro.escape(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
 
