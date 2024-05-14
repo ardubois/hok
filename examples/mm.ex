@@ -42,12 +42,12 @@ grid_cols = trunc ((k + block_size - 1) / block_size)
 
 
 prev = System.monotonic_time()
-ker=Hok.load(&MM.mm/6)
+
 a=Hok.new_gmatrex(mat1)
 b=Hok.new_gmatrex(mat2)
 c=Hok.new_gmatrex(1,m*k)
 
-Hok.spawn(ker,{grid_rows,grid_cols,1},{block_size,block_size,1},[a,b,c,m,n,k])
+Hok.spawn(&MM.mm/6,{grid_rows,grid_cols,1},{block_size,block_size,1},[a,b,c,m,n,k])
 Hok.synchronize()
 
 _result = Hok.get_gmatrex(c)
