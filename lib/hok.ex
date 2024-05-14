@@ -482,6 +482,7 @@ def type_check_args(kernel,narg, [:int | t1], [v|t2]) do
   end
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
+  raise "droga"
   if rt == art do
     type_check_args("anonymous",1,ft,aft)
     type_check_args(kernel,narg+1,t1,t2)
