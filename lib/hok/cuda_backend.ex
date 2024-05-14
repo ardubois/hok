@@ -586,9 +586,9 @@ def gen_cuda(body,types,is_typed,module) do
           #"(*#{fun})(#{nargs})"
 
           if(is_arg(fun)) do
-            "#{fun}(#{nargs})\;"
+            "#{fun}(#{nargs});"
           else
-            "#{module}_#{fun}(#{nargs})\;"
+            "#{module}_#{fun}(#{nargs});"
           end
 
         number when is_integer(number) or is_float(number) -> to_string(number)
