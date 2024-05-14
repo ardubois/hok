@@ -598,7 +598,7 @@ def gen_cuda(body,types,is_typed,module) do
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
 
-          "#{fun}(#{nargs});"
+          "#{fun}(#{nargs})"
 
       #    if(is_arg(fun)) do
       #      "#{fun}(#{nargs});"
