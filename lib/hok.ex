@@ -403,6 +403,21 @@ end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
+def load_types(kernel) do
+  case Macro.escape(kernel) do
+    {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
+
+
+              bytes = File.read!("#{module}.types")
+              map = :erlang.binary_to_term(bytes)
+
+              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+
+              map["#{module_name}_#{kernelname}"]
+
+    _ -> raise "Hok.build: invalid kernel"
+  end
+end
 def load(kernel) do
   case Macro.escape(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
@@ -451,30 +466,18 @@ def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
 def spawn(k,t,b,l) when is_function(k) do
-  #anon_func = Enum.filter(l, fn arg -> case arg do
-  #                                      {:anon,_} -> true
-  #                                       _ -> false
-  #                                      end end)
-  #if anon_func == [] do
 
     k=load(k)
- #   IO.inspect l
+
+    tk = load_type(k)
+    IO.inspect tk
+    raise "hell"
 
     args = process_args(l)
-   # IO.inspect args
-    #raise "hell"
+
     spawn_nif(k,t,b,args)
- # else
-  #  {:&, [],[{:/, [], [{{:., [], [module, _funname]}, _, []}, _nargs]}]} = Macro.escape(k)
-  #  refs = Hok.CudaBackend.gen_lambda_ref(module, anon_func)
-  #  k = load(k)
-   # args = process_args(l,[])
-    #IO.inspect args
-    #IO.inspect k
-   # raise "hell"
-   # spawn_nif(k,t,b,args)
-  #end
-end
+
+  end
 def spawn(k,t,b,l) do
   raise "First argument of spawn must be a function."
   #spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
