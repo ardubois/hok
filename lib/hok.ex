@@ -509,7 +509,7 @@ def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calli
 
 def type_check_function(k,narg,[at|t1],[ft|t2]) do
     if (at == ft) do
-      type_check_args(k,narg+1,t1,t2)
+      type_check_function(k,narg+1,t1,t2)
     else
       raise "#{k}: argument #{narg} has type #{ft} and should have type #{at}"
     end
