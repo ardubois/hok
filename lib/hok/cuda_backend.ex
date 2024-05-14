@@ -542,10 +542,11 @@ def gen_cuda(body,types,is_typed,module) do
         {:type, _ , [{_,_,_}]} ->
             ""
         {fun, _, args} when is_list(args)->
+          module = get_module_name()
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
-          "#{fun}(#{nargs})\;"
+          "#{module}_#{fun}(#{nargs})\;"
         {str,_ ,_ } ->
             "#{to_string str};"
         number when is_integer(number) or is_float(number) -> to_string(number)
@@ -571,11 +572,12 @@ def gen_cuda(body,types,is_typed,module) do
             end
         {var, _, nil} when is_atom(var) -> to_string(var)
         {fun, _, args} ->
+          module = get_module_name()
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
           #"(*#{fun})(#{nargs})"
-          "#{fun}(#{nargs})"
+          "#{module}_#{fun}(#{nargs})"
         number when is_integer(number) or is_float(number) -> to_string(number)
         string when is_binary(string)  -> "\"#{string}\""
       end
@@ -601,7 +603,15 @@ def gen_cuda(body,types,is_typed,module) do
       "\n}\n"
     end
 
-#######
+####### types server
+
+def get_module_name() do
+  send(:types_server,{:module,self()})
+  receive do
+    {:module,name} -> name
+    _         -> raise "Unknown message from types server."
+  end
+end
 
 def types_server(used,types, is_typed,module) do
    if (is_typed) do
@@ -643,6 +653,9 @@ def types_server(used,types, is_typed,module) do
   end
 end
 
+#############3 end types server
+
+###################
   def gen_kernel_call(kname,nargs,types) do
     gen_header(kname) <> gen_args(nargs,types) <> gen_call(kname,nargs)
   end
