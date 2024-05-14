@@ -485,8 +485,11 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} 
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
    {art,aft} = load_type(func)
-   {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} = func
-    if rt == art do
+   f_name= case Macro.escape(func) do
+    {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+     _ -> raise "Argument to spawn should be a function."
+
+  if rt == art do
       type_check_args(f_name,0,ft,aft)
       type_check_args(kernel,narg+1,t1,t2)
     else
@@ -501,7 +504,11 @@ def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
 def spawn(k,t,b,l) when is_function(k) do
-  {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} = k
+
+  f_name= case Macro.escape(k) do
+    {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+     _ -> raise "Argument to spawn should be a function."
+
 
     pk=load(k)
 
