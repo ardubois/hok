@@ -1,7 +1,6 @@
 * function of type void
 * testar o numero de argumentos das funcoes antes de compilar (quantos tipos e quantos argumentos)
 * adicionar lista de tipos de funções em C para carregar e usar no type checking
-* checar em tempo de execução se os argumentos do kernel estão corretos
 * função anônima que retorna um número não funciona
 * Pode-se permitr a compilação de lambdas de maneira dinâmica para que eles possam conter valores de tempo de execução?
 * void* ptr = fn(); 393
