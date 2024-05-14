@@ -51,6 +51,8 @@ end
 
   ############ Compile Hok Module
   def compile_module(module_name,body) do
+    IO.inspect module_name
+    raise "hell"
     pid = spawn_link(fn -> function_types_server(%{}) end)
     Process.register(pid, :function_types_server)
 
