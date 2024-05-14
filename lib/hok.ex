@@ -460,7 +460,13 @@ end
 defp process_args([]), do: []
 
 ############################
+def type_check_args(kernel,narg, [:matrex | t1], [|t2]) do
+    case a do
+      {_ref,{_l,_c}} -> type_check_args(kernel,narg+1,t1,t2)
+      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
+    end
 
+end
 def type_check_args(kernel,narg, [:float | t1], [v|t2]) do
     if is_float(v) do
       type_check_args(kernel,narg+1,t1,t2)
