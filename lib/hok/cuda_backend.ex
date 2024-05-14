@@ -618,6 +618,8 @@ def types_server(used,types, is_typed,module) do
    end
   else
    receive do
+    {:module,pid} -> send(pid,{:module,module})
+              types_server(used,types,is_typed,module)
     {:check_var, var, pid} ->
       if (!Enum.member?(used,var)) do
         type = Map.get(types,String.to_atom(var))
@@ -627,13 +629,13 @@ def types_server(used,types, is_typed,module) do
           raise "Could not find type for variable #{var}. Please declare it using \"var #{var} type\""
         end
         send(pid,{:type,type})
-        types_server([var|used],types,is_typed)
+        types_server([var|used],types,is_typed,module)
       else
         send(pid,{:alredy_declared})
-        types_server(used,types,is_typed)
+        types_server(used,types,is_typed,module)
       end
     {:check_return,pid} -> send(pid, Map.get(types,:return))
-                       types_server(used,types, is_typed)
+                       types_server(used,types, is_typed,module)
     {:kill} ->
       :ok
     end
