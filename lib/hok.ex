@@ -483,7 +483,7 @@ def type_check_args(kernel,narg, [:int | t1], [v|t2]) do
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
   if rt == art do
-    type_check_args("anonymous",1,ft,aft)
+    type_check_function("anonymous",1,ft,aft)
     type_check_args(kernel,narg+1,t1,t2)
   else
     raise "#{kernel}: anonymous function has return type #{art}, was excpected to have type #{rt}."
@@ -491,14 +491,14 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} 
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
    {art,aft} = load_type(func)
-   IO.inspect ft
-   IO.inspect aft
+   #IO.inspect ft
+   #IO.inspect aft
    f_name= case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
    end
   if rt == art do
-      type_check_args(f_name,0,ft,aft)
+      type_check_function(f_name,0,ft,aft)
       type_check_args(kernel,narg+1,t1,t2)
     else
       raise "#{kernel}: #{f_name} function has return type #{art}, was excpected to have type #{rt}."
@@ -507,6 +507,15 @@ end
 def type_check_args(_k,_narg,[],[]), do: []
 def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
 
+def type_check_function(k,narg,[at|t1],[ft|t2]) do
+    if (at == ft) do
+      type_check_args(k,narg+1,t1,t2)
+    else
+      raise "#{k}: argument #{narg} has type #{ft} and should have type #{at}"
+    end
+end
+def type_check_function(_k,_narg,[],[]), do: []
+def type_check_function(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
 #######################
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
