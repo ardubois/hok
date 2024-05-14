@@ -491,6 +491,8 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} 
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
    {art,aft} = load_type(func)
+   IO.inspect ft
+   IO.inspect aft
    f_name= case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
