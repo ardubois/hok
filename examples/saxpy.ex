@@ -5,7 +5,7 @@ Hok.defmodule PMap2 do
 defh saxpy(a,b)do
     return 2*a+b
   end
-  #deft map_2kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
+  deft map_2kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
   defk map_2kernel(a1,a2,a3,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
