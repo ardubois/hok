@@ -148,8 +148,8 @@ end
     {delta,false}
     end
 
-    IO.inspect delta
-    raise "hell"
+    #IO.inspect delta
+    #raise "hell"
 
     inf_types = Hok.TypeInference.type_check(delta,body)
 
@@ -446,6 +446,8 @@ end
 
 
 def gen_cuda(body,types,is_typed,module) do
+    IO.inspect types
+    raise "hell"
     pid = spawn_link(fn -> types_server([],types,is_typed,module) end)
     Process.register(pid, :types_server)
     code = gen_body(body)
