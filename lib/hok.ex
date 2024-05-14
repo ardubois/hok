@@ -430,19 +430,19 @@ def load_lambda(module,lambda,type) do
   {:anon, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
 #####################
-defp process_args([{:anon,ref,_type}|t1],t2) do
-  [ref | process_args(t1,t2)]
+defp process_args([{:anon,ref,_type}|t1]) do
+  [ref | process_args(t1)]
 end
-defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
-  [matrex | process_args(t1,refs)]
+defp process_args([{matrex,{_rows,_cols}}| t1]) do
+  [matrex | process_args(t1)]
 end
-defp process_args([arg|t1],refs) when is_function(arg) do
-  [load_fun(arg)| process_args(t1,refs)]
+defp process_args([arg|t1]) when is_function(arg) do
+  [load_fun(arg)| process_args(t1)]
 end
-defp process_args([arg|t1],refs) do
-  [arg | process_args(t1,refs)]
+defp process_args([arg|t1]) do
+  [arg | process_args(t1)]
 end
-defp process_args([],_l), do: []
+defp process_args([]), do: []
 
 
 
@@ -460,7 +460,7 @@ def spawn(k,t,b,l) when is_function(k) do
     k=load(k)
  #   IO.inspect l
 
-    args = process_args(l,[])
+    args = process_args(l)
    # IO.inspect args
     #raise "hell"
     spawn_nif(k,t,b,args)
