@@ -107,10 +107,10 @@ end
     else
         case h do
           {:defk, _, _ } ->   code = compile_kernel(module_name,h, :none,module_name)
-                            rest_code = compile_definitions(module_name,t,module_name)
+                            rest_code = compile_definitions(module_name,t)
                             code <> rest_code
           {:defh , _, _ } -> code = compile_function(module_name,h, :none,module_name)
-                            rest_code = compile_definitions(module_name,t,module_name)
+                            rest_code = compile_definitions(module_name,t)
                             code <> rest_code
           {:include, _, [{_,_,[name]}]} -> #IO.inspect(name)
                                             code = File.read!("c_src/Elixir.#{name}.cu")
