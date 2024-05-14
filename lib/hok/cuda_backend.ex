@@ -541,7 +541,7 @@ def gen_cuda(body,types,is_typed,module) do
             ""
         {:type, _ , [{_,_,_}]} ->
             ""
-        {:return, _, arg} ->
+        {:return, _, [arg]} ->
           "return (#{gen_exp(arg)});"
         {fun, _, args} when is_list(args)->
           module = get_module_name()
