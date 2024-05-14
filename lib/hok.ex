@@ -426,7 +426,7 @@ def load(kernel) do
              # IO.puts module
               #raise "hell"
               module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
-              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{kernelname}"))
+              Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
   end
@@ -437,7 +437,7 @@ def load_fun(fun) do
 
               module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{module_name}_#{funname}"))
+              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{funname}"))
     _ -> raise "Hok.invalid function"
   end
 end

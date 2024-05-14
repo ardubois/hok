@@ -170,7 +170,8 @@ end
     #IO.inspect inf_types
     #raise "hell"
 
-    fname = "#{module_name}_#{fname}"
+    ##############
+    #fname = "#{module_name}_#{fname}"
 
     save_type_info(fname,:unit,types_para)
 
@@ -300,8 +301,8 @@ end
     types_para = para
       |>  Enum.map(fn {p, _, _}-> Map.get(inf_types,p) end)
 
-
-    fname = "#{module_name}_#{fname}"
+##################3
+    #fname = "#{module_name}_#{fname}"
     save_type_info(fname, Map.get(inf_types, :return),types_para)
 
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
@@ -555,16 +556,18 @@ def gen_cuda(body,types,is_typed,module) do
         {:return, _, [arg]} ->
           "return (#{gen_exp(arg)});"
         {fun, _, args} when is_list(args)->
-          module = get_module_name()
+          #module = get_module_name()
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
 
-          if(is_arg(fun)) do
-              "#{fun}(#{nargs})\;"
-          else
-            "#{module}_#{fun}(#{nargs})\;"
-          end
+          "#{fun}(#{nargs});"
+
+          #if(is_arg(fun)) do
+           #   "#{fun}(#{nargs})\;"
+          #else
+          #  "#{module}_#{fun}(#{nargs})\;"
+          #end
         {str,_ ,_ } ->
             "#{to_string str};"
         number when is_integer(number) or is_float(number) -> to_string(number)
@@ -594,13 +597,14 @@ def gen_cuda(body,types,is_typed,module) do
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
-          #"(*#{fun})(#{nargs})"
 
-          if(is_arg(fun)) do
-            "#{fun}(#{nargs});"
-          else
-            "#{module}_#{fun}(#{nargs});"
-          end
+        "(*#{fun})(#{nargs})"
+
+      #    if(is_arg(fun)) do
+      #      "#{fun}(#{nargs});"
+      #    else
+      #      "#{module}_#{fun}(#{nargs});"
+      #    end
 
         number when is_integer(number) or is_float(number) -> to_string(number)
         string when is_binary(string)  -> "\"#{string}\""
