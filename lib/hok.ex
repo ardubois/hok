@@ -478,12 +478,12 @@ def type_check_args(kernel,narg, [:int | t1], [v|t2]) do
   if is_integer(v) do
     type_check_args(kernel,narg+1,t1,t2)
   else
-    raise "#{kernel}: argument #{narg} should have type float."
+    raise "#{kernel}: argument #{narg} should have type int."
   end
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
   if rt == art do
-    type_check_args("anonymous",0,ft,aft)
+    type_check_args("anonymous",1,ft,aft)
     type_check_args(kernel,narg+1,t1,t2)
   else
     raise "#{kernel}: anonymous function has return type #{art}, was excpected to have type #{rt}."
