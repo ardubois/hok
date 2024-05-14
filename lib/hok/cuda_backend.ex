@@ -167,15 +167,15 @@ end
 
 
     inf_types = if is_typed do %{} else inf_types end
-    #IO.inspect inf_types
-    #raise "hell"
+    IO.inspect inf_types
+    raise "hell"
 
     fname = "#{module_name}_#{fname}"
 
     save_type_info(fname,:unit,types_para)
 
-    IO.inspect inf_types
-    raise "hell"
+    #IO.inspect inf_types
+    #raise "hell"
 
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
     k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
