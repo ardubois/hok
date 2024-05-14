@@ -488,7 +488,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(
    f_name= case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
-
+   end
   if rt == art do
       type_check_args(f_name,0,ft,aft)
       type_check_args(kernel,narg+1,t1,t2)
@@ -508,7 +508,7 @@ def spawn(k,t,b,l) when is_function(k) do
   f_name= case Macro.escape(k) do
     {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
-
+  end
 
     pk=load(k)
 
