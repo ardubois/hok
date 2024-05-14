@@ -637,8 +637,8 @@ end
 def types_server(used,types, is_typed,module) do
    if (is_typed) do
     receive do
-      {:is_arg, fun, pid} -> if (Map.get(types,fun)) do
-                                send(pid,{:is_arg,true})
+      {:is_arg, fun, pid} -> if (nil == Map.get(types,fun)) do
+                                send(pid,{:is_arg,false})
                                 types_server(used,types,is_typed,module)
                             else
                                 send(pid,{:is_arg,true})
@@ -656,8 +656,8 @@ def types_server(used,types, is_typed,module) do
    end
   else
    receive do
-    {:is_arg, fun, pid} -> if (Map.get(types,fun)) do
-              send(pid,{:is_arg,true})
+    {:is_arg, fun, pid} -> if (nil==Map.get(types,fun)) do
+              send(pid,{:is_arg,false})
               types_server(used,types,is_typed,module)
           else
               send(pid,{:is_arg,true})
