@@ -51,8 +51,7 @@ end
 
   ############ Compile Hok Module
   def compile_module(module_name,body) do
-    IO.inspect module_name
-    raise "hell"
+
     pid = spawn_link(fn -> function_types_server(%{}) end)
     Process.register(pid, :function_types_server)
 
@@ -97,21 +96,21 @@ end
         end
         [definition | rest ] = t
         case definition do
-           {:defh , _, _ } ->   code = compile_function(module_name,definition,h)
+           {:defh , _, _ } ->   code = compile_function(module_name,definition,h,module_name)
                                 rest_code = compile_definitions(module_name,rest)
                                 code <> rest_code
-           {:defk, _, _ } ->   code = compile_kernel(module_name,definition,h)
+           {:defk, _, _ } ->   code = compile_kernel(module_name,definition,h,module_name)
                               rest_code = compile_definitions(module_name,rest)
                               code <> rest_code
            _              -> raise "Type definition must be followed by gpu function or kernel definition #{definition}"
         end
     else
         case h do
-          {:defk, _, _ } ->   code = compile_kernel(module_name,h, :none)
-                            rest_code = compile_definitions(module_name,t)
+          {:defk, _, _ } ->   code = compile_kernel(module_name,h, :none,module_name)
+                            rest_code = compile_definitions(module_name,t,module_name)
                             code <> rest_code
-          {:defh , _, _ } -> code = compile_function(module_name,h, :none)
-                            rest_code = compile_definitions(module_name,t)
+          {:defh , _, _ } -> code = compile_function(module_name,h, :none,module_name)
+                            rest_code = compile_definitions(module_name,t,module_name)
                             code <> rest_code
           {:include, _, [{_,_,[name]}]} -> #IO.inspect(name)
                                             code = File.read!("c_src/Elixir.#{name}.cu")
@@ -133,7 +132,7 @@ end
   ############ Compile a kernel
   ###################################
 
-  def compile_kernel(module_name,{:defk,_,[header,[body]]}, type_def) do
+  def compile_kernel(module_name,{:defk,_,[header,[body]]}, type_def,module) do
     {fname, _, para} = header
     {delta,is_typed}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
@@ -171,7 +170,7 @@ end
 
     save_type_info(fname,:unit,types_para)
 
-    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
+    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
     k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
     accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(para),Enum.reverse(types_para))
     "\n" <> k <> "\n\n" <> accessfunc
@@ -188,7 +187,7 @@ end
 
   def gen_lambda(module,lambda) do
     name = gen_lambda_name()
-    {code,type} = compile_lambda(lambda,[], name);
+    {code,type} = compile_lambda(lambda,[], name,module);
     file = File.open!("c_src/#{module}.cu", [:append])
     IO.write(file, "//#############################\n\n" <> code)
     File.close(file)
@@ -211,7 +210,7 @@ end
   def gen_lambda_name() do
     for _ <- 1..10, into: "", do: <<Enum.random('0123456789abcdefghijklmno')>>
   end
-  def compile_lambda({:fn, _, [{:->, _ , [para,body]}] }, type, name) do
+  def compile_lambda({:fn, _, [{:->, _ , [para,body]}] }, type, name,module) do
 #    IO.puts "Compile lambda!!!!!!!!!!!!!!!!!!!!!!!!!!!!11"
     fname = "anonymous_#{name}"
 
@@ -250,7 +249,7 @@ end
 
     #save_type_info(fname, Map.get(inf_types, :return),types_para)
 
-    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
+    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
     k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
     ptr =      Hok.CudaBackend.gen_function_ptr(fname)
     get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
@@ -262,7 +261,7 @@ end
 
   #################### Compile a function
 
-  def compile_function(module_name,{:defh,_,[header,[body]]}, type_def) do
+  def compile_function(module_name,{:defh,_,[header,[body]]}, type_def,module) do
     {fname, _, para} = header
     IO.inspect body
     #raise "hell"
@@ -298,7 +297,7 @@ end
     fname = "#{module_name}_#{fname}"
     save_type_info(fname, Map.get(inf_types, :return),types_para)
 
-    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed)
+    cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
     k =        Hok.CudaBackend.gen_function(fname,param_list,cuda_body,fun_type)
     ptr =      Hok.CudaBackend.gen_function_ptr(fname)
     get_ptr = Hok.CudaBackend.gen_get_function_ptr(fname)
@@ -442,8 +441,8 @@ end
 #############################
 
 
-def gen_cuda(body,types,is_typed) do
-    pid = spawn_link(fn -> types_server([],types,is_typed) end)
+def gen_cuda(body,types,is_typed,module) do
+    pid = spawn_link(fn -> types_server([],types,is_typed,module) end)
     Process.register(pid, :types_server)
     code = gen_body(body)
     send(pid,{:kill})
@@ -604,14 +603,16 @@ def gen_cuda(body,types,is_typed) do
 
 #######
 
-def types_server(used,types, is_typed) do
+def types_server(used,types, is_typed,module) do
    if (is_typed) do
     receive do
+      {:module,pid} -> send(pid,{:module,module})
+              types_server(used,types,is_typed,module)
       {:check_var, _var, pid} ->
           send(pid,{:is_typed})
-          types_server(used,types, is_typed)
+          types_server(used,types, is_typed,module)
       {:check_return,pid} ->  send(pid, Map.get(types,:return))
-                              types_server(used,types, is_typed)
+                              types_server(used,types, is_typed,module)
       {:kill} ->
             :ok
    end
