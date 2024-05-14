@@ -415,6 +415,7 @@ def load_type(kernel) do
 
               #map["#{module_name}_#{kernelname}"]
               IO.inspect map
+              IO.inspect "#{kernelname}"
               map["#{kernelname}"]
     _ -> raise "Hok.build: invalid kernel"
   end
