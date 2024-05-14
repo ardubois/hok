@@ -548,7 +548,12 @@ def gen_cuda(body,types,is_typed,module) do
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
-          "#{module}_#{fun}(#{nargs})\;"
+
+          if(is_arg(fun)) do
+              "#{fun}(#{nargs})\;"
+          else
+            "#{module}_#{fun}(#{nargs})\;"
+          end
         {str,_ ,_ } ->
             "#{to_string str};"
         number when is_integer(number) or is_float(number) -> to_string(number)
@@ -579,7 +584,13 @@ def gen_cuda(body,types,is_typed,module) do
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
           #"(*#{fun})(#{nargs})"
-          "#{module}_#{fun}(#{nargs})"
+
+          if(is_arg(fun)) do
+            "#{fun}(#{nargs})\;"
+          else
+            "#{module}_#{fun}(#{nargs})\;"
+          end
+
         number when is_integer(number) or is_float(number) -> to_string(number)
         string when is_binary(string)  -> "\"#{string}\""
       end
@@ -615,9 +626,24 @@ def get_module_name() do
   end
 end
 
+def is_arg(func) do
+  send(:types_server,{:is_arg,func,self()})
+  receive do
+    {:is_arg,resp} -> resp
+    _         -> raise "Unknown message from types server."
+  end
+end
+
 def types_server(used,types, is_typed,module) do
    if (is_typed) do
     receive do
+      {:is_arg, fun, pid} -> if (Map.get(types,fun)) do
+                                send(pid,{:is_arg,true})
+                                types_server(used,types,is_typed,module)
+                            else
+                                send(pid,{:is_arg,true})
+                                types_server(used,types,is_typed,module)
+                            end
       {:module,pid} -> send(pid,{:module,module})
               types_server(used,types,is_typed,module)
       {:check_var, _var, pid} ->
@@ -630,6 +656,13 @@ def types_server(used,types, is_typed,module) do
    end
   else
    receive do
+    {:is_arg, fun, pid} -> if (Map.get(types,fun)) do
+              send(pid,{:is_arg,true})
+              types_server(used,types,is_typed,module)
+          else
+              send(pid,{:is_arg,true})
+              types_server(used,types,is_typed,module)
+          end
     {:module,pid} -> send(pid,{:module,module})
               types_server(used,types,is_typed,module)
     {:check_var, var, pid} ->
