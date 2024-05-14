@@ -66,7 +66,7 @@ end
       _     -> raise "unknown message for function type server."
     end
 
-    File.write!("c_src/Elixir.#{module_name}.types", :erlang.term_to_binary(map))
+    #File.write!("c_src/Elixir.#{module_name}.types", :erlang.term_to_binary(map))
     Process.unregister(:function_types_server)
     code
   end
