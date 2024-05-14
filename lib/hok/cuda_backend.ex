@@ -65,10 +65,8 @@ end
       {:map,map} -> map
       _     -> raise "unknown message for function type server."
     end
-    IO.inspect map
-    file = File.open!("c_src/#{module_name}.types", [:write])
-    File.write(file, :erlang.term_to_binary(map))
-    File.close(file)
+
+    File.write!("c_src/#{module_name}.types", :erlang.term_to_binary(map))
     Process.unregister(:function_types_server)
     code
   end
