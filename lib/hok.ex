@@ -482,6 +482,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} 
   else
     raise "#{kernel}: anonymous function has return type #{art}, was excpected to have type #{rt}."
   end
+end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
    {art,aft} = load_type(func)
    {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} = func
