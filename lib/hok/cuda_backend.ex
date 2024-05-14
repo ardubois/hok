@@ -166,9 +166,9 @@ end
 
 
 
-    inf_types = if is_typed do %{} else inf_types end
-    IO.inspect inf_types
-    raise "hell"
+    #inf_types = if is_typed do %{} else inf_types end
+    #IO.inspect inf_types
+    #raise "hell"
 
     fname = "#{module_name}_#{fname}"
 
