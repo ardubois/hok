@@ -406,15 +406,15 @@ end
 def load_type(kernel) do
   case Macro.escape(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
-
+             #IO.inspect module
 
               bytes = File.read!("c_src/#{module}.types")
               map = :erlang.binary_to_term(bytes)
 
               module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              map["#{module_name}_#{kernelname}"]
-
+              #map["#{module_name}_#{kernelname}"]
+              map["#{kernelname}"]
     _ -> raise "Hok.build: invalid kernel"
   end
 end
