@@ -459,25 +459,59 @@ defp process_args([arg|t1]) do
 end
 defp process_args([]), do: []
 
+############################
 
+def type_check_args(kernel,narg, [:float | t1], [v|t2]) do
+    if is_float(v) do
+      type_check_args(kernel,narg+1,t1,t2)
+    else
+      raise "#{kernel}: argument #{narg} should have type float."
+    end
+end
+def type_check_args(kernel,narg, [:int | t1], [v|t2]) do
+  if is_integer(v) do
+    type_check_args(kernel,narg+1,t1,t2)
+  else
+    raise "#{kernel}: argument #{narg} should have type float."
+  end
+end
+def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
+  if rt == art do
+    type_check_args("anonymous",0,ft,aft)
+    type_check_args(kernel,narg+1,t1,t2)
+  else
+    raise "#{kernel}: anonymous function has return type #{art}, was excpected to have type #{rt}."
+  end
+def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
+   {art,aft} = load_type(func)
+   {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} = func
+    if rt == art do
+      type_check_args(f_name,0,ft,aft)
+      type_check_args(kernel,narg+1,t1,t2)
+    else
+      raise "#{kernel}: #{f_name} function has return type #{art}, was excpected to have type #{rt}."
+    end
+end
+def type_check_args(_k,_narg,[],[]), do: []
+def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}."
 
 #######################
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
 def spawn(k,t,b,l) when is_function(k) do
+  {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} = k
 
     pk=load(k)
 
     tk = load_type(k)
-    IO.inspect tk
-    raise "hell"
 
+    type_check_args(f_name,1,tk,l)
     args = process_args(l)
 
     spawn_nif(pk,t,b,args)
 
-  end
+end
 def spawn(k,t,b,l) do
   raise "First argument of spawn must be a function."
   #spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
