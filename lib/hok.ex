@@ -430,9 +430,9 @@ def load_lambda(module,lambda,type) do
   {:anon, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
 #####################
-#defp process_args([{:anon,_fun}|t1],[ref|t2]) do
-#  [ref | process_args(t1,t2)]
-#end
+defp process_args([{:anon,ref,_type}|t1],t2) do
+  [ref | process_args(t1,t2)]
+end
 defp process_args([{matrex,{_rows,_cols}}| t1], refs) do
   [matrex | process_args(t1,refs)]
 end
