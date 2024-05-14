@@ -11,7 +11,7 @@ defmodule Hok do
     #IO.inspect function
     #raise "hell"
     {fname,type} = Hok.CudaBackend.gen_lambda("Elixir.App",function)
-    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote fname, unquote type)
+    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote(fname), unquote(type))
     #IO.inspect result
     #raise "hell"
     result
