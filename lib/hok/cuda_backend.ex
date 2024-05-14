@@ -174,6 +174,9 @@ end
 
     save_type_info(fname,:unit,types_para)
 
+    IO.inspect inf_types
+    raise "hell"
+
     cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,module)
     k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
     accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(para),Enum.reverse(types_para))
