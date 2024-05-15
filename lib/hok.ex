@@ -304,7 +304,7 @@ end
 defp process_args([{:anon,ref,_type}|t1]) do
   [ref | process_args(t1)]
 end
-defp process_args([{:fun, func, _type}|t1]) do
+defp process_args([{:func, func, _type}|t1]) do
   [load_fun(func)| process_args(t1)]
 end
 defp process_args([{matrex,{_rows,_cols}}| t1]) do
