@@ -337,6 +337,19 @@ def type_check_args(kernel,narg, [:int | t1], [v|t2]) do
     raise "#{kernel}: argument #{narg} should have type int."
   end
 end
+def type_check_args(kernel,narg, [{rt , ft} | t1], [{:func, func, { art , aft}} |t2]) do
+  if rt == art do
+    f_name= case Macro.escape(func) do
+      {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+       _ -> raise "Argument to spawn should be a function."
+     end
+     type_check_function(f_name,0,ft,aft)
+     type_check_args(kernel,narg+1,t1,t2)
+   else
+     raise "#{kernel}: #{f_name} function has return type #{art}, was excpected to have type #{rt}."
+   end
+  end
+
 def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
   if rt == art do
     type_check_function("anonymous",1,ft,aft)
