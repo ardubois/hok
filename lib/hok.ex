@@ -19,10 +19,10 @@ defmodule Hok do
 
 
     defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
-      IO.inspect (quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end)))
+      quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end))
       end
 
-   defmacro gpufor({:<-,_, [var1, {:..,_, [b1, e1]}]}, {:<-,_, [var2, {:..,_, [b2, e2]}]},arr1,arr2,do: body) do
+   defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, {:<-,_, [var2, {:..,_, [_b2, e2]}]},arr1,arr2,do: body) do
        r=      quote do: MM.comp2xy2D(unquote(arr1), unquote(arr2), unquote(e1), unquote(e2),
                                           Hok.hok (fn (unquote(arr1),
                                                        unquote(arr2),
@@ -411,7 +411,7 @@ def load_type(kernel) do
               bytes = File.read!("c_src/#{module}.types")
               map = :erlang.binary_to_term(bytes)
 
-              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
 
               resp = Map.get(map,String.to_atom("#{kernelname}"))
