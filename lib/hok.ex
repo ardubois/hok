@@ -377,7 +377,7 @@ def spawn_nif(_k,_t,_b,_l) do
 end
 defmacro spawn_macro(k,t,b,l) do
   case k do
-    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} ->
+    {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _nargs]}]} ->
             type = load_type_syntax(k)
             result = quote do: spawn(unquote type)
             IO.inspect result
