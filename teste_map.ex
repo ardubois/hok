@@ -29,6 +29,7 @@ Hok.defmodule PMap do
     result_gpu =Hok.new_gmatrex(1,size)
 
     Hok.spawn(&PMap.map2_ske/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[v1,v2,result_gpu,size, f])
+    result_gpu
   end
 end
 
