@@ -166,33 +166,30 @@ defmodule Hok do
 
 
 
-defp gen_para(p,:matrex) do
-  "float *#{p}"
-end
-defp gen_para(p,:float) do
-  "float #{p}"
-end
-defp gen_para(p,:int) do
-  "int #{p}"
-end
-defp gen_para(p, list) when is_list(list) do
-  size = length(list)
-
-  {ret,type}=List.pop_at(list,size-1)
-  #IO.inspect list
-  #IO.inspect ret
-  #IO.inspect type
-  #raise "hell"
-  r="#{ret} (*#{p})(#{to_arg_list(type)})"
-  r
-
-end
-defp to_arg_list([t]) do
-  "#{t}"
-end
-defp to_arg_list([v|t]) do
-  "#{v}," <> to_arg_list(t)
-end
+#defp gen_para(p,:matrex) do
+#  "float *#{p}"
+#end
+#defp gen_para(p,:float) do
+#  "float #{p}"
+#end
+#defp gen_para(p,:int) do
+#  "int #{p}"
+#end
+#defp gen_para(p, list) when is_list(list) do
+#  size = length(list)
+#
+#  {ret,type}=List.pop_at(list,size-1)
+#
+#  r="#{ret} (*#{p})(#{to_arg_list(type)})"
+#  r
+#
+#end
+#defp to_arg_list([t]) do
+#  "#{t}"
+#end
+#defp to_arg_list([v|t]) do
+#  "#{v}," <> to_arg_list(t)
+#end
 
   def create_ref_nif(_matrex) do
     raise "NIF create_ref_nif/1 not implemented"
