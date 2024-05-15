@@ -247,7 +247,7 @@ end
 def load_type_syntax(kernel) do
   {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
 #  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
-  bytes = File.read!("c_src/#{module}.types")
+  bytes = File.read!("c_src/Elixir.#{module}.types")
               map = :erlang.binary_to_term(bytes)
 
               #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
