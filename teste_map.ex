@@ -28,7 +28,7 @@ Hok.defmodule PMap do
     {_l,size} = Matrex.size(array)
     result_gpu =Hok.new_gmatrex(1,size)
 
-    Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[v1,v2,result_gpu,size, f])
+    Hok.spawn(&PMap.map2_ske/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[v1,v2,result_gpu,size, f])
   end
 end
 
@@ -46,7 +46,7 @@ ref2 = Hok.new_gmatrex(vet2)
 
 prev = System.monotonic_time()
 
-result = map2(vet1,vet2,&PMap.sum/2)
+result = PMap.map2(vet1,vet2,&PMap.sum/2)
 
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
