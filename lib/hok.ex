@@ -390,7 +390,7 @@ defmacro spawn_macro(k,t,b,l) do
 end
 defmacro lt(k) do
   type = load_type(k)
-  quote do: {:func, unquote(k), unquote(t)}
+  quote do: {:func, unquote(k), unquote(type)}
 end
 def spawn({:func, k, type}, t, b, l) do
   f_name= case Macro.escape(k) do
