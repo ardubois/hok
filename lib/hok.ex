@@ -388,7 +388,7 @@ defmacro spawn_macro(k,t,b,l) do
     _ -> IO.inspect k; raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
-def spawn(k,t,b,l) when is_function(k) do
+def spawn(k,t,b,l) do # when is_function(k) do
    IO.inspect k
    raise "hell"
 
