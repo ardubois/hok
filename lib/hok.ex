@@ -389,7 +389,7 @@ defmacro spawn_macro(k,t,b,l) do
   end
 end
 defmacro lt(k) do
-  type = load_type(k)
+  type = load_type_syntax(k)
   r= quote do: {:func, unquote(k), unquote(type)}
   IO.inspect r
   r
