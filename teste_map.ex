@@ -51,5 +51,5 @@ result = PMap.map2(vet1,vet2,&PMap.sum/2)
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref3)
+result = Hok.get_gmatrex(result)
 IO.inspect result
