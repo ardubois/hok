@@ -245,7 +245,8 @@ def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
 def load_type_syntax(kernel) do
-  {:&, [],[{:/, [], [{{_, [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
+  {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
+#  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
   bytes = File.read!("c_src/#{module}.types")
               map = :erlang.binary_to_term(bytes)
 
