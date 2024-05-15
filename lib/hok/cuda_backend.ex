@@ -271,7 +271,7 @@ end
 
   def compile_function(_module_name,{:defh,_,[header,[body]]}, type_def,module) do
     {fname, _, para} = header
-    IO.inspect body
+   # IO.inspect body
     #raise "hell"
     {delta,is_typed,fun_type}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
