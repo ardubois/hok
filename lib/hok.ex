@@ -244,6 +244,18 @@ end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
+def load_type_syntax(kernel) do
+  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
+  bytes = File.read!("c_src/#{module}.types")
+              map = :erlang.binary_to_term(bytes)
+
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+
+
+              resp = Map.get(map,String.to_atom("#{kernelname}"))
+              #IO.inspect resp
+              resp
+end
 def load_type(kernel) do
   case Macro.escape(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
@@ -363,6 +375,14 @@ def type_check_function(k,_narg,a,v), do: raise "Wrong number of arguments when 
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
+defmacro spawn_macro(k,t,b,l) do
+  case k do
+    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} ->
+            type = load_type_syntax(k)
+            result = quote spwan(unquote type)
+            IO.inspect resutl
+            raise "hell"
+  end
 def spawn(k,t,b,l) when is_function(k) do
 
   f_name= case Macro.escape(k) do
@@ -382,13 +402,6 @@ def spawn(k,t,b,l) when is_function(k) do
 end
 def spawn(_k,_t,_b,_l) do
   raise "First argument of spawn must be a function."
-  #spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
-end
-def get_ref({ref,{_rows,_cols}}) do
-  ref
-end
-def get_ref(e) do
-  e
 end
 def gmatrex_size({_r,{l,size}}), do: {l,size}
 end
