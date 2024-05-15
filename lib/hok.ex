@@ -388,6 +388,25 @@ defmacro spawn_macro(k,t,b,l) do
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
+defmacro lt(k) do
+  type = load_type(k)
+  quote do: {:func, unquote(k), unquote(t)}
+end
+def spawn({:func, k, type}, t b, l) do
+  f_name= case Macro.escape(k) do
+    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+     _ -> raise "Argument to spawn should be a function."
+  end
+
+    pk=load(k)
+    {:unit,tk} = type
+
+    type_check_args(f_name,1,tk,l)
+    args = process_args(l)
+
+    spawn_nif(pk,t,b,args)
+
+end
 def spawn(k,t,b,l) when is_function(k) do
    #IO.inspect k
    #raise "hell"
