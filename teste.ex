@@ -19,4 +19,4 @@ Hok.defmodule PMap2 do
     end
   end
 
-  Hok.spawn_macro(&PMap2.map_2kernel/5,1,1,1)
+  Hok.spawn_macro(&PMap2.map_2kernel/5,[:a,:b,:c],1,1)
