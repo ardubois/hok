@@ -427,7 +427,7 @@ def load(kernel) do
 
              # IO.puts module
               #raise "hell"
-              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
               Hok.load_kernel_nif(to_charlist("Elixir.App"),to_charlist("#{kernelname}"))
 
     _ -> raise "Hok.build: invalid kernel"
@@ -437,7 +437,7 @@ def load_fun(fun) do
   case Macro.escape(fun) do
     {:&, [],[{:/, [], [{{:., [], [module, funname]}, [no_parens: true], []}, _nargs]}]} ->
 
-              module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
               Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{funname}"))
     _ -> raise "Hok.invalid function"
@@ -496,7 +496,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(
    #IO.inspect ft
    #IO.inspect aft
    f_name= case Macro.escape(func) do
-    {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
    end
   if rt == art do
@@ -507,7 +507,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(
     end
 end
 def type_check_args(_k,_narg,[],[]), do: []
-def type_check_args(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
+def type_check_args(k,_narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
 
 def type_check_function(k,narg,[at|t1],[ft|t2]) do
     if (at == ft) do
@@ -517,7 +517,7 @@ def type_check_function(k,narg,[at|t1],[ft|t2]) do
     end
 end
 def type_check_function(_k,_narg,[],[]), do: []
-def type_check_function(k,narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
+def type_check_function(k,_narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
 #######################
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
@@ -525,7 +525,7 @@ end
 def spawn(k,t,b,l) when is_function(k) do
 
   f_name= case Macro.escape(k) do
-    {:&, [],[{:/, [], [{{:., [], [module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
   end
 
@@ -539,7 +539,7 @@ def spawn(k,t,b,l) when is_function(k) do
     spawn_nif(pk,t,b,args)
 
 end
-def spawn(k,t,b,l) do
+def spawn(_k,_t,_b,_l) do
   raise "First argument of spawn must be a function."
   #spawn_nif(k,t,b,Enum.map(l,&get_ref/1))
 end
