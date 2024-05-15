@@ -380,7 +380,7 @@ defmacro spawn_macro(k,t,b,l) do
     {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} ->
             type = load_type_syntax(k)
             result = quote do: spawn(unquote type)
-            IO.inspect resutl
+            IO.inspect result
             raise "hell"
   end
 end
