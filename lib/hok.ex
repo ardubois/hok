@@ -383,6 +383,7 @@ defmacro spawn_macro(k,t,b,l) do
             IO.inspect resutl
             raise "hell"
   end
+end
 def spawn(k,t,b,l) when is_function(k) do
 
   f_name= case Macro.escape(k) do
