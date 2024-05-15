@@ -381,6 +381,7 @@ defmacro spawn_macro(k,t,b,l) do
     {:&, _,_} ->
             IO.inspect t
             type = load_type_syntax(k)
+            IO.inspect type
             result =  quote do: spawn(unquote type)
             IO.inspect result
             raise "hell"
