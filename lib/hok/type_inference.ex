@@ -241,13 +241,13 @@ defmodule Hok.TypeInference do
             end
 
           {fun, _, args} when is_list(args)->
-            IO.puts "case function"
-            IO.inspect fun
-            IO.inspect args
-            IO.puts "#########"
+            #IO.puts "case function"
+           # IO.inspect fun
+           # IO.inspect args
+          #  IO.puts "#########"
            # raise "hell"
              type_fun = map[fun]
-             IO.inspect type_fun
+            # IO.inspect type_fun
               if( type_fun == nil) do
                   Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
               else

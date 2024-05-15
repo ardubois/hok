@@ -35,7 +35,7 @@ defmodule Hok do
 
 
   defmacro defmodule(header,do: body) do
-    IO.inspect header
+    #IO.inspect header
     #IO.inspect body
     {:__aliases__, _, [module_name]} = header
 
@@ -67,7 +67,7 @@ defmodule Hok do
   end
 
   defmacro include(inc_list) do
-    IO.inspect inc_list
+    #IO.inspect inc_list
     includes = inc_list
                 |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
 

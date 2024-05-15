@@ -652,8 +652,8 @@ end
 def types_server(used,types, is_typed,module) do
    if (is_typed) do
     receive do
-      {:is_arg, fun, pid} -> IO.inspect fun
-                             IO.inspect types
+      {:is_arg, fun, pid} -> #IO.inspect fun
+                             #IO.inspect types
                             if (nil == Map.get(types,fun)) do
                                 send(pid,{:is_arg,false})
                                 types_server(used,types,is_typed,module)
