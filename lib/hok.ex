@@ -413,11 +413,9 @@ def load_type(kernel) do
 
               module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              #map["#{module_name}_#{kernelname}"]
-              IO.inspect map
-              IO.inspect "#{kernelname}"
+
               resp = Map.get(map,String.to_atom("#{kernelname}"))
-              IO.inspect resp
+              #IO.inspect resp
               resp
     _ -> raise "Hok.build: invalid kernel"
   end
