@@ -390,5 +390,5 @@ end
 def get_ref(e) do
   e
 end
-def gmatrex_size({_r,{_l,size}}), do: {_l,size}
+def gmatrex_size({_r,{l,size}}), do: {l,size}
 end
