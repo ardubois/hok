@@ -2,10 +2,10 @@ require Hok
 Hok.defmodule PMap do
   deft inc float ~> float
   defh inc(a)do
-    return 5*a
+    return 1*a
   end
-  deft map gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
-  defk map(a1,a2,size,f) do
+  deft map_ske gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
+  defk map_ske(a1,a2,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
       a2[id] = f(a1[id])
@@ -15,12 +15,20 @@ Hok.defmodule PMap do
   defh sum(a,b)do
     return a+b
   end
-  deft map2 gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
-  defk map2(a1,a2,a3,size,f) do
+  deft map2_ske gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [ float ~> float ~> float]  ~> unit
+  defk map2_ske(a1,a2,a3,size,f) do
     var id int = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
       a3[id] = f(a1[id],a2[id])
     end
+  end
+  def map2(v1,v2,f) do
+    threadsPerBlock = 128;
+    numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
+    {_l,size} = Matrex.size(array)
+    result_gpu =Hok.new_gmatrex(1,size)
+
+    Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[v1,v2,result_gpu,size, f])
   end
 end
 
@@ -34,18 +42,11 @@ vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
 ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
-ref3= Hok.new_gmatrex(1,n)
-
-#map=Hok.load(&PMap.map2/4)
-
-threadsPerBlock = 128;
-numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 
 prev = System.monotonic_time()
 
-Hok.spawn(&PMap.map2/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref1,ref2,ref3,n, &PMap.sum/2])
-#Hok.synchronize()
+result = map2(vet1,vet2,&PMap.sum/2)
 
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
