@@ -450,9 +450,9 @@ end
 
 
 def gen_cuda(body,types,is_typed,module) do
-   IO.puts "##########################gen cuda"
-   IO.inspect types
-   IO.puts "############end gen cuda"
+  # IO.puts "##########################gen cuda"
+  # IO.inspect types
+ #  IO.puts "############end gen cuda"
    # raise "hell"
     pid = spawn_link(fn -> types_server([],types,is_typed,module) end)
     Process.register(pid, :types_server)
