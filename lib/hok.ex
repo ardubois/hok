@@ -387,7 +387,7 @@ end
 def spawn(k,t,b,l) when is_function(k) do
 
   f_name= case Macro.escape(k) do
-    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+    {:&, _,_} -> f_name
      _ -> raise "Argument to spawn should be a function."
   end
 
