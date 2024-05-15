@@ -377,7 +377,7 @@ def spawn_nif(_k,_t,_b,_l) do
 end
 defmacro spawn_macro(k,t,b,l) do
   case k do
-    {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _nargs]}]} ->
+    {:&, _,_} ->
             type = load_type_syntax(k)
             result = quote do: spawn(unquote type)
             IO.inspect result
@@ -387,7 +387,7 @@ end
 def spawn(k,t,b,l) when is_function(k) do
 
   f_name= case Macro.escape(k) do
-    {:&, _,_} -> f_name
+    {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
   end
 
