@@ -132,7 +132,7 @@ end
   ############ Compile a kernel
   ###################################
 
-  def compile_kernel(module_name,{:defk,_,[header,[body]]}, type_def,module) do
+  def compile_kernel(_module_name,{:defk,_,[header,[body]]}, type_def,module) do
     {fname, _, para} = header
     {delta,is_typed}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
@@ -269,7 +269,7 @@ end
 
   #################### Compile a function
 
-  def compile_function(module_name,{:defh,_,[header,[body]]}, type_def,module) do
+  def compile_function(_module_name,{:defh,_,[header,[body]]}, type_def,module) do
     {fname, _, para} = header
     IO.inspect body
     #raise "hell"
@@ -593,7 +593,7 @@ def gen_cuda(body,types,is_typed,module) do
             end
         {var, _, nil} when is_atom(var) -> to_string(var)
         {fun, _, args} ->
-          module = get_module_name()
+          #module = get_module_name()
           nargs=args
           |> Enum.map(&gen_exp/1)
           |> Enum.join(", ")
