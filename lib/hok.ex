@@ -408,7 +408,7 @@ end
 defmacro lt(k) do
   type = load_type_syntax(k)
   r= quote do: {:func, unquote(k), unquote(type)}
-  IO.inspect r
+  #IO.inspect r
   r
 end
 def spawn({:func, k, type}, t, b, l) do
