@@ -41,7 +41,7 @@ Hok.include [MM]
 m = String.to_integer(arg)
 
 #n = m
-k=m
+#k=m
 
 
 #mat = Matrex.fill(1,m*k,1)

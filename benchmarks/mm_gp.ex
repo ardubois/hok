@@ -50,7 +50,7 @@ c=Hok.new_gmatrex(1,m*k)
 Hok.spawn(&MM.mm/6,{grid_rows,grid_cols,1},{block_size,block_size,1},[a,b,c,m,n,k])
 Hok.synchronize()
 
-_result = Hok.get_gmatrex(c)
+result = Hok.get_gmatrex(c)
 
 next = System.monotonic_time()
 #IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
