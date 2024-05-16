@@ -244,6 +244,21 @@ end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
+def load_type_ast(kernel) do
+  {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
+  bytes = File.read!("c_src/Elixir.#{module}.types")
+  map_types = :erlang.binary_to_term(bytes)
+
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+  type = Map.get(map_types,String.to_atom("#{kernelname}"))
+
+  bytes = File.read!("c_src/Elixir.#{module}.asts")
+  map_asts = :erlang.binary_to_term(bytes)
+
+            #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+  ast = Map.get(map_ast,String.to_atom("#{kernelname}"))
+  {type,ast}
+end
 def load_type_syntax(kernel) do
   {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
 #  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
@@ -318,7 +333,8 @@ defp process_args([arg|t1]) do
 end
 defp process_args([]), do: []
 
-############################
+############################ Type checking the arguments at runtime
+
 def type_check_args(kernel,narg, [:matrex | t1], [a|t2]) do
     case a do
       {_ref,{_l,_c}} -> type_check_args(kernel,narg+1,t1,t2)
@@ -402,7 +418,6 @@ defmacro spawn_macro(k,t,b,l) do
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type)},unquote(t),unquote(b), unquote(l))
             #IO.inspect result
             #raise "hell"
-            result
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
