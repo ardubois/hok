@@ -36,11 +36,10 @@ end
 
 Hok.include [MM]
 
-#[arg] = System.argv()
+[arg] = System.argv()
 
-#m = String.to_integer(arg)
+m = String.to_integer(arg)
 
-m = 1000
 #n = m
 k=m
 
@@ -59,10 +58,7 @@ mat2 = Matrex.apply(mat,f)
 
 prev = System.monotonic_time()
 
-#result = Hok.gpufor x <- 0..1000, mat1, y <- 0..1000, mat2 do
-#          z=x+y
-#          z
-#          end
+
 
 result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
             sum = 0.0
@@ -71,15 +67,9 @@ result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
             end
             sum
           end
-#result = MM.comp2xy2D(mat1,mat2,1000,1000, Hok.hok fn (mat1,mat2,x,y) ->
-#                                      sum = 0.0
-#                                      for i in range(0,1000,1) do
-#                                              sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
-#                                      end
-#                                      sum end)
 
 next = System.monotonic_time()
-#IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
+
 IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
 m1 = Matrex.reshape(mat1,m,m)
@@ -87,4 +77,3 @@ m2 = Matrex.reshape(mat2,m,m)
 res_cpu = Matrex.dot(m1,m2)
 IO.inspect Matrex.sum(res_cpu)
 IO.inspect Matrex.sum(result)
-#IO.puts GPU.Backend.gen_c_kernel('addVectors',4,[])
