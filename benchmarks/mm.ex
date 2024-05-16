@@ -60,7 +60,7 @@ prev = System.monotonic_time()
 
 
 
-result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
+_result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
             sum = 0.0
             for i in range(0,1000,1) do
                   sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
@@ -72,8 +72,8 @@ next = System.monotonic_time()
 
 IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
-m1 = Matrex.reshape(mat1,m,m)
-m2 = Matrex.reshape(mat2,m,m)
-res_cpu = Matrex.dot(m1,m2)
-IO.inspect Matrex.sum(res_cpu)
-IO.inspect Matrex.sum(result)
+#m1 = Matrex.reshape(mat1,m,m)
+#m2 = Matrex.reshape(mat2,m,m)
+#res_cpu = Matrex.dot(m1,m2)
+#IO.inspect Matrex.sum(res_cpu)
+#IO.inspect Matrex.sum(result)
