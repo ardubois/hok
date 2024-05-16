@@ -98,9 +98,9 @@ defp subs_exp(map,exp) do
       {fun,info, _args} ->
         new_name = map[fun]
         if (new_name == nil ) do
-          {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp)}
+          {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
         else
-          {new_name, info, Enum.map(args,fn(exp) -> subs_exp(map,exp)}
+          {new_name, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
         end
       float when  is_float(float) -> float
       int   when  is_integer(int) -> int
