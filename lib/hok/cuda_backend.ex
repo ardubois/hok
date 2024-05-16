@@ -74,17 +74,20 @@ end
   end
 
 ###########################
-######  This server constructs A map from frunction names to their respective types and asts
+######  This server constructs two maps: 1. function names ->  types
+#                                        2. function names -> ASTs
 ######            Types are used to type check at runtime a kernel call
 ######            ASTs are used to recompile a kernel at runtime substituting the names of the formal parameters of a function for
 ######         the actual parameters
 ############################
-  def function_types_server(map) do
+  def types_ast_server(types_map,ast_map) do
      receive do
+      {:add_ast,fun, ast} ->
+        function_types_server(types_map,Map.put(ast_map,fun,ast))
        {:add_type,fun, type} ->
-           function_types_server(Map.put(map,fun,type))
-       {:get_map,pid} ->  send(pid, {:map,map})
-            function_types_server(map)
+           function_types_server(Map.put(types_map,fun,type),ast_map)
+       {:get_map,pid} ->  send(pid, {:map,{types_map,ast_map}})
+            function_types_server(types_map,ast_map)
        {:kill} ->
              :ok
        end
