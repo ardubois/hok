@@ -402,6 +402,7 @@ defmacro spawn_macro(k,t,b,l) do
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type)},unquote(t),unquote(b), unquote(l))
             #IO.inspect result
             #raise "hell"
+            result
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
