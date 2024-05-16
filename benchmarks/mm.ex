@@ -49,8 +49,8 @@ k=m
 #mat1 = Matrex.apply(mat,f)
 #mat2 = Matrex.apply(mat,f)
 
-mat1 = Matrex.new([Enum.to_list(1..n)])
-mat2 = Matrex.new([Enum.to_list(1..n)])
+mat1 = Matrex.new([Enum.to_list(1..m*m)])
+mat2 = Matrex.new([Enum.to_list(1..m*m)])
 
 prev = System.monotonic_time()
 

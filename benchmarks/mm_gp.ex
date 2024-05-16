@@ -28,15 +28,13 @@ k=m
 
 
 
-mat = Matrex.fill(1,m*k,1)
-
+#mat = Matrex.fill(1,m*k,1)
 #f = fn _ -> Enum.random(1..100) end
-
 #mat1 = Matrex.apply(mat,f)
 #mat2 = Matrex.apply(mat,f)
 
-mat1 = Matrex.new([Enum.to_list(1..n)])
-mat2 = Matrex.new([Enum.to_list(1..n)])
+mat1 = Matrex.new([Enum.to_list(1..m*m)])
+mat2 = Matrex.new([Enum.to_list(1..m*m)])
 
 block_size = 16
 grid_rows = trunc ((m + block_size - 1) / block_size)
