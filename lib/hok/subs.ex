@@ -63,9 +63,9 @@ defp subs_command(map,code) do
         {fun, info, args} when is_list(args)->
           new_name = map[fun]
           if (new_name == nil ) do
-            {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp)}
+            {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
           else
-            {new_name, _, Enum.map(args,fn(exp) -> subs_exp(map,exp)}
+            {new_name, _, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
           end
         number when is_integer(number) or is_float(number) -> raise "Error: number is a command"
         {str,i1 ,a } -> {str,i1 ,a }
