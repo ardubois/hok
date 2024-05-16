@@ -63,8 +63,8 @@ end
 
     send(pid,{:get_map,self()})
 
-    map = receive do
-      {:map,{map_types,map_asts} -> map
+    {map_types,map_asts} = receive do
+      {:map,{map_types,map_asts}} -> {map_types,map_asts}
       _     -> raise "unknown message for function type server."
     end
 
