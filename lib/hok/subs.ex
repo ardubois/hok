@@ -1,3 +1,4 @@
+defmodule Subs do
 def subs(map,body1) do
 
   body = add_return(map,body1)
@@ -109,4 +110,5 @@ defp subs_exp(map,exp) do
   end
 
 
+end
 end
