@@ -1,6 +1,6 @@
 defmodule Hok.CudaBackend do
   ########
-  #Generating a new module to be to substitute the Hok module in the Elixir program
+  #Generating a new module in pure Elixir to substitute the Hok module in the Elixir program
   ################
   def gen_new_module(header,body) do
     new_body =  case body do
@@ -73,6 +73,12 @@ end
     code
   end
 
+###########################
+######  This server constructs A map from frunction names to their respective types and asts
+######            Types are used to type check at runtime a kernel call
+######            ASTs are used to recompile a kernel at runtime substituting the names of the formal parameters of a function for
+######         the actual parameters
+############################
   def function_types_server(map) do
      receive do
        {:add_type,fun, type} ->
