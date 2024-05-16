@@ -15,7 +15,7 @@ def subs(map,body1) do
         subs_command(map,body)
    end
 end
-defp infer_block(map,{:__block__, info, code}) do
+defp subs_block(map,{:__block__, info, code}) do
   {:__block__, info,
       Enum.map(code,  fn com -> subs_command(map,com) end)
   }
@@ -53,7 +53,7 @@ defp subs_command(map,code) do
         {:var, i1 , [{var,i2,[type]}]} ->
           {:var, i1 , [{var,i2,[type]}]}
         {:type, i1 , [{var,i2,[{type,i3,t}]}]} ->
-          {:type, i1 , [{var,i1,[{type,i3,t}]}]}
+          {:type, i1 , [{var,i2,[{type,i3,t}]}]}
         {:type, i1 , [{var,i2,[type]}]} ->
           {:type, i1 , [{var,i2,[type]}]}
 
@@ -76,7 +76,7 @@ end
 defp subs_if(map,[bexp, [do: then]]) do
   [subs_exp(map,bexp), [do: subs(map,then)]]
 end
-defp infer_if(map,[bexp, [do: thenbranch, else: elsebranch]]) do
+defp subs_if(map,[bexp, [do: thenbranch, else: elsebranch]]) do
   [subs_exp(map,bexp), [do: subs(map,thenbranch), else: subs(map,elsebranch)]]
 end
 
@@ -86,7 +86,7 @@ defp subs_exp(map,exp) do
       {{:., i1, [Access, :get]}, i2, [arg1,arg2]} ->
           {{:., i1, [Access, :get]}, i2, [arg1, subs_exp(map,arg2)]}
       {{:., i1, [{struct, i2, nil}, field]},i3,[]} ->
-          {{:., i1, [{struct, i1, nil}, field]},i3,[]}
+          {{:., i1, [{struct, i2, nil}, field]},i3,[]}
       {{:., i1, [{:__aliases__, i2, [struct]}, field]}, i3, []} ->
         {{:., i1, [{:__aliases__, i2, [struct]}, field]}, i3, []}
       {op,info, args} when op in [:+, :-, :/, :*] ->
