@@ -30,11 +30,13 @@ k=m
 
 mat = Matrex.fill(1,m*k,1)
 
-f = fn _ -> Enum.random(1..100) end
+#f = fn _ -> Enum.random(1..100) end
 
-mat1 = Matrex.apply(mat,f)
-mat2 = Matrex.apply(mat,f)
+#mat1 = Matrex.apply(mat,f)
+#mat2 = Matrex.apply(mat,f)
 
+mat1 = Matrex.new([Enum.to_list(1..n)])
+mat2 = Matrex.new([Enum.to_list(1..n)])
 
 block_size = 16
 grid_rows = trunc ((m + block_size - 1) / block_size)
@@ -56,5 +58,9 @@ next = System.monotonic_time()
 #IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
-#IO.inspect result
-#IO.puts GPU.Backend.gen_c_kernel('addVectors',4,[])
+
+m1 = Matrex.reshape(mat1,m,m)
+m2 = Matrex.reshape(mat2,m,m)
+res_cpu = Matrex.dot(m1,m2)
+IO.inspect Matrex.sum(res_cpu)
+IO.inspect Matrex.sum(result)
