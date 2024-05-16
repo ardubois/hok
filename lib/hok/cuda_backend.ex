@@ -52,8 +52,9 @@ end
   ############ Compile Hok Module
   def compile_module(module_name,body) do
 
-    pid = spawn_link(fn -> function_types_server(%{}) end)
-    Process.register(pid, :function_types_server)
+    # initiate server that collects types and asts
+    pid = spawn_link(fn -> types_ast_server(%{},%{}) end)
+    Process.register(pid, :types_ast_server)
 
     code = case body do
         {:__block__, [], definitions} ->  compile_definitions(module_name,definitions)
@@ -63,12 +64,13 @@ end
     send(pid,{:get_map,self()})
 
     map = receive do
-      {:map,map} -> map
+      {:map,{map_types,map_asts} -> map
       _     -> raise "unknown message for function type server."
     end
 
-    File.write!("c_src/Elixir.#{module_name}.types", :erlang.term_to_binary(map))
-    Process.unregister(:function_types_server)
+    File.write!("c_src/Elixir.#{module_name}.types", :erlang.term_to_binary(map_types))
+    File.write!("c_src/Elixir.#{module_name}.asts", :erlang.term_to_binary(map_asts))
+    Process.unregister(:types_ast_server)
     send(pid,{:kill})
     code
   end
@@ -83,11 +85,11 @@ end
   def types_ast_server(types_map,ast_map) do
      receive do
       {:add_ast,fun, ast} ->
-        function_types_server(types_map,Map.put(ast_map,fun,ast))
+        types_ast_server(types_map,Map.put(ast_map,fun,ast))
        {:add_type,fun, type} ->
-           function_types_server(Map.put(types_map,fun,type),ast_map)
+        types_ast_server(Map.put(types_map,fun,type),ast_map)
        {:get_map,pid} ->  send(pid, {:map,{types_map,ast_map}})
-            function_types_server(types_map,ast_map)
+        types_ast_server(types_map,ast_map)
        {:kill} ->
              :ok
        end
@@ -142,7 +144,7 @@ end
   ###################################
 
   def compile_kernel(_module_name,{:defk,_,[header,[body]]}, type_def,module) do
-    {fname, _, para} = header
+    {fname, iinfo, para} = header
     {delta,is_typed}  = if(is_tuple(type_def)) do
         types = get_type_fun(type_def)
         delta= para
@@ -184,6 +186,8 @@ end
 
     save_type_info(fname,:unit,types_para)
 
+    save_ast_info(fname,{:defk,iinfo,[header,[body]]})
+
     #IO.inspect inf_types
     #raise "hell"
 
@@ -196,7 +200,13 @@ end
   def save_type_info(name,return, types) do
 
 
-    send(:function_types_server,{:add_type,name,{return,types}})
+    send(:types_ast_server,{:add_type,name,{return,types}})
+
+  end
+  def save_ast_info(name,ast) do
+
+
+    send(:types_ast_server,{:add_ast,name,ast})
 
   end
 
