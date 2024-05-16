@@ -50,15 +50,15 @@ c=Hok.new_gmatrex(1,m*k)
 Hok.spawn(&MM.mm/6,{grid_rows,grid_cols,1},{block_size,block_size,1},[a,b,c,m,n,k])
 Hok.synchronize()
 
-result = Hok.get_gmatrex(c)
+_result = Hok.get_gmatrex(c)
 
 next = System.monotonic_time()
 #IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
-IO.puts "Hok\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
+IO.puts "GPotion\t#{m}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
 
-m1 = Matrex.reshape(mat1,m,m)
-m2 = Matrex.reshape(mat2,m,m)
-res_cpu = Matrex.dot(m1,m2)
-IO.inspect Matrex.sum(res_cpu)
-IO.inspect Matrex.sum(result)
+#m1 = Matrex.reshape(mat1,m,m)
+#m2 = Matrex.reshape(mat2,m,m)
+#res_cpu = Matrex.dot(m1,m2)
+#IO.inspect Matrex.sum(res_cpu)
+#IO.inspect Matrex.sum(result)
