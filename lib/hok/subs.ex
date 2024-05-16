@@ -1,7 +1,7 @@
 defmodule Subs do
-def subs(map,body1) do
+def subs(map,body) do
 
-  body = add_return(map,body1)
+  #body = add_return(map,body)
 
 
   case body do
@@ -44,8 +44,8 @@ defp subs_command(map,code) do
           {:=, i, [var, subs_exp(map,exp)]}
         {:if, i, if_com} ->
           {:if, i, subs_if(map,if_com)}
-        {:var, i1 , [{var,i2,[{:=, i3, [{type,_,nil}, exp]}]}]} ->
-          {:var, i1 , [{var,i2,[{:=, i3, [{type,_,nil}, subs_exp(map,exp)]}]}]}
+        {:var, i1 , [{var,i2,[{:=, i3, [{type,ii,nil}, exp]}]}]} ->
+          {:var, i1 , [{var,i2,[{:=, i3, [{type,ii,nil}, subs_exp(map,exp)]}]}]}
         {:var, i1 , [{var,i2,[{:=, i3, [type, exp]}]}]} ->
           {:var, i1 , [{var,i2,[{:=, i3, [type, subs_exp(map,exp)]}]}]}
         {:var, i1 , [{var,i2,[{type,i3,t}]}]} ->
@@ -65,7 +65,7 @@ defp subs_command(map,code) do
           if (new_name == nil ) do
             {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
           else
-            {new_name, _, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
+            {new_name, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
           end
         number when is_integer(number) or is_float(number) -> raise "Error: number is a command"
         {str,i1 ,a } -> {str,i1 ,a }
@@ -95,7 +95,7 @@ defp subs_exp(map,exp) do
         {op,info, Enum.map(args, fn e -> subs_exp(map,e) end)}
       {var,info, nil} when is_atom(var) ->
         {var, info, nil}
-      {fun,info, _args} ->
+      {fun,info, args} ->
         new_name = map[fun]
         if (new_name == nil ) do
           {fun, info, Enum.map(args,fn(exp) -> subs_exp(map,exp) end)}
