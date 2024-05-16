@@ -244,6 +244,9 @@ end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
+
+############################################################## Loading types and asts from files
+
 def load_type_ast(kernel) do
   {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
   bytes = File.read!("c_src/Elixir.#{module}.types")
@@ -256,7 +259,7 @@ def load_type_ast(kernel) do
   map_asts = :erlang.binary_to_term(bytes)
 
             #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
-  ast = Map.get(map_ast,String.to_atom("#{kernelname}"))
+  ast = Map.get(map_asts,String.to_atom("#{kernelname}"))
   {type,ast}
 end
 def load_type_syntax(kernel) do
@@ -413,7 +416,7 @@ defmacro spawn_macro(k,t,b,l) do
   case k do
     {:&, _,_} ->
             #IO.inspect t
-            type = load_type_syntax(k)
+            {type,ast} = load_type_ast(k)
             #IO.inspect type
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type)},unquote(t),unquote(b), unquote(l))
             #IO.inspect result
