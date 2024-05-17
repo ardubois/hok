@@ -442,9 +442,7 @@ defmacro lt(k) do
   r
 end
 def spawn({:ker, k, type,ast}, t, b, l) do
-  IO.inspect k
-  IO.inspect type
-  IO.inspect ast
+  Subs.remove_args(ast)
   raise "hell"
   f_name= case Macro.escape(k) do
     {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name

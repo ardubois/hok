@@ -1,4 +1,12 @@
 defmodule Subs do
+
+def remove_args(map, ast) do
+   case ast of
+   {:defk, _info,[ {name, _i2,  args} ,block]} = ast
+   IO.inspect args
+   raise "hell"
+
+end
 def subs(map,body) do
 
   #body = add_return(map,body)
