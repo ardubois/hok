@@ -191,6 +191,13 @@ defmodule Hok do
 #  "#{v}," <> to_arg_list(t)
 #end
 
+################################
+#######
+#######  GMatrex stuff:
+#######
+####################
+
+
   def create_ref_nif(_matrex) do
     raise "NIF create_ref_nif/1 not implemented"
 end
@@ -318,7 +325,11 @@ end
 def load_lambda(module,lambda,type) do
   {:anon, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
-#####################
+############################
+######
+######   Fixes arguments before making the real kernall call
+######
+##############
 defp process_args([{:anon,ref,_type}|t1]) do
   [ref | process_args(t1)]
 end
@@ -418,7 +429,8 @@ defmacro spawn_macro(k,t,b,l) do
             #IO.inspect t
             {type,ast} = load_type_ast(k)
             #IO.inspect type
-            result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),(unquote ast)},unquote(t),unquote(b), unquote(l))
+            n_ast = Macro.escape ast
+            result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),(unquote n_ast)},unquote(t),unquote(b), unquote(l))
             #IO.inspect result
             #raise "hell"
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"

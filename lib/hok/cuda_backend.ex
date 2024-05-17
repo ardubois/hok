@@ -397,7 +397,7 @@ def gen_function(name,para,body,type) do
     "__device__\n#{type} #{name}(#{para})\n{\n#{body}\n}"
 end
 
-########################## ADDING RETURN WHEN FUNCTION RETURNS AN EXPRESSION
+########################## ADDING RETURN statement to the ast WHEN FUNCTION RETURNS AN EXPRESSION
 
 defp add_return(body) do
   send(:types_server,{:check_return, self()})
