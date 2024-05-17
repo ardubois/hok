@@ -4,6 +4,7 @@ def remove_args(map, ast) do
    case ast do
         {:defk, _info,[ {name, _i2,  args} ,block]} ->   IO.inspect args
         _ -> raise "Unknown function ast!"
+   end
    raise "hell"
 
 end
