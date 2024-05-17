@@ -35,7 +35,7 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
   end
 end
 def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when is_list(funct) do
-  case Macro.escape(kernel) do
+  case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [_module, func_name]}, [no_parens: true], []}, _nargs]}]} ->
         create_map_subs(tt,tfa,taa,Map.put(fname,func_name))
     _ -> raise "Problem with paramenter #{inspect func}"
