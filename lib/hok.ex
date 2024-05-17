@@ -431,8 +431,7 @@ defmacro spawn_macro(k,t,b,l) do
             #IO.inspect type
             n_ast = Macro.escape ast
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),(unquote n_ast)},unquote(t),unquote(b), unquote(l))
-            #IO.inspect result
-            #raise "hell"
+            result
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
@@ -443,7 +442,7 @@ defmacro lt(k) do
   r
 end
 def spawn({:ker, k, type,ast}, t, b, l) do
-  IO.inpect k
+  IO.inspect k
   IO.inspect type
   IO.inspect ast
   raise "hell"
