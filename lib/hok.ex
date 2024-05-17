@@ -442,8 +442,8 @@ defmacro lt(k) do
   r
 end
 def spawn({:ker, k, type,ast}, t, b, l) do
-  Subs.remove_args(ast)
-  raise "hella"
+ # Subs.remove_args(ast)
+ # raise "hella"
   f_name= case Macro.escape(k) do
     {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."

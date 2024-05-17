@@ -1,13 +1,49 @@
 defmodule Subs do
 
-def remove_args( ast) do
+############## Removing from kernel definition the arguments that are functions
+def remove_args(map, ast) do
    case ast do
-        {:defk, _info,[ {name, _i2,  args} ,block]} ->   IO.inspect args
-        _ -> raise "Unknown function ast!"
+        {:defk, _info,[ {name, _i2,  args} ,block]} ->  {:defk, _info,[ {name, _i2, filter_args(map,args)} ,block]}
+        _ -> raise "Recompiling kernel: unknown ast!"
    end
-   raise "hell"
 
 end
+
+def filter_args(map,[{var,_i, nil}| t]) do
+  if map[var] ==  nil do
+    [{var,_i, nil}| filter_args(map,t)]
+  else
+    filter_args(t)
+  end
+end
+def filter_args([]), do: []
+
+def get_args(ast) do
+  case ast do
+       {:defk, _info,[ {name, _i2,  args} ,block]} ->  args
+       _ -> raise "Recompiling kernel: unknown ast!"
+  end
+
+end
+
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when is_list(funct) and is_function(func) do
+  case Macro.escape(kernel) do
+    {:&, [],[{:/, [], [{{:., [], [_module, func_name]}, [no_parens: true], []}, _nargs]}]} ->
+        create_map_subs(tt,tfa,taa,Map.put(fname,func_name))
+    _ -> raise "Problem with paramenter #{inspect func}"
+
+  end
+end
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when is_list(funct) do
+  case Macro.escape(kernel) do
+    {:&, [],[{:/, [], [{{:., [], [_module, func_name]}, [no_parens: true], []}, _nargs]}]} ->
+        create_map_subs(tt,tfa,taa,Map.put(fname,func_name))
+    _ -> raise "Problem with paramenter #{inspect func}"
+
+  end
+end
+################### substitute variables that represent functions by the actual function names
+
 def subs(map,body) do
 
   #body = add_return(map,body)
