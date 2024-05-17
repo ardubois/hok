@@ -1,6 +1,6 @@
 defmodule Subs do
 
-def remove_args() ast) do
+def remove_args( ast) do
    case ast do
         {:defk, _info,[ {name, _i2,  args} ,block]} ->   IO.inspect args
         _ -> raise "Unknown function ast!"
