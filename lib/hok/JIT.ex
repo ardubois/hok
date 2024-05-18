@@ -98,13 +98,14 @@ def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at ke
 #### Takes the map created with create_map_subs and the ast and returns a new ast
 ########################
 
-def subs(map,body) do
+def subs(map,{:defk, i1,header, [body]}) do
+
+
 
   #body = add_return(map,body)
 
-  IO.inspect body
-  raise "hell"
-  case body do
+
+  nbody = case body do
 
       {:__block__, _, _code} ->
         subs_block(map,body)
@@ -115,6 +116,8 @@ def subs(map,body) do
       {_,_,_} ->
         subs_command(map,body)
    end
+
+   {:defk, i1,header, [nbody]}
 end
 defp subs_block(map,{:__block__, info, code}) do
   {:__block__, info,
