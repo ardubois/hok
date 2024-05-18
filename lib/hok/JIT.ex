@@ -104,6 +104,8 @@ def subs(map,body) do
 
 
   case body do
+    IO.inspect body
+    raise "hell"
       {:__block__, _, _code} ->
         subs_block(map,body)
       {:do, {:__block__,pos, code}} ->
