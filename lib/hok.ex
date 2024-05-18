@@ -318,7 +318,7 @@ end
 ######   Prepares the  arguments before making the real kernell call
 ######
 ##############
-defp process_args([{:anon,name,ref,_type}|t1]) do
+defp process_args([{:anon,_name,ref,_type}|t1]) do
   [ref | process_args(t1)]
 end
 defp process_args([{:func, func, _type}|t1]) do

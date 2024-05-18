@@ -9,9 +9,9 @@ def remove_args(map, ast) do
 
 end
 
-def filter_args(map,[{var,_i, nil}| t]) do
+def filter_args(map,[{var,i, nil}| t]) do
   if map[var] ==  nil do
-    [{var,_i, nil}| filter_args(map,t)]
+    [{var,i, nil}| filter_args(map,t)]
   else
     filter_args(t)
   end
@@ -20,7 +20,7 @@ def filter_args([]), do: []
 
 def get_args(ast) do
   case ast do
-       {:defk, _info,[ {name, _i2,  args} ,block]} ->  args
+       {:defk, _info,[ {_name, _i2,  args} ,_block]} ->  args
        _ -> raise "Recompiling kernel: unknown ast!"
   end
 
@@ -39,15 +39,19 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, ref,type} | taa], map) when is_list(funct) do
-          create_map_subs(tt,tfa,taa,Map.put(map.fname,lambda))
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_type} | taa], map) when is_list(funct) do
+          create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
 end
-def create_map_subs([funct |tt], [fa | tfa], [aa | taa], map)  do
+def create_map_subs([_t |tt], [_fa | tfa], [_aa | taa], map)  do
   create_map_subs(tt,tfa,taa,map)
 end
 def create_map_subs([], [], [], map), do: map
 def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at kernel launch."
+
+###################
 ################### substitute variables that represent functions by the actual function names
+############   (substitutes formal parameters that are functions by their actual values)
+########################
 
 def subs(map,body) do
 
