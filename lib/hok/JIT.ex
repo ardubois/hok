@@ -7,6 +7,8 @@ def compile_and_load_kernel({:ker, k, type,ast},  l) do
   formal_par = get_args(ast)
 
   IO.inspect formal_par
+  IO.inspect type
+  IO.inspect l
   # creates a map with the names that must be substituted
 
   map = create_map_subs(type, formal_par, l, %{})
