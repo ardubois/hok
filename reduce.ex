@@ -95,7 +95,7 @@ vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
 
 ref1= Hok.new_gmatrex(vet1)
-ref2 = Hok.new_gmatrex(vet2)
+#ref2 = Hok.new_gmatrex(vet2)
 
 
 prev = System.monotonic_time()
