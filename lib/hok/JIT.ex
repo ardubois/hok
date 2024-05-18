@@ -98,7 +98,7 @@ def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at ke
 #### Takes the map created with create_map_subs and the ast and returns a new ast
 ########################
 
-def subs(map,{:defk, i1,header, [body]}) do
+def subs(map,{:defk, i1,[header, [body]]}) do
 
 
 
