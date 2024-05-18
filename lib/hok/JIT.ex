@@ -99,10 +99,12 @@ def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at ke
 ########################
 
 def subs(map,{:defk, i1,[header, [body]]}) do
+   nbody = subs_body(body)
+   {:defk, i1,header, [nbody]}
+end
 
 
-
-  #body = add_return(map,body)
+def subs_body(map,body) do
 
 
   nbody = case body do
@@ -117,7 +119,7 @@ def subs(map,{:defk, i1,[header, [body]]}) do
         subs_command(map,body)
    end
 
-   {:defk, i1,header, [nbody]}
+
 end
 defp subs_block(map,{:__block__, info, code}) do
   {:__block__, info,
@@ -128,13 +130,13 @@ end
 defp subs_command(map,code) do
     case code do
         {:for,i,[param,[body]]} ->
-          {:for,i,[param,[subs(map,body)]]}
+          {:for,i,[param,[subs_body(map,body)]]}
         {:do_while, i, [[doblock]]} ->
-          {:do_while, i, [[subs(map,doblock)]]}
+          {:do_while, i, [[subs_body(map,doblock)]]}
         {:do_while_test, i, [exp]} ->
           {:do_while_test, i, [subs_exp(map,exp)]}
         {:while, i, [bexp,[body]]} ->
-          {:while, i, [subs_exp(map,bexp),[subs(map,body)]]}
+          {:while, i, [subs_exp(map,bexp),[subs_body(map,body)]]}
         # CRIAÇÃO DE NOVOS VETORES
         {{:., i1, [Access, :get]}, i2, [arg1,arg2]} ->
           {{:., i1, [Access, :get]}, i2, [subs_exp(map,arg1),subs_exp(map,arg2)]}
@@ -178,10 +180,10 @@ defp subs_command(map,code) do
 end
 
 defp subs_if(map,[bexp, [do: then]]) do
-  [subs_exp(map,bexp), [do: subs(map,then)]]
+  [subs_exp(map,bexp), [do: subs_body(map,then)]]
 end
 defp subs_if(map,[bexp, [do: thenbranch, else: elsebranch]]) do
-  [subs_exp(map,bexp), [do: subs(map,thenbranch), else: subs(map,elsebranch)]]
+  [subs_exp(map,bexp), [do: subs_body(map,thenbranch), else: subs_body(map,elsebranch)]]
 end
 
 
