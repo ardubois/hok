@@ -1,5 +1,28 @@
 defmodule JIT do
 
+def compile_and_load_kernel({:ker, k, type,ast},  l) do
+
+ # get the formal parameters of the function
+
+  formal_par = get_args(ast)
+
+  IO.inspect formal_par
+  # creates a map with the names that must be substituted
+
+  map = create_map_subs(type, formal_par, l, %{})
+
+  IO.inspect map
+  raise "hell"
+ # removes the arguments that will be substituted from the kernel definition
+
+  n_ast = remove_args(map,ast)
+
+  # makes the substitutions:
+
+  n_ast = subs(map, ast)
+
+end
+
 ############## Removing from kernel definition the arguments that are functions
 def remove_args(map, ast) do
    case ast do

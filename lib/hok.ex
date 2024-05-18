@@ -97,7 +97,7 @@ defmodule Hok do
 
   #####################
   #####
-  #####  gptype macro ##########
+  ##### Legacy code:  gptype macro ##########
   #####
   ##########################
 
@@ -159,7 +159,7 @@ defmodule Hok do
 
   #############################################
   ###########
-  #######    Hok macro
+  #######   Legacy code Hok macro
   #######
   #####################
 
@@ -224,6 +224,8 @@ def new_gmatrex(r,c) do
   ref=new_ref_nif(c)
   {ref, {r,c}}
   end
+
+def gmatrex_size({_r,{l,size}}), do: {l,size}
 
 def new_ref_nif(_matrex) do
   raise "NIF new_ref_nif/1 not implemented"
@@ -337,6 +339,8 @@ defp process_args([]), do: []
 
 ############################ Type checking the arguments at runtime
 
+### first two arguments are used for error messages. Takes a list of types and a list of actual parameters and type checks them
+
 def type_check_args(kernel,narg, [:matrex | t1], [a|t2]) do
     case a do
       {_ref,{_l,_c}} -> type_check_args(kernel,narg+1,t1,t2)
@@ -429,10 +433,18 @@ def load_type_at_compilation(kernel) do
               resp
 end
 ####################################
-def spawn_nif(_k,_t,_b,_l) do
-  raise "NIF spawn_nif/1 not implemented"
-end
-defmacro spawn_macro(k,t,b,l) do
+
+
+##################################
+###########
+###########  Spawn with jit compilation
+###########
+########################################
+
+######## at compilation we build a representation for the kernel: {:ker, its type, its ast}
+##### and leave a call to spawn
+
+defmacro spawn_jit(k,t,b,l) do
   case k do
     {:&, _,_} ->
             #IO.inspect t
@@ -445,6 +457,8 @@ defmacro spawn_macro(k,t,b,l) do
   end
 end
 
+############ at run time we call this function
+
 def spawn({:ker, k, type,ast}, t, b, l) do
  # Subs.remove_args(ast)
  # raise "hella"
@@ -453,15 +467,28 @@ def spawn({:ker, k, type,ast}, t, b, l) do
      _ -> raise "Argument to spawn should be a function."
   end
 
-    pk=load(k)
+  ####### First type check the arguments
     {:unit,tk} = type
-
     type_check_args(f_name,1,tk,l)
-    args = process_args(l)
 
-    spawn_nif(pk,t,b,args)
+
+  ##########
+
+  k = JIT.compile_and_load_kernel({:ker, k, type,ast},  l)
+
+
+  args = process_args(l)
+
+  spawn_nif(k,t,b,args)
 
 end
+
+#############################################3
+##########
+########### spawn that uses function pointers
+#########
+#######################################
+
 def spawn(k,t,b,l) when is_function(k) do
    #IO.inspect k
    #raise "hell"
@@ -484,5 +511,9 @@ end
 def spawn(_k,_t,_b,_l) do
   raise "First argument of spawn must be a function."
 end
-def gmatrex_size({_r,{l,size}}), do: {l,size}
+def spawn_nif(_k,_t,_b,_l) do
+  raise "NIF spawn_nif/1 not implemented"
+end
+
+
 end
