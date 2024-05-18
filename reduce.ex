@@ -92,7 +92,7 @@ n = 100000
 list = [DP.replicate(n,1)]
 
 vet1 = Matrex.new(list)
-vet2 = Matrex.new(list)
+#vet2 = Matrex.new(list)
 
 ref1= Hok.new_gmatrex(vet1)
 #ref2 = Hok.new_gmatrex(vet2)
