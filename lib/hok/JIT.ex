@@ -1,14 +1,16 @@
 defmodule JIT do
 
-def compile_and_load_kernel({:ker, k, type,ast},  l) do
+def compile_and_load_kernel({:ker, k, k_type,ast},  l) do
 
  # get the formal parameters of the function
 
   formal_par = get_args(ast)
 
-  IO.inspect formal_par
-  IO.inspect type
-  IO.inspect l
+  {:unit, type} = k_type
+
+  #IO.inspect formal_par
+  #IO.inspect type
+  #IO.inspect l
   # creates a map with the names that must be substituted
 
   map = create_map_subs(type, formal_par, l, %{})
