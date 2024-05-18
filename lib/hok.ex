@@ -323,14 +323,14 @@ def load_fun(fun) do
   end
 end
 def load_lambda(module,lambda,type) do
-  {:anon, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
+  {:anon, funname, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
 ############################
 ######
 ######   Fixes arguments before making the real kernall call
 ######
 ##############
-defp process_args([{:anon,ref,_type}|t1]) do
+defp process_args([{:anon,name,ref,_type}|t1]) do
   [ref | process_args(t1)]
 end
 defp process_args([{:func, func, _type}|t1]) do
@@ -384,7 +384,7 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:func, func, { art , aft}} 
    end
   end
 
-def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _ref, { art , aft}} |t2]) do
+def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _name, _ref, { art , aft}} |t2]) do
   if rt == art do
     type_check_function("anonymous",1,ft,aft)
     type_check_args(kernel,narg+1,t1,t2)
