@@ -3,7 +3,7 @@ defmodule Subs do
 ############## Removing from kernel definition the arguments that are functions
 def remove_args(map, ast) do
    case ast do
-        {:defk, _info,[ {name, _i2,  args} ,block]} ->  {:defk, _info,[ {name, _i2, filter_args(map,args)} ,block]}
+        {:defk, info,[ {name, i2,  args} ,block]} ->  {:defk, info,[ {name, i2, filter_args(map,args)} ,block]}
         _ -> raise "Recompiling kernel: unknown ast!"
    end
 
