@@ -453,7 +453,8 @@ defmacro spawn_jit(k,t,b,l) do
             n_ast = Macro.escape ast
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),(unquote n_ast)},unquote(t),unquote(b), unquote(l))
             result
-    _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
+    _ -> IO.inspect k
+       raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
 
