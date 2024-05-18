@@ -18,11 +18,11 @@ defmodule Hok do
   end
 
 
-    defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
+  defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
       quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end))
-      end
+  end
 
-   defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, {:<-,_, [var2, {:..,_, [_b2, e2]}]},arr1,arr2,do: body) do
+  defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, {:<-,_, [var2, {:..,_, [_b2, e2]}]},arr1,arr2,do: body) do
        r=      quote do: MM.comp2xy2D(unquote(arr1), unquote(arr2), unquote(e1), unquote(e2),
                                           Hok.hok (fn (unquote(arr1),
                                                        unquote(arr2),
@@ -31,7 +31,7 @@ defmodule Hok do
        #IO.inspect r
        #raise "hell"
        r
-   end
+  end
 
 
   defmacro defmodule(header,do: body) do
@@ -269,19 +269,7 @@ def load_type_ast(kernel) do
   ast = Map.get(map_asts,String.to_atom("#{kernelname}"))
   {type,ast}
 end
-def load_type_syntax(kernel) do
-  {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
-#  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
-  bytes = File.read!("c_src/Elixir.#{module}.types")
-              map = :erlang.binary_to_term(bytes)
 
-              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
-
-
-              resp = Map.get(map,String.to_atom("#{kernelname}"))
-              #IO.inspect resp
-              resp
-end
 def load_type(kernel) do
   case Macro.escape(kernel) do
     {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} ->
@@ -327,7 +315,7 @@ def load_lambda(module,lambda,type) do
 end
 ############################
 ######
-######   Fixes arguments before making the real kernall call
+######   Prepares the  arguments before making the real kernell call
 ######
 ##############
 defp process_args([{:anon,name,ref,_type}|t1]) do
@@ -419,7 +407,28 @@ def type_check_function(k,narg,[at|t1],[ft|t2]) do
 end
 def type_check_function(_k,_narg,[],[]), do: []
 def type_check_function(k,_narg,a,v), do: raise "Wrong number of arguments when calling #{k}. #{inspect a} #{inspect v} "
-#######################
+
+####################### loads type of a function at compilation time
+defmacro lt(k) do
+  type = load_type_at_compilation(k)
+  r= quote do: {:func, unquote(k), unquote(type)}
+  #IO.inspect r
+  r
+end
+def load_type_at_compilation(kernel) do
+  {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
+#  {:&, [],[{:/, [], [{{:., [], [module, kernelname]}, [no_parens: true], []}, _nargs]}]} = kernel
+  bytes = File.read!("c_src/Elixir.#{module}.types")
+              map = :erlang.binary_to_term(bytes)
+
+              #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+
+
+              resp = Map.get(map,String.to_atom("#{kernelname}"))
+              #IO.inspect resp
+              resp
+end
+####################################
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
 end
@@ -435,12 +444,7 @@ defmacro spawn_macro(k,t,b,l) do
     _ -> raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"
   end
 end
-defmacro lt(k) do
-  type = load_type_syntax(k)
-  r= quote do: {:func, unquote(k), unquote(type)}
-  #IO.inspect r
-  r
-end
+
 def spawn({:ker, k, type,ast}, t, b, l) do
  # Subs.remove_args(ast)
  # raise "hella"
