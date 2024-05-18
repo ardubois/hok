@@ -17,15 +17,18 @@ def compile_and_load_kernel({:ker, k, k_type,ast},  l) do
   map = create_map_subs(type, formal_par, l, %{})
 
   IO.inspect map
-  raise "hell"
+
  # removes the arguments that will be substituted from the kernel definition
 
   n_ast = remove_args(map,ast)
 
+  IO.inspect n_ast
+
   # makes the substitutions:
 
   n_ast = subs(map, ast)
-
+  IO.inspect n_ast
+  raise "hell"
 end
 
 ############## Removing from kernel definition the arguments that are functions
