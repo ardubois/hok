@@ -323,7 +323,7 @@ def load_fun(fun) do
   end
 end
 def load_lambda(module,lambda,type) do
-  {:anon, funname, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
+  {:anon, lambda, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
 end
 ############################
 ######
