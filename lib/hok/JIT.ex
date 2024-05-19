@@ -33,12 +33,7 @@ def gen_jit_kernel_load({{:defh,_,[header,[body]]}, istyped,delta}, type) do
 
   {fname, _, para} = header
 
-  delta= para
-  |> Enum.map(fn({p, _, _}) -> p end)
-  |> Enum.zip(types)
-  |> Map.new()
 
-  inf_types = Hok.TypeInference.type_check(delta,body)
 end
 ############## Removing from kernel definition the arguments that are functions
 def remove_args(map, ast) do
