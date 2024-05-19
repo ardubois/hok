@@ -32,7 +32,7 @@ def gen_jit_kernel_load({:defh,_,[header,[body]]}, is_typed, inf_types) do
   {_fname, _, para} = header
 
   param_list = para
-       |> Enum.map(fn {p, _, _}-> gen_para(p,Map.get(inf_types,p)) end)
+       |> Enum.map(fn {p, _, _}-> CudaBackEnd.gen_para(p,Map.get(inf_types,p)) end)
        |> Enum.join(", ")
 
   types_para = para

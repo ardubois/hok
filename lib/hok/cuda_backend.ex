@@ -345,16 +345,16 @@ defp type_to_list([type]) do
 end
 defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
 defp type_to_list({x,_,_}), do: raise "Unknown type constructor #{x}"
-defp gen_para(p,:matrex) do
+def gen_para(p,:matrex) do
   "float *#{p}"
 end
-defp gen_para(p,:float) do
+def gen_para(p,:float) do
   "float #{p}"
 end
-defp gen_para(p,:int) do
+def gen_para(p,:int) do
   "int #{p}"
 end
-defp gen_para(p, {ret,type}) do
+def gen_para(p, {ret,type}) do
   #size = length(list)
 
   #{ret,type}=List.pop_at(list,size-1)
