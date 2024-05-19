@@ -448,10 +448,13 @@ defmacro spawn_jit(k,t,b,l) do
   case k do
     {:&, _,_} ->
             #IO.inspect t
-            {type,ast} = load_type_ast(k)
+            {type,{ast,typed?,delta}} = load_type_ast(k)
             #IO.inspect type
             n_ast = Macro.escape ast
-            result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),(unquote n_ast)},unquote(t),unquote(b), unquote(l))
+            n_delta = Macro.escape delta
+            result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),
+                                      {(unquote n_ast), (unquote typed?), unquote(n_delta)},
+                                      unquote(t),unquote(b), unquote(l))
             result
     _ -> IO.inspect k
        raise "The first argumento to spawn should be a Hok kernel: &Module.kernel/nargs"

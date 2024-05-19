@@ -186,7 +186,7 @@ end
 
     save_type_info(fname,:unit,types_para)
 
-    save_ast_info(fname,{:defk,iinfo,[header,[body]]})
+    save_ast_info(fname,{:defk,iinfo,[header,[body]]},is_typed, inf_types)
 
     #IO.inspect inf_types
     #raise "hell"
@@ -203,10 +203,10 @@ end
     send(:types_ast_server,{:add_type,name,{return,types}})
 
   end
-  def save_ast_info(name,ast) do
+  def save_ast_info(name,ast,typed?,delta) do
 
 
-    send(:types_ast_server,{:add_ast,name,ast})
+    send(:types_ast_server,{:add_ast,name,{ast,is_typed?,deta})
 
   end
 

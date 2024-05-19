@@ -1,6 +1,10 @@
 defmodule JIT do
 
-def compile_and_load_kernel({:ker, k, k_type,ast},  l) do
+def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta},  l) do
+
+  IO.inspect is_typed?
+  IO.inspect delta
+  raise "hell"
 
  # get the formal parameters of the function
 
@@ -9,20 +13,14 @@ def compile_and_load_kernel({:ker, k, k_type,ast},  l) do
   {:unit, type} = k_type
 
 
-  IO.inspect type
-  IO.inspect formal_par
-  IO.inspect l
   # creates a map with the names that must be substituted
 
   map = create_map_subs(type, formal_par, l, %{})
-
-  IO.inspect map
 
  # removes the arguments that will be substituted from the kernel definition
 
   n_ast = remove_args(map,ast)
 
-  IO.inspect n_ast
 
   # makes the substitutions:
 
@@ -31,6 +29,17 @@ def compile_and_load_kernel({:ker, k, k_type,ast},  l) do
   raise "hell"
 end
 
+def gen_jit_kernel_load({{:defh,_,[header,[body]]}, istyped,delta}, type) do
+
+  {fname, _, para} = header
+
+  delta= para
+  |> Enum.map(fn({p, _, _}) -> p end)
+  |> Enum.zip(types)
+  |> Map.new()
+
+  inf_types = Hok.TypeInference.type_check(delta,body)
+end
 ############## Removing from kernel definition the arguments that are functions
 def remove_args(map, ast) do
    case ast do
