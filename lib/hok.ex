@@ -453,7 +453,7 @@ defmacro spawn_jit(k,t,b,l) do
             n_ast = Macro.escape ast
             n_delta = Macro.escape delta
             result =  quote do: Hok.spawn({:ker,unquote(k),(unquote type),
-                                      {(unquote n_ast), (unquote typed?), unquote(n_delta)},
+                                      {(unquote n_ast), (unquote typed?), unquote(n_delta)}},
                                       unquote(t),unquote(b), unquote(l))
             result
     _ -> IO.inspect k
