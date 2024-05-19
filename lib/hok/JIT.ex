@@ -39,7 +39,7 @@ def gen_jit_kernel_load({:defk,_,[header,[body]]}, is_typed, inf_types) do
        |>  Enum.map(fn {p, _, _}-> Map.get(inf_types,p) end)
 
 
-  fname = "kernel_" <> Hok.CudaBackEnd.gen_lambda_name()
+  fname = "kernel_" <> Hok.CudaBackend.gen_lambda_name()
   cuda_body = Hok.CudaBackend.gen_cuda(body,inf_types,is_typed,"")
   k = Hok.CudaBackend.gen_kernel(fname,param_list,cuda_body)
   accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(para),Enum.reverse(types_para))
