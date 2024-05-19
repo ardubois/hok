@@ -511,7 +511,7 @@ end
 #########
 #######################################
 
-def spawn{{:func, k, type}, t,b,l} do
+def spawn({:func, k, type}, t,b,l) do
   f_name= case Macro.escape(k) do
     {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
