@@ -27,7 +27,7 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
   r
 end
 
-def gen_jit_kernel_load({:defh,_,[header,[body]]}, is_typed, inf_types) do
+def gen_jit_kernel_load({:defk,_,[header,[body]]}, is_typed, inf_types) do
 
   {_fname, _, para} = header
 
