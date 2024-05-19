@@ -531,7 +531,7 @@ def spawn(k,t,b,l) when is_function(k) do
 
 end
 def spawn(_k,_t,_b,_l) do
-  raise "First argument of spawn must be a function."
+  raise "First argument of spawn must be a function.."
 end
 def spawn_nif(_k,_t,_b,_l) do
   raise "NIF spawn_nif/1 not implemented"
