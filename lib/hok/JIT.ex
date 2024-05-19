@@ -1,6 +1,6 @@
 defmodule JIT do
 
-def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta},  l) do
+def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
   IO.inspect is_typed?
   IO.inspect delta
