@@ -35,7 +35,7 @@ end
 
 Hok.include [PMap]
 
-n = 10000000
+n = 100000000
 
 list = [Enum.to_list(1..n)]
 
