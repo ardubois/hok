@@ -523,10 +523,10 @@ def spawn{{:func, k, type}, t,b,l} do
 
     type_check_args(f_name,1,tk,l)
 
-    pk=load(k)
+
 
     args = process_args(l)
-
+    pk=load(k)
     spawn_nif(pk,t,b,args)
 
 end
