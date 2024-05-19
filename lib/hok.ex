@@ -337,6 +337,24 @@ defp process_args([arg|t1]) do
 end
 defp process_args([]), do: []
 
+#########################
+defp process_args_no_fun([{:anon,_name,ref,_type}|t1]) do
+  process_args_no_fun(t1)
+end
+defp process_args_no_fun([{:func, func, _type}|t1]) do
+  process_args_no_fun(t1)
+end
+defp process_args_no_fun([{matrex,{_rows,_cols}}| t1]) do
+  [matrex | process_args_no_fun(t1)]
+end
+defp process_args_no_fun([arg|t1]) when is_function(arg) do
+  process_args_no_fun(t1)
+end
+defp process_args_no_fun([arg|t1]) do
+  [arg | process_args_no_fun(t1)]
+end
+defp process_args_no_fun([]), do: []
+
 ############################ Type checking the arguments at runtime
 
 ### first two arguments are used for error messages. Takes a list of types and a list of actual parameters and type checks them
@@ -481,7 +499,7 @@ def spawn({:ker, k, type,ast}, t, b, l) do
   k = JIT.compile_and_load_kernel({:ker, k, type,ast},  l)
 
 
-  args = process_args(l)
+  args = process_args_no_fun(l)
 
   spawn_nif(k,t,b,args)
 
