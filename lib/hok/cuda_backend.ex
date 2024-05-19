@@ -206,7 +206,7 @@ end
   def save_ast_info(name,ast,typed?,delta) do
 
 
-    send(:types_ast_server,{:add_ast,name,{ast,is_typed?,deta}})
+    send(:types_ast_server,{:add_ast,name,{ast,typed?,delta}})
 
   end
 
