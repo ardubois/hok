@@ -5,9 +5,9 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
  # get the formal parameters of the function
 
   formal_par = get_args(ast)
-
+  IO.puts "-----------------"
   IO.inspect formal_par
-
+  IO.puts "-----------------"
   {:unit, type} = k_type
 
 
