@@ -76,10 +76,10 @@ def filter_args(map,[{var,i, nil}| t]) do
   if map[var] ==  nil do
     [{var,i, nil}| filter_args(map,t)]
   else
-    filter_args(t)
+    filter_args(map,t)
   end
 end
-def filter_args([]), do: []
+def filter_args(map,[]), do: []
 
 def get_args(ast) do
   case ast do
