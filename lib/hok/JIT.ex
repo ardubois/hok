@@ -14,7 +14,7 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
   IO.inspect type
   IO.inspect formal_par
   IO.inspect l
-  raise "hwwell"
+
   map = create_map_subs(type, formal_par, l, %{})
 
   IO.inspect map
@@ -116,6 +116,8 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
   end
 end
 def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_type} | taa], map) when is_list(funct) do
+          IO.inspect "yoooooo"
+          raise "hell"
           create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
 end
 def create_map_subs([_t |tt], [_fa | tfa], [_aa | taa], map)  do
