@@ -12,7 +12,7 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
   # creates a map with the names that must be substituted
 
   IO.inspect type
-  IO.inspect forma_par
+  IO.inspect formal_par
   IO.inspect l
   raise "hwwell"
   map = create_map_subs(type, formal_par, l, %{})
