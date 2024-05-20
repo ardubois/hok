@@ -18,14 +18,14 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
  #  removes the arguments that will be substituted from the kernel definition
 
- n_ast = remove_args(map,ast)
+ ast = remove_args(map,ast)
 
  # makes the substitutions:
 
-  n_ast = subs(map, ast)
+  ast = subs(map, ast)
 
 
-  r = gen_jit_kernel_load(n_ast, is_typed?, delta)
+  r = gen_jit_kernel_load(ast, is_typed?, delta)
   r
 end
 
