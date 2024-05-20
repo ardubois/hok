@@ -6,14 +6,13 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
   formal_par = get_args(ast)
 
+ # get types of parameters:
+
   {:unit, type} = k_type
 
 
-  # creates a map with the names that must be substituted
+  # creates a map with the names that must be substituted (all parameters that are functions)
 
-  #IO.inspect type
-  #IO.inspect formal_par
-  #IO.inspect l
 
   map = create_map_subs(type, formal_par, l, %{})
 
@@ -23,10 +22,11 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
  # makes the substitutions:
 
+ IO.inspect ast
   n_ast = subs(map, ast)
 
-  #IO.inspect n_ast
-  #raise "hell"
+  IO.inspect n_ast
+  raise "hell"
 
   r = gen_jit_kernel_load(n_ast, is_typed?, delta)
   r
