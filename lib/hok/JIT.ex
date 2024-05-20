@@ -17,12 +17,13 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
   map = create_map_subs(type, formal_par, l, %{})
 
-  #IO.inspect map
+  IO.inspect map
   #raise "hell"
  # removes the arguments that will be substituted from the kernel definition
-
+  IO.inspect ast
   n_ast = remove_args(map,ast)
-
+  IO.inspect n_ast
+  raise "hell"
 
   # makes the substitutions:
 
