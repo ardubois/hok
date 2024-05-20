@@ -134,7 +134,7 @@ def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at ke
 
 def subs(map,{:defk, i1,[header, [body]]}) do
    nbody = subs_body(map,body)
-   {:defk, i1,header, [nbody]}
+   {:defk, i1,[header, [nbody]]}
 end
 
 
