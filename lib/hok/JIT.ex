@@ -117,12 +117,7 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_t
           create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
 end
 def create_map_subs([_t |tt], [_fa | tfa], [_aa | taa], map)  do
-  IO.puts "############ maps subs"
-  IO.inspect _t
-  IO.inspect _fa
-  IO.inspect _aa
-  IO.puts "##################"
-  create_map_subs(tt,tfa,taa,map)
+    create_map_subs(tt,tfa,taa,map)
 end
 def create_map_subs([], [], [], map), do: map
 def create_map_subs(_,_,_,_), do: raise "spawn: wrong number of parameters at kernel launch."
