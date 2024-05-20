@@ -18,7 +18,7 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
   map = create_map_subs(type, formal_par, l, %{})
 
   IO.inspect map
-  raise "hell"
+ # raise "hell"
  # removes the arguments that will be substituted from the kernel definition
 
   n_ast = remove_args(map,ast)
@@ -107,7 +107,7 @@ def create_map_subs([{_rt, funct} |tt], [{fname,_,nil} | tfa], [{:func, func, _t
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when is_list(funct) and is_function(func) do
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when   is_function(func) do
   case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [_module, func_name]}, [no_parens: true], []}, _nargs]}]} ->
         create_map_subs(tt,tfa,taa,Map.put(map,fname,func_name))
@@ -115,7 +115,7 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_type} | taa], map) when is_list(funct) do
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_type} | taa], map)  do
           IO.inspect "yoooooo"
           raise "hell"
           create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
