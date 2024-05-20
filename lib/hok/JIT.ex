@@ -2,12 +2,11 @@ defmodule JIT do
 
 def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
-IO.inspect delta
-raise "hell"
-
  # get the formal parameters of the function
 
   formal_par = get_args(ast)
+
+  IO.inspect formal_par
 
   {:unit, type} = k_type
 
@@ -16,6 +15,8 @@ raise "hell"
 
   map = create_map_subs(type, formal_par, l, %{})
 
+  IO.inspect map
+  raise "hell"
  # removes the arguments that will be substituted from the kernel definition
 
   n_ast = remove_args(map,ast)
