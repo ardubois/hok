@@ -11,23 +11,22 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
   # creates a map with the names that must be substituted
 
-  IO.inspect type
-  IO.inspect formal_par
-  IO.inspect l
+  #IO.inspect type
+  #IO.inspect formal_par
+  #IO.inspect l
 
   map = create_map_subs(type, formal_par, l, %{})
 
-  IO.inspect map
-  #raise "hell"
- # removes the arguments that will be substituted from the kernel definition
-  IO.inspect ast
-  n_ast = remove_args(map,ast)
-  IO.inspect n_ast
-  raise "hell"
+ #  removes the arguments that will be substituted from the kernel definition
 
-  # makes the substitutions:
+ n_ast = remove_args(map,ast)
+
+ # makes the substitutions:
 
   n_ast = subs(map, ast)
+
+  IO.inspect n_ast
+  raise "hell"
 
   r = gen_jit_kernel_load(ast, is_typed?, delta)
   r
