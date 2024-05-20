@@ -22,11 +22,8 @@ def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
  # makes the substitutions:
 
- IO.inspect ast
   n_ast = subs(map, ast)
 
-  IO.inspect n_ast
-  raise "hell"
 
   r = gen_jit_kernel_load(n_ast, is_typed?, delta)
   r
