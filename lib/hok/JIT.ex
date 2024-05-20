@@ -2,6 +2,8 @@ defmodule JIT do
 
 def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
 
+IO.inspect delta
+raise "hell"
 
  # get the formal parameters of the function
 
