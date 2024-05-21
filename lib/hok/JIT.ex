@@ -118,7 +118,7 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda, _ref,_type} | taa], map)  do
+def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda,_type} | taa], map)  do
          # IO.inspect "yoooooo"
           #raise "hell"
           create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
