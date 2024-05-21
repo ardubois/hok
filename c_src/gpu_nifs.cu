@@ -318,7 +318,7 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
         return enif_make_int(env, 0);
       }
 
-
+  printf("Pointer %p\n",m_handle);
 
   void (*fn)();
   fn= (void (*)())dlsym( m_handle, func_name);
