@@ -11,7 +11,7 @@ defmodule Hok do
     #IO.inspect function
     #raise "hell"
     {fname,type} = Hok.CudaBackend.gen_lambda("Elixir.App",function)
-    result = quote do: Hok.load_lambda(unquote("Elixir.App"), unquote(fname), unquote(type))
+    result = quote do: Hok.load_lambda_compilation(unquote("Elixir.App"), unquote(fname), unquote(type))
     #IO.inspect result
     #raise "hell"
     result
@@ -312,17 +312,20 @@ def load_fun(fun) do
     _ -> raise "Hok.invalid function"
   end
 end
-def load_lambda(module,lambda,type) do
+def load_lambda_compilation(module,lambda,type) do
  # {:anon, lambda, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
  {:anon, lambda, type}
 end
+def load_lambda(lambda) do
+  Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist(lambda)), type}
+ end
 ############################
 ######
 ######   Prepares the  arguments before making the real kernell call
 ######
 ##############
 defp process_args([{:anon,name,_type}|t1]) do
-  [load_fun(name) | process_args(t1)]
+  [load_lambda(name) | process_args(t1)]
 end
 defp process_args([{:func, func, _type}|t1]) do
   [load_fun(func)| process_args(t1)]
