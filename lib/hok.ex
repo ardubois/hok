@@ -505,6 +505,8 @@ def spawn({:ker, k, type,ast}, t, b, l) do
 
   args = process_args_no_fun(l)
 
+  IO.inspect args
+
   spawn_nif(k,t,b,args)
 
 end
