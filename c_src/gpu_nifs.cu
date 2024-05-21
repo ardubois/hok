@@ -299,15 +299,14 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
   enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
 
   strcpy(func_name,kernel_name);
+  strcat(func_name,"_call");
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
-  strcat(func_name,"_call");
   strcat(lib_name,".so");
 
-  //strcpy(func_name, "print");
-
-  //printf("libname %s\n",lib_name);
-  //printf("kernel name a %s\n",kernel_name);
+  
+  printf("libname %s\n",lib_name);
+  printf("func name a %s\n",func_name);
   //printf("module name %s\n", module_name);
   
   void * m_handle = dlopen(lib_name, RTLD_NOW);
