@@ -317,7 +317,7 @@ def load_lambda_compilation(module,lambda,type) do
  {:anon, lambda, type}
 end
 def load_lambda(lambda) do
-  Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist(lambda)), type}
+  Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist(lambda))
  end
 ############################
 ######
