@@ -30,7 +30,7 @@ end
       threadsPerBlock = 256;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
 
-      Hok.spawn_jit(&DP.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,result_gpu,size,func])
+      Hok.spawn(&DP.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,result_gpu,size,func])
 
       Hok.synchronize()
 
@@ -45,7 +45,7 @@ end
       threadsPerBlock = 256
       blocksPerGrid = div(size + threadsPerBlock - 1, threadsPerBlock)
       numberOfBlocks = blocksPerGrid
-      Hok.spawn_jit(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
+      Hok.spawn(&DP.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
       result_gpu
   end
   defk reduce_kernel(a, ref4, f,n) do
