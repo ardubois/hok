@@ -49,10 +49,11 @@ def gen_jit_kernel_load({:defk,_,[header,[body]]}, is_typed, inf_types) do
   accessfunc = Hok.CudaBackend.gen_kernel_call(fname,length(para),Enum.reverse(types_para))
   code = "\n" <> k <> "\n\n" <> accessfunc
 
+  IO.inspect code
   file = File.open!("c_src/Elixir.App.cu", [:append])
   IO.write(file, "//#############################\n\n" <> code)
   File.close(file)
-    {result, errcode} = System.cmd("nvcc",
+  {result, errcode} = System.cmd("nvcc",
         [ "--shared",
           "--compiler-options",
           "'-fPIC'",
