@@ -387,7 +387,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
         return enif_make_int(env, 0);
       }
 
-
+printf("Pointer %p\n",m_handle);
 
   //printf("function name %s \nlib name %s pointer %p\n", func_name, lib_name, m_handle);
 
