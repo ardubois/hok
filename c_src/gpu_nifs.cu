@@ -325,7 +325,7 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
 
    if(fn == NULL)  
         { 
-          
+          fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
           char message[200];
         strcpy(message,"Error opening .so file: ");
         strcat(message, func_name);
