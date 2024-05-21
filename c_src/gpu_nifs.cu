@@ -311,7 +311,8 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
   
   void * m_handle = dlopen(lib_name, RTLD_NOW);
   if(m_handle== NULL)  
-      { char message[200];
+      { fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
+        char message[200];
         strcpy(message,"Error opening shared library for the programa. It was not found.\n");
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
         return enif_make_int(env, 0);
