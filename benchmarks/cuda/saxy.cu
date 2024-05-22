@@ -74,10 +74,7 @@ int main(int argc, char *argv[])
 
     cudaMemcpy(resp, dev_resp, N*sizeof(float), cudaMemcpyDeviceToHost);
 
-    for(int i=0; i<10; i++) {
-		printf("resp[%d] = %f;\n",i,resp[i]);
-	}
-
+    
     cudaFree(dev_a);
 	cudaFree(dev_b);
     cudaFree(dev_resp);
@@ -87,6 +84,11 @@ int main(int argc, char *argv[])
     cudaEventElapsedTime(&time, start, stop) ;
 
     printf("CUDA\t%d\t%3.1f\n", N,time);
+
+    for(int i=0; i<10; i++) {
+		printf("resp[%d] = %f;\n",i,resp[i]);
+	}
+
 
 	//printf("\n FINAL RESULTADO: %f \n", c);
 
