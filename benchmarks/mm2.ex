@@ -6,7 +6,7 @@ Hok.defmodule MM do
 defk map2xy2D_kernel(arr1,arr2,par, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x
-
+  type par integer
   type arr1 matrex
   type arr2 matrex
 
