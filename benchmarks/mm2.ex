@@ -19,7 +19,7 @@ def map2xy2D1p(arr1,arr2,par,resp,size,f) do
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
 
-  Hok.spawn(&MM.map2xy2D_kernel/6,{grid_rows,grid_cols,1},{block_size,block_size,1},[arr1,arr2,par,resp,size,f])
+  Hok.spawn_jit(&MM.map2xy2D_kernel/6,{grid_rows,grid_cols,1},{block_size,block_size,1},[arr1,arr2,par,resp,size,f])
 end
 def comp2xy2D1p(arr1,arr2,par,size1,size2,f) do
 
