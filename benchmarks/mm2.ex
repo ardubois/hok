@@ -36,11 +36,11 @@ end
 
 Hok.include [MM]
 
-#[arg] = System.argv()
+[arg] = System.argv()
 
-#m = String.to_integer(arg)
+m = String.to_integer(arg)
 
-m = 1000
+#m = 1000
 
 #n = m
 #k=m
