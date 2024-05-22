@@ -20,6 +20,8 @@ __global__
 void map_2kernel(float *a1, float *a2, float *a3, int size, float (*f)(float,float))
 {
 int id = ((blockIdx.x * blockDim.x) + threadIdx.x);
+int stride = (blockDim.x * gridDim.x);
+for( int i = id; i<size; i+=stride){
 if((id < size))
 {
         a3[id] = f(a1[id], a2[id]);
@@ -27,11 +29,15 @@ if((id < size))
 
 }
 
+}
+
+
 int main(int argc, char *argv[])
 {
 
     float *a, *b, *resp;
 	float *dev_a, *dev_b, *dev_resp;
+    cudaError_t j_error;
 
     int N = atoi(argv[1]);
 
@@ -63,16 +69,30 @@ int main(int argc, char *argv[])
 
 
 	cudaMalloc((void**)&dev_a, N*sizeof(float));
+    j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 	cudaMalloc((void**)&dev_b, N*sizeof(float));
+    j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 	cudaMalloc((void**)&dev_resp, N*sizeof(float));
+    j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 	cudaMemcpy(dev_a, a, N*sizeof(float), cudaMemcpyHostToDevice);
+     j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
     cudaMemcpy(dev_b, b, N*sizeof(float), cudaMemcpyHostToDevice);
+     j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 
     float (*f)(float,float) = (float (*)(float,float)) get_saxpy_ptr();
 
     map_2kernel<<< numberOfBlocks, threadsPerBlock>>>(dev_a, dev_b, dev_resp, N, f);
+     j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 
     cudaMemcpy(resp, dev_resp, N*sizeof(float), cudaMemcpyDeviceToHost);
+     j_error = cudaGetLastError();
+    if(j_error != cudaSuccess) {printf("Error: %s\n", cudaGetErrorString(j_error)); exit(1);}
 
     
     cudaFree(dev_a);
