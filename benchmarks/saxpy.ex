@@ -26,7 +26,10 @@ end
 
 Hok.include [PMap2]
 
-n = 10000000
+[arg] = System.argv()
+
+n = String.to_integer(arg)
+
 
 list = [Enum.to_list(1..n)]
 
