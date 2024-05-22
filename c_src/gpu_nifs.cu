@@ -305,8 +305,8 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
   strcat(lib_name,".so");
 
   
-  printf("libname %s\n",lib_name);
-  printf("func name a %s\n",func_name);
+  //printf("libname %s\n",lib_name);
+ // printf("func name a %s\n",func_name);
   //printf("module name %s\n", module_name);
   
   void * m_handle = dlopen(lib_name, RTLD_NOW);
@@ -318,7 +318,7 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
         return enif_make_int(env, 0);
       }
 
-  printf("Pointer %p\n",m_handle);
+ // printf("Pointer %p\n",m_handle);
 
   void (*fn)();
   fn= (void (*)())dlsym( m_handle, func_name);
@@ -387,7 +387,7 @@ static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
         return enif_make_int(env, 0);
       }
 
-printf("Pointer %p\n",m_handle);
+//printf("Pointer %p\n",m_handle);
 
   //printf("function name %s \nlib name %s pointer %p\n", func_name, lib_name, m_handle);
 
