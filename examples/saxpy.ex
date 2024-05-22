@@ -28,12 +28,14 @@ list = [Enum.to_list(1..n)]
 vet1 = Matrex.new(list)
 vet2 = Matrex.new(list)
 
+prev = System.monotonic_time()
+
 ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
 ref3= Hok.new_gmatrex(1,n)
 
 
-prev = System.monotonic_time()
+
 
 PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
