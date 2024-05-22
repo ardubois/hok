@@ -324,7 +324,7 @@ def load_fun(fun) do
     _ -> raise "Hok.invalid function"
   end
 end
-def load_lambda_compilation(module,lambda,type) do
+def load_lambda_compilation(_module,lambda,type) do
  # {:anon, lambda, Hok.load_fun_nif(to_charlist(module),to_charlist(lambda)), type}
  {:anon, lambda, type}
 end
@@ -357,7 +357,7 @@ defp process_args([]), do: []
 defp process_args_no_fun([{:anon,_name,_type}|t1]) do
   process_args_no_fun(t1)
 end
-defp process_args_no_fun([{:func, func, _type}|t1]) do
+defp process_args_no_fun([{:func, _func, _type}|t1]) do
   process_args_no_fun(t1)
 end
 defp process_args_no_fun([{matrex,{_rows,_cols}}| t1]) do
@@ -573,7 +573,7 @@ def spawn(k,t,b,l) when is_function(k) do
 
 end
 def spawn(_k,_t,_b,_l) do
-  IO.inspect _k
+  #IO.inspect _k
   raise "First argument of spawn must be a function.."
 end
 def spawn_nif(_k,_t,_b,_l) do

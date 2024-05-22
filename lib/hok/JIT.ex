@@ -1,6 +1,6 @@
 defmodule JIT do
 
-def compile_and_load_kernel({:ker, k, k_type,{ast, is_typed?, delta}},  l) do
+def compile_and_load_kernel({:ker, _k, k_type,{ast, is_typed?, delta}},  l) do
 
  # get the formal parameters of the function
 
@@ -87,7 +87,7 @@ def filter_args(map,[{var,i, nil}| t]) do
     filter_args(map,t)
   end
 end
-def filter_args(map,[]), do: []
+def filter_args(_map,[]), do: []
 
 def get_args(ast) do
   case ast do
@@ -110,7 +110,7 @@ def create_map_subs([{_rt, funct} |tt], [{fname,_,nil} | tfa], [{:func, func, _t
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when   is_function(func) do
+def create_map_subs([_funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when   is_function(func) do
   case Macro.escape(func) do
     {:&, [],[{:/, [], [{{:., [], [_module, func_name]}, [no_parens: true], []}, _nargs]}]} ->
         create_map_subs(tt,tfa,taa,Map.put(map,fname,func_name))
@@ -118,7 +118,7 @@ def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [func | taa], map) when 
 
   end
 end
-def create_map_subs([funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda,_type} | taa], map)  do
+def create_map_subs([_funct |tt], [{fname,_,nil} | tfa], [{:anon, lambda,_type} | taa], map)  do
          # IO.inspect "yoooooo"
           #raise "hell"
           create_map_subs(tt,tfa,taa,Map.put(map,fname,lambda))
@@ -144,7 +144,7 @@ end
 def subs_body(map,body) do
 
 
-  nbody = case body do
+  case body do
 
       {:__block__, _, _code} ->
         subs_block(map,body)
