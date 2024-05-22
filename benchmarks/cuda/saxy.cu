@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     cudaMemcpy(resp, dev_resp, N*sizeof(float), cudaMemcpyDeviceToHost);
 
-    for(int i=0; i<N; i++) {
+    for(int i=0; i<10; i++) {
 		printf("resp[%d] = %f;\n",i,resp[i]);
 	}
 
