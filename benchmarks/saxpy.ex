@@ -52,7 +52,7 @@ PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 #Hok.synchronize()
 
 next = System.monotonic_time()
-IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 result = Hok.get_gmatrex(ref3)
 IO.inspect result
