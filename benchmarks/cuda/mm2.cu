@@ -80,7 +80,7 @@ int main(int argc, char const *argv[])
     
     
     int m = value;
-    int block_size = 16;
+    
     cudaError_t j_error;
     
 
@@ -90,7 +90,7 @@ int main(int argc, char const *argv[])
     float *cpu_result = (float*) malloc(m*m*sizeof(float));
     
     srand(time(0));
-
+    /*
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < m; ++j) {
             a[i * m + j] =  (rand() %(100 -1 + 1)) + 1;
@@ -102,12 +102,25 @@ int main(int argc, char const *argv[])
             b[i * m + j] = (rand() %(100 -1 + 1)) + 1;
         }
     }
+    */
+
+for (int i = 1; i <= m*m; ++i) {
+    a[i] = i;
+}
+
+
+for (int i = 1; i <= m*m; ++i) {
+    b[i] = i;
+}
+
+  
 
 
     //for (int i=0;i<m;i++)
     //    printf("v %f\n",b[10]);
     float *d_a, *d_b, *d_c;
 
+  int block_size = 16;
     int grid_rows = (m + block_size - 1) / block_size;
     int grid_cols = (m + block_size - 1) / block_size;
     dim3 dimGrid(grid_cols, grid_rows);
