@@ -59,8 +59,8 @@ int main(int argc, char *argv[])
     //int threadsPerBlock = 128;
     //int  numberOfBlocks = (N + threadsPerBlock - 1)/ threadsPerBlock;
 
-   threadsPerBlock = 256;
-      numberOfBlocks = 1024;
+   int threadsPerBlock = 256;
+   int   numberOfBlocks = 1024;
 
     float time;
     cudaEvent_t start, stop;   
