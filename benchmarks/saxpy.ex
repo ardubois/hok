@@ -19,7 +19,7 @@ defh saxpy(a,b)do
   def map2(t1,t2,t3,size,func) do
       threadsPerBlock = 256;
       numberOfBlocks = 1024;
-      numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
+     # numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
       Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
   end
 end
