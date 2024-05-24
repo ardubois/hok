@@ -54,5 +54,5 @@ PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 next = System.monotonic_time()
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref3)
+_result = Hok.get_gmatrex(ref3)
 #IO.inspect result
