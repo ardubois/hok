@@ -106,11 +106,12 @@ int main(int argc, char *argv[])
 
     printf("CUDA\t%d\t%3.1f\n", N,time);
 
+/*
     for(int i=0; i<10; i++) {
 		printf("resp[%d] = %f;\n",i,resp[i]);
 	}
 
-
+*/
 	//printf("\n FINAL RESULTADO: %f \n", c);
 
 	free(a);
