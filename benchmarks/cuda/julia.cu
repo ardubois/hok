@@ -202,7 +202,7 @@ int main( int argc, char const *argv[] ) {
 
     printf("CUDA\t%d\t%3.1f\n", usr_value,time);
     
-    genBpm(height,width,h_pixelbuffer);
+    //genBpm(height,width,h_pixelbuffer);
    
     free(h_pixelbuffer);
     cudaFree(d_pixelbuffer);
