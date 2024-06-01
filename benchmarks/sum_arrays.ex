@@ -37,8 +37,8 @@ size = String.to_integer(arg)
 
 #size = 10000
 
-a1 = Matrex.new(1, size, fn -> :rand.uniform() end)
-a2 = Matrex.new(1, size, fn -> :rand.uniform() end)
+a1 = Matrex.new(1, size, fn -> 1 end)
+a2 = Matrex.new(1, size, fn -> 2 end)
 
 prev = System.monotonic_time()
 
