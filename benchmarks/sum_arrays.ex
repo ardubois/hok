@@ -8,10 +8,10 @@ Hok.defmodule Comp do
       r[id] = f(a1,a2,id)
     end
   end
-  def map2_xy(t1,t2,size,func) do
+  def map2_xy(t1,t2,r,size,func) do
       threadsPerBlock = 128;
       numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&Comp.map2_xy_kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,size,func])
+      Hok.spawn(&Comp.map2_xy_kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,r,size,func])
   end
 
   def comp_xy_2arrays(a1,a2,size,func) do
@@ -20,10 +20,10 @@ Hok.defmodule Comp do
     a1_gpu = Hok.new_gmatrex(a1)
     a2_gpu = Hok.new_gmatrex(a2)
 
-    Comp.map2_xy(a1,a2,size,func)
+    Comp.map2_xy(a1_gpu,a2_gpu,result_gpusize,func)
 
-    r_gpu = Hok.get_gmatrex(result_gpu)
-    r_gpu
+    r = Hok.get_gmatrex(result_gpu)
+    r
   end
 
 def replicate(n, x), do: (for _ <- 1..n, do: x)
