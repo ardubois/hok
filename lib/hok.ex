@@ -20,10 +20,7 @@ defmodule Hok do
   defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
       quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end))
   end
-  defmacro gpufor(comp, arr1, arr2,do: body) do
-    IO.inspect comp
-    raise "hell"
-  end
+
   defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, arr1, arr2,do: body) do
        r=      quote do: Comp.map2_xy(unquote(arr1), unquote(arr2), unquote(e1),
                                           Hok.hok (fn (unquote(arr1),
