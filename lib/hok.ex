@@ -17,20 +17,19 @@ defmodule Hok do
     result
   end
 
-  defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, {:<-,_, [var2, {:..,_, [_b2, e2]}]},arr1,arr2,do: body) do
   defmacro gpufor({:<-, _ ,[var,tensor]},do: b)  do
       quote do: Comp.comp(unquote(tensor), Hok.hok (fn (unquote(var)) -> (unquote b) end))
   end
 
-#  defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, arr1, arr2,do: body) do
-#       r=      quote do: Comp.map2_xy(unquote(arr1), unquote(arr2), unquote(e1),
-#                                          Hok.hok (fn (unquote(arr1),
-#                                                       unquote(arr2),
-#                                                       unquote(var1)) -> (unquote body) end))
-#      #IO.inspect r
-#       #raise "hell"
-#       r
-#  end
+  defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, arr1, arr2,do: body) do
+       r=      quote do: Comp.map2_xy(unquote(arr1), unquote(arr2), unquote(e1),
+                                          Hok.hok (fn (unquote(arr1),
+                                                       unquote(arr2),
+                                                       unquote(var1)) -> (unquote body) end))
+      #IO.inspect r
+       #raise "hell"
+       r
+  end
 
   defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, {:<-,_, [var2, {:..,_, [_b2, e2]}]},arr1,arr2, par3, do: body) do
        r=      quote do: MM.comp2xy2D1p(unquote(arr1), unquote(arr2), unquote(par3), unquote(e1), unquote(e2),
