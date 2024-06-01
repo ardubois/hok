@@ -31,8 +31,11 @@ end
 
 Hok.include [Comp]
 
+[arg] = System.argv()
 
-size = 10000
+size = String.to_integer(arg)
+
+#size = 10000
 
 a1 = Matrex.new([Comp.replicate(size,1)])
 
