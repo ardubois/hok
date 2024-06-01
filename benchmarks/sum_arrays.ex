@@ -37,9 +37,8 @@ size = String.to_integer(arg)
 
 #size = 10000
 
-a1 = Matrex.new([Comp.replicate(size,1)])
-
-a2 = Matrex.new([Comp.replicate(size,2)])
+a1 = Matrex.new(1, size, fn -> :rand.uniform() end)
+a2 = Matrex.new(1, size, fn -> :rand.uniform() end)
 
 prev = System.monotonic_time()
 
