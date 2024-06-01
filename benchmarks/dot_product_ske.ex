@@ -127,6 +127,6 @@ result = Hok.get_gmatrex(result_gpu)
 
 
 next = System.monotonic_time()
-IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 IO.inspect result
