@@ -162,10 +162,10 @@ nn_d = data_set_device
       |> NN.reduce(&NN.menor/2)
 
 
-nn = Hok.get_gmatrex(nn_d)
+_nn = Hok.get_gmatrex(nn_d)
 
 next = System.monotonic_time()
-IO.puts "GPotion\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 #result_elixir = Enum.reverse(NN.euclid_seq(list_data_set,0.0,0.0))
 

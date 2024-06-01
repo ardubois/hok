@@ -81,6 +81,6 @@ image = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
 #image = Hok.get_gmatrex(ref)
 next = System.monotonic_time()
 
-IO.puts "GPotion\t#{dim}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok\t#{dim}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-BMP.gen_bmp('julia2gpotion.bmp',dim,image)
+#BMP.gen_bmp('julia2gpotion.bmp',dim,image)
