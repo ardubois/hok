@@ -22,7 +22,7 @@ defmodule Hok do
   end
 
   defmacro gpufor({:<-,_, [var1, {:..,_, [_b1, e1]}]}, arr1, arr2,do: body) do
-       r=      quote do: Comp.map2_xy(unquote(arr1), unquote(arr2), unquote(e1),
+       r=      quote do: Comp.comp_xy_2arrays(unquote(arr1), unquote(arr2), unquote(e1),
                                           Hok.hok (fn (unquote(arr1),
                                                        unquote(arr2),
                                                        unquote(var1)) -> (unquote body) end))
