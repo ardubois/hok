@@ -90,14 +90,18 @@ end
 
 Hok.include [DP]
 
-n = 10000000
+[arg] = System.argv()
 
+n = String.to_integer(arg)
+
+#n = 10000000
 #list = [Enum.to_list(1..n)]
+#list = [DP.replicate(n,1)]
+#vet1 = Matrex.new(list)
+#vet2 = Matrex.new(list)
 
-list = [DP.replicate(n,1)]
-
-vet1 = Matrex.new(list)
-vet2 = Matrex.new(list)
+vet1 = Matrex.new(1, n, fn -> :rand.uniform() end)
+vet2 = Matrex.new(1, n, fn -> :rand.uniform() end)
 
 ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
