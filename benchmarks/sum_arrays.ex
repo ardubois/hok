@@ -41,7 +41,7 @@ prev = System.monotonic_time()
 
 #result = Comp.comp(array, Hok.hok (fn (a) ->  a + 10.0 end))
 
-result = Hok.gpufor x<- 0..size, a1,a2 do: a1[i] + a2[i]
+result = Hok.gpufor x <- 0..size, a1,a2 do: a1[i] + a2[i]
 
 next = System.monotonic_time()
 
