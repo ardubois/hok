@@ -1,10 +1,6 @@
 require Hok
 Hok.defmodule Comp do
 
-  #defh soma(x,y) do
-  #  x + y
-  #end
-
   defk map2_xy_kernel(a1,a2,r,size,f) do
     id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
