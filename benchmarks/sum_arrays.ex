@@ -2,7 +2,7 @@ require Hok
 Hok.defmodule Comp do
   deft map2_xy_kernel gmatrex ~> gmatrex ~> gmatrex ~> integer ~> [gmatrex ~> gmatrex ~> integer] ~> unit
   defk map2_xy_kernel(a1,a2,r,size,f) do
-    id = blockIdx.x * blockDim.x + threadIdx.x
+    var int id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
       r[id] = f(a1,a2,id)
     end
