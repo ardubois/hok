@@ -44,11 +44,11 @@ prev = System.monotonic_time()
 
 #result = Comp.comp(array, Hok.hok (fn (a) ->  a + 10.0 end))
 
-result = Hok.gpufor i <- 0..size, a1,a2 do
+_result = Hok.gpufor i <- 0..size, a1,a2 do
  a1[i] + a2[i]
 end
 next = System.monotonic_time()
 
 IO.puts "Hok\t#{size}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-IO.inspect result
+#IO.inspect result
