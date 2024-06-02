@@ -104,19 +104,11 @@ n = String.to_integer(arg)
 vet1 = Matrex.new(1, n, fn -> :rand.uniform() end)
 vet2 = Matrex.new(1, n, fn -> :rand.uniform() end)
 
+prev = System.monotonic_time()
+
 ref1= Hok.new_gmatrex(vet1)
 ref2 = Hok.new_gmatrex(vet2)
 
-
-prev = System.monotonic_time()
-
-
-
-#result_gpu = ref1
-#    |> DP.map2(ref2, &DP.mult/2)
-#    |> DP.reduce(&DP.sum/2)
-
-#IO.puts "aqui........"
 
 result_gpu = ref1
     |> DP.map2(ref2, Hok.hok fn (a,b) -> a * b end)
