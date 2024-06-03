@@ -3,31 +3,31 @@ require Hok
 
 Hok.defmodule MM do
 
-defk map2xy2D_kernel(arr1,arr2, resp,size,f) do
+defk map2xy2D_kernel(arr1,arr2,par, resp,size,f) do
   row  = blockIdx.y * blockDim.y + threadIdx.y
   col = blockIdx.x * blockDim.x + threadIdx.x
-
+  type par int
   type arr1 matrex
   type arr2 matrex
 
   if(col < size && row < size) do
-    resp[row * size + col] = f(arr1,arr2,row,col)
+    resp[row * size + col] = f(arr1,arr2,par,row,col)
   end
 end
-def map2xy2D(arr1,arr2,resp,size,f) do
+def map2xy2D1p(arr1,arr2,par,resp,size,f) do
   block_size = 16
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
 
-  Hok.spawn_jit(&MM.map2xy2D_kernel/5,{grid_rows,grid_cols,1},{block_size,block_size,1},[arr1,arr2,resp,size,f])
+  Hok.spawn(&MM.map2xy2D_kernel/6,{grid_cols,grid_rows,1},{block_size,block_size,1},[arr1,arr2,par,resp,size,f])
 end
-def comp2xy2D(arr1,arr2,size1,size2,f) do
+def comp2xy2D1p(arr1,arr2,par,size1,size2,f) do
 
     result_gpu = Hok.new_gmatrex(1,size1*size2)
     arr1_gpu = Hok.new_gmatrex(arr1)
     arr2_gpu = Hok.new_gmatrex(arr2)
 
-    MM.map2xy2D(arr1_gpu, arr2_gpu, result_gpu, size1,f)
+    MM.map2xy2D1p(arr1_gpu, arr2_gpu,par, result_gpu, size1,f)
 
     r_gpu = Hok.get_gmatrex(result_gpu)
     r_gpu
@@ -36,11 +36,11 @@ end
 
 Hok.include [MM]
 
-#[arg] = System.argv()
+[arg] = System.argv()
 
-#m = String.to_integer(arg)
+m = String.to_integer(arg)
 
-m = 1000
+#m = 1000
 
 #n = m
 #k=m
@@ -58,10 +58,10 @@ prev = System.monotonic_time()
 
 
 
-_result = Hok.gpufor x <- 0..1000, y <- 0..1000, mat1, mat2 do
+_result = Hok.gpufor x <- 0..m, y <- 0..m, mat1, mat2,m do
             sum = 0.0
-            for i in range(0,1000,1) do
-                  sum = sum + mat1[x * 1000 + i] * mat2[i * 1000 + y]
+            for i in range(0,m,1) do
+                  sum = sum + mat1[x * m + i] * mat2[i * m + y]
             end
             sum
           end
