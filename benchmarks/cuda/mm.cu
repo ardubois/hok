@@ -1,19 +1,49 @@
 #include <stdio.h>
 #include <time.h>
-__global__ void gpu_mm(float *a,float *b, float *c, int m, int n, int k)
-{ 
-    int row = blockIdx.y * blockDim.y + threadIdx.y; 
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    float sum = 0;
-    if( col < k && row < m) 
-    {
-        for(int i = 0; i < n; i++) 
-        {
-            sum += a[row * n + i] * b[i * k + col];
-        }
-        c[row * k + col] = sum;
-    }
-} 
+
+
+__global__
+void map2xy2D_kernel(float *arr1, float *arr2, int par, float *resp, int size, float (*f)(float*,float*,int,int,int))
+{
+        int row = ((blockIdx.y * blockDim.y) + threadIdx.y);
+        int col = ((blockIdx.x * blockDim.x) + threadIdx.x);
+
+
+
+if(((col < size) && (row < size)))
+{
+        resp[((row * size) + col)] = f(arr1, arr2, par, row, col);
+}
+
+}
+
+
+
+__device__
+float anonymous_9nl89mhko6(float *mat1, float *mat2, int m, int x, int y)
+{
+        float sum = 0.0;
+for( int i = 0; i<m; i+=1){
+        sum = (sum + (mat1[((x * m) + i)] * mat2[((i * m) + y)]));
+}
+
+return (sum);
+}
+
+__device__ void* anonymous_9nl89mhko6_ptr = (void*) anonymous_9nl89mhko6;
+
+void* get_anonymous_9nl89mhko6_ptr()
+{
+        void* host_function_ptr;
+        cudaMemcpyFromSymbol(&host_function_ptr, anonymous_9nl89mhko6_ptr, sizeof(void*));
+        return host_function_ptr;
+}
+
+
+
+
+
+
 
 void cpu_mm(float *h_a, float *h_b, float *h_result, int m, int n, int k) {
     for (int i = 0; i < m; ++i) 
@@ -50,7 +80,7 @@ int main(int argc, char const *argv[])
     
     
     int m = value;
-    int block_size = 16;
+    
     cudaError_t j_error;
     
 
@@ -60,7 +90,7 @@ int main(int argc, char const *argv[])
     float *cpu_result = (float*) malloc(m*m*sizeof(float));
     
     srand(time(0));
-
+    /*
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < m; ++j) {
             a[i * m + j] =  (rand() %(100 -1 + 1)) + 1;
@@ -72,12 +102,25 @@ int main(int argc, char const *argv[])
             b[i * m + j] = (rand() %(100 -1 + 1)) + 1;
         }
     }
+    */
+
+for (int i = 1; i <= m*m; ++i) {
+    a[i] = rand() %1000;
+}
+
+
+for (int i = 1; i <= m*m; ++i) {
+    b[i] = rand() %1000;
+}
+
+  
 
 
     //for (int i=0;i<m;i++)
     //    printf("v %f\n",b[10]);
     float *d_a, *d_b, *d_c;
 
+  int block_size = 16;
     int grid_rows = (m + block_size - 1) / block_size;
     int grid_cols = (m + block_size - 1) / block_size;
     dim3 dimGrid(grid_cols, grid_rows);
@@ -111,8 +154,10 @@ int main(int argc, char const *argv[])
      j_error = cudaGetLastError();
     if(j_error != cudaSuccess) printf("Error 5: %s\n", cudaGetErrorString(j_error));
     
+    float (*f)(float*,float*,int,int,int) =  (float (*)(float*,float*,int,int,int)) get_anonymous_9nl89mhko6_ptr();
     
-    gpu_mm<<<dimGrid, dimBlock>>>(d_a, d_b, d_c, m,m,m);  
+
+    map2xy2D_kernel<<<dimGrid, dimBlock>>>(d_a, d_b, m, d_c, m,f);  
    
     j_error = cudaGetLastError();
     if(j_error != cudaSuccess) printf("Error 6: %s\n", cudaGetErrorString(j_error));
