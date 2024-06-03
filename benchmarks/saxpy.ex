@@ -31,10 +31,8 @@ Hok.include [PMap2]
 n = String.to_integer(arg)
 
 
-list = [Enum.to_list(1..n)]
-
-vet1 = Matrex.new(list)
-vet2 = Matrex.new(list)
+vet1 = Matrex.new(1, n, fn -> :rand.uniform() end)
+vet2 = Matrex.new(1, n, fn -> :rand.uniform() end)
 
 prev = System.monotonic_time()
 
@@ -45,14 +43,16 @@ ref3= Hok.new_gmatrex(1,n)
 
 
 
-PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
+PMap2.map2(ref1,ref2,ref3,n, Hok.lt(&PMap2.saxpy/2))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> 2*a+b end))
 
 #Hok.synchronize()
 
+_result = Hok.get_gmatrex(ref3)
+
 next = System.monotonic_time()
 IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-_result = Hok.get_gmatrex(ref3)
+
 #IO.inspect result
