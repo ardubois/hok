@@ -20,7 +20,7 @@ defh saxpy(a,b)do
       threadsPerBlock = 256;
       numberOfBlocks = 1024;
      # numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
-      Hok.spawn(&PMap2.map_2kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
+      Hok.spawn(Hok.lt(&PMap2.map_2kernel/5),{numberOfBlocks,1,1},{threadsPerBlock,1,1},[t1,t2,t3,size,func])
   end
 end
 
