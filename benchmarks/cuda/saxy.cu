@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
     resp = (float*)malloc(N*sizeof(float));
 
     for(int i=0; i<N; i++) {
-		a[i] = i+1;
+		a[i] = rand();
 		
 	}
 
     for(int i=0; i<N; i++) {
-		b[i] = i+1;
+		b[i] =rand();
 		
 	}
 
