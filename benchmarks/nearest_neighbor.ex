@@ -59,7 +59,7 @@ Hok.defmodule NN do
     threadsPerBlock = 256
     blocksPerGrid = div(size + threadsPerBlock - 1, threadsPerBlock)
     numberOfBlocks = blocksPerGrid
-    Hok.spawn(&NN.reduce_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
+    Hok.spawn(Hok.lt(&NN.reduce_kernel/4),{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref4, result_gpu, f, size])
     result_gpu
 end
 defk reduce_kernel(a, ref4, f,n) do
@@ -118,7 +118,7 @@ end
   end
   def map_step_2para_1resp(d_array,step, par1, par2, size, f) do
       distances_device = Hok.new_gmatrex(1,size)
-      Hok.spawn(&NN.map_step_2para_1resp_kernel/7,{size,1,1},{1,1,1},[d_array,distances_device,step,par1,par2,size,f])
+      Hok.spawn(Hok.lt(&NN.map_step_2para_1resp_kernel/7),{size,1,1},{1,1,1},[d_array,distances_device,step,par1,par2,size,f])
       distances_device
   end
   deft euclid gmatrex ~> float ~> float ~> float
@@ -148,18 +148,17 @@ Hok.include [NN]
 size = String.to_integer(arg)
 
 
-list_data_set = DataSet.gen_data_set(2*size)
+list_data_set = DataSet.gen_data_set(size)
 
 data_set_host = Matrex.new([list_data_set])
 
-data_set_device = Hok.new_gmatrex(data_set_host)
-
 
 prev = System.monotonic_time()
+data_set_device = Hok.new_gmatrex(data_set_host)
 
 nn_d = data_set_device
-      |> NN.map_step_2para_1resp(2,0.0,0.0,size, &NN.euclid/3)
-      |> NN.reduce(&NN.menor/2)
+      |> NN.map_step_2para_1resp(2,0.0,0.0,size, Hok.lt(&NN.euclid/3))
+      |> NN.reduce(Hok.lt(&NN.menor/2))
 
 
 _nn = Hok.get_gmatrex(nn_d)

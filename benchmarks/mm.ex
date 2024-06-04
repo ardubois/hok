@@ -19,7 +19,7 @@ def map2xy2D1p(arr1,arr2,par,resp,size,f) do
   grid_rows = trunc ((size + block_size - 1) / block_size)
   grid_cols = trunc ((size + block_size - 1) / block_size)
 
-  Hok.spawn(&MM.map2xy2D_kernel/6,{grid_cols,grid_rows,1},{block_size,block_size,1},[arr1,arr2,par,resp,size,f])
+  Hok.spawn(Hok.lt(&MM.map2xy2D_kernel/6),{grid_cols,grid_rows,1},{block_size,block_size,1},[arr1,arr2,par,resp,size,f])
 end
 def comp2xy2D1p(arr1,arr2,par,size1,size2,f) do
 
@@ -51,8 +51,11 @@ m = String.to_integer(arg)
 #mat1 = Matrex.apply(mat,f)
 #mat2 = Matrex.apply(mat,f)
 
-mat1 = Matrex.new([Enum.to_list(1..m*m)])
-mat2 = Matrex.new([Enum.to_list(1..m*m)])
+#mat1 = Matrex.new([Enum.to_list(1..m*m)])
+#mat2 = Matrex.new([Enum.to_list(1..m*m)])
+
+mat1 = Matrex.new(1, m*m, fn -> :rand.uniform(1000) end)
+mat2 = Matrex.new(1, m*m, fn -> :rand.uniform(1000) end)
 
 prev = System.monotonic_time()
 
