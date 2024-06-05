@@ -14,14 +14,13 @@ n = String.to_integer(arg)
 list1 = Enum.to_list(1..n)
 list2 = Enum.to_list(1..n)
 
+two = Enum.zip(list1,list2)
+
 prev = System.monotonic_time()
 
-#_result = for i <- 0..size, a1,a2 do
-#  a1[i] + a2[i]
-#end
-_r = list1
-   |> Saxpy.map2(list2,&Saxpy.saxpy/2)
-
+_result = for {a,b} <- two do
+    a+b
+end
 
 next = System.monotonic_time()
 IO.puts "Elixir\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
