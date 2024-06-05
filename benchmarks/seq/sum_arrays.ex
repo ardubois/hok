@@ -16,9 +16,9 @@ list2 = Enum.to_list(1..n)
 
 prev = System.monotonic_time()
 
-_result = for i <- 0..size, a1,a2 do
-  a1[i] + a2[i]
-end
+#_result = for i <- 0..size, a1,a2 do
+#  a1[i] + a2[i]
+#end
 _r = list1
    |> Saxpy.map2(list2,&Saxpy.saxpy/2)
 
