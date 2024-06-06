@@ -76,7 +76,7 @@ dim = m
 
 prev = System.monotonic_time()
 
-image = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
+_image = Julia.mapgen2D_step_xy_1para_noret(4,dim,dim, &Julia.julia_function/4)
 
 #image = Hok.get_gmatrex(ref)
 next = System.monotonic_time()
