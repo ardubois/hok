@@ -55,7 +55,7 @@ dim = user_value
 
 indices = for i <- Enum.to_list(0..(dim-1)), j<-Enum.to_list(0..(dim-1)), do: {i,j}
 prev = System.monotonic_time()
-imageseq = Enum.map(indices, fn indices -> Julia.julia_seq(dim,indices) end)
+_imageseq = Enum.map(indices, fn indices -> Julia.julia_seq(dim,indices) end)
 next = System.monotonic_time()
 IO.puts "Elixir\t#{dim}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 #imageseq = Enum.reduce(imageseq,[], fn a,b -> a ++ b end)
