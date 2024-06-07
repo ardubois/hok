@@ -1,7 +1,7 @@
 require Hok
 
 Hok.defmodule Saxpy do
-import Hok
+
 defk saxpy_kernel(a,b,c,n) do
    index = blockIdx.x * blockDim.x + threadIdx.x;
    stride = blockDim.x * gridDim.x;
