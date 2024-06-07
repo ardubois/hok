@@ -21,8 +21,8 @@ list = [Enum.to_list(1..n)]
 mat1 = Matrex.new(list)
 mat2 = Matrex.new(list)
 
-gmatrex1 = Hok.new_gmatrex(vet1)
-gmatrex2 = Hok.new_gmatrex(vet2)
+gmatrex1 = Hok.new_gmatrex(mat1)
+gmatrex2 = Hok.new_gmatrex(mat2)
 gmatrex3 = Hok.new_gmatrex(1,n)
 
 threadsPerBlock = 128;
