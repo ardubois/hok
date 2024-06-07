@@ -28,8 +28,8 @@ gmr = Hok.new_gmatrex(1,n)
 threadsPerBlock = 128;
 numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
-Hok.spawn(Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm1,gm2,gmr,n])
+Hok.spawn(&Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm1,gm2,gmr,n])
 
 
 
-result = Hok.get_gmatrex(gmr)
+_result = Hok.get_gmatrex(gmr)
