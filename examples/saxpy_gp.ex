@@ -21,18 +21,18 @@ list = [Enum.to_list(1..n)]
 mat1 = Matrex.new(list)
 mat2 = Matrex.new(list)
 
-gmatrex1 = Hok.new_gmatrex(mat1)
-gmatrex2 = Hok.new_gmatrex(mat2)
-gmatrex3 = Hok.new_gmatrex(1,n)
+gm1 = Hok.new_gmatrex(mat1)
+gm2 = Hok.new_gmatrex(mat2)
+gmr = Hok.new_gmatrex(1,n)
 
 threadsPerBlock = 128;
 numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
-Hok.spawn(Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref3,ref1,ref2,n])
+Hok.spawn(Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm1,gm2,gmr,n])
 
 
 next = System.monotonic_time()
 IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
-result = Hok.get_gmatrex(ref3)
+result = Hok.get_gmatrex(gmr)
 IO.inspect result
