@@ -32,4 +32,6 @@ Hok.spawn(&Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm1,
 
 
 
-_result = Hok.get_gmatrex(gmr)
+result = Hok.get_gmatrex(gmr)
+
+IO.inspect result
