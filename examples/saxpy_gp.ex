@@ -31,8 +31,5 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 Hok.spawn(Saxpy.saxpy_kernel/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm1,gm2,gmr,n])
 
 
-next = System.monotonic_time()
-IO.puts "time gpu #{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 result = Hok.get_gmatrex(gmr)
-IO.inspect result
