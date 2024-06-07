@@ -3,7 +3,7 @@ require Hok
 Hok.defmodule Saxpy do
 import Hok
 defk saxpy_kernel(a,b,c,n) do
-   intex = blockIdx.x * blockDim.x + threadIdx.x;
+   index = blockIdx.x * blockDim.x + threadIdx.x;
    stride = blockDim.x * gridDim.x;
 
   for i in range(index,n,stride) do
