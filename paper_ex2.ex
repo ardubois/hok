@@ -1,8 +1,8 @@
 require Hok
 Hok.defmodule Ex1 do
   #deft inc float ~> float
-  defh inc(a)do
-     1+a
+  defh square(x)do
+     x*x
   end
   #deft apply_k gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk apply_k(a,r,size,f) do
