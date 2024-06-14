@@ -417,8 +417,8 @@ def type_check_args(kernel,narg, [{rt , ft} | t1], [{:anon, _name, { art , aft}}
   end
 end
 def type_check_args(kernel,narg, [{rt , ft} | t1], [func |t2]) when is_function(func) do
-  IO.inspect func
-  raise "hell"
+  #IO.inspect func
+  #raise "hell"
    {art,aft} = load_type(func)
    #IO.inspect ft
    #IO.inspect aft
