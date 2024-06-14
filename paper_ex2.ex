@@ -1,6 +1,6 @@
 require Hok
 Hok.defmodule Ex1 do
-  deft inc float ~> float
+  deft square float ~> float
   defh square(x)do
      1.0+x
   end
