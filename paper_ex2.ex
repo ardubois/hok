@@ -1,12 +1,12 @@
 require Hok
 Hok.defmodule Ex1 do
-  #deft inc float ~> float
+  deft inc float ~> float
   defh square(x)do
      1.0+x
   end
-  #deft apply_k gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
+  deft apply_k gmatrex ~> gmatrex ~> integer ~> [ float ~> float]  ~> unit
   defk apply_k(a,r,size,f) do
-   id  = blockIdx.x * blockDim.x + threadIdx.x
+   var id int  = blockIdx.x * blockDim.x + threadIdx.x
    if(id < size) do
       r[id] = f(a[id])
     end
