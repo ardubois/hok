@@ -32,7 +32,7 @@ numberOfBlocks = div(n + threadsPerBlock - 1, threadsPerBlock)
 
 prev = System.monotonic_time()
 
-Hok.spawn(&Ex1.apply_k/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[vet1_gpu,resp_gpu,n, &Ex1.inc/1])
+Hok.spawn(&Ex1.apply_k/4,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[vet1_gpu,resp_gpu,n, &Ex1.square/1])
 #Hok.synchronize()
 
 next = System.monotonic_time()
