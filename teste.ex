@@ -1,20 +1,10 @@
-defmodule Teste do
 
-  defmacro m(ast)do
-    nast= Macro.escape ast
-    quote do: IO.inspect (unquote nast)
-  end
-end
 
-defmodule Teste2 do
-require Teste
 
-def dowork() do
+t = Nx.tensor([[1, 2, 3, 4]],type: {:f, 32})
 
-  Teste.m(1+3*4)
+gm = Hok.new_gmatrex(t)
 
-end
+mt = Hok.get_gmatrex(gm)
 
-end
-
-Teste2.dowork
+IO.inspect mt

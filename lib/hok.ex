@@ -6,7 +6,7 @@ defmodule Hok do
   end
 
   defmacro hok(function) do
-     #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
+    #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
     #IO.inspect function
     #raise "hell"
@@ -224,6 +224,10 @@ end
 def new_gmatrex(%Matrex{data: matrix} = a) do
   ref=create_ref_nif(matrix)
   {ref, Matrex.size(a)}
+end
+def new_gmatrex((%Nx.Tensor{data: data, type: type, shape: shape, names: name}) ) do
+  ref=new_gmatrex_pinned_nif(array)
+  {ref, {l,c}}
 end
 def new_gmatrex({array,{l,c}}) do
   ref=new_gmatrex_pinned_nif(array)
