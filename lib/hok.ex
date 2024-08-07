@@ -225,10 +225,10 @@ def new_gmatrex(%Matrex{data: matrix} = a) do
   ref=create_ref_nif(matrix)
   {ref, Matrex.size(a)}
 end
-def new_gmatrex((%Nx.Tensor{data: data, type: type, shape: shape, names: name}) ) do
+def new_gmatrex((%Nx.Tensor{data: data, type: _type, shape: shape, names: _name}) ) do
   %Nx.BinaryBackend{ state: array} = data
 
-  ref=new_gmatrex_pinned_nif(array)
+  ref=create_ref_nif(array)
   {ref, shape}
 end
 def new_gmatrex({array,{l,c}}) do
