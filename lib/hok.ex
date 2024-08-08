@@ -207,7 +207,9 @@ defmodule Hok do
 #######
 ####################
 
-
+def create_nx_ref_nif(_matrex,_l,_c) do
+  raise "NIF create_nx_ref_nif/3 not implemented"
+end
   def create_ref_nif(_matrex) do
     raise "NIF create_ref_nif/1 not implemented"
 end
@@ -227,8 +229,8 @@ def new_gmatrex(%Matrex{data: matrix} = a) do
 end
 def new_gmatrex((%Nx.Tensor{data: data, type: _type, shape: shape, names: _name}) ) do
   %Nx.BinaryBackend{ state: array} = data
-
-  ref=create_ref_nif(array)
+  {l,c} = shape
+  ref=create_nx_ref_nif(array,l,c)
   {ref, shape}
 end
 def new_gmatrex({array,{l,c}}) do
