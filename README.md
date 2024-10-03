@@ -1,21 +1,19 @@
-# Hok
+# Hok: Higher-Order GPU kernels in Elixir
 
-**TODO: Add description**
+**A DSL for GPU programming in Elixir**
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `hok` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:hok, "~> 0.1.0"}
-  ]
-end
+* Install Erlang, Elixir and nvcc
+* Install erlang-dev
+* ** cd hok **
+* type: **make clean**
+* type: **make**
+* Some benchmarks also need: **make bmp**
+* type: **mix deps.get**
+* type: **mix compile**
+* benchmarks are in the ***benchmarks*** folder
+* type **mix run benchmakrs/mm.ex 1024**
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/hok>.
 
