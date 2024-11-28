@@ -164,7 +164,7 @@ static ERL_NIF_TERM create_nx_ref_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
   error_gpu = cudaGetLastError();
   if(error_gpu != cudaSuccess)  
       { char message[200];
-        strcpy(message,"Error create_ref_nif: ");
+        strcpy(message,"Error create_nx_ref_nif: ");
         strcat(message, cudaGetErrorString(error_gpu));
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
       }
@@ -173,7 +173,7 @@ static ERL_NIF_TERM create_nx_ref_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
   error_gpu = cudaGetLastError();
   if(error_gpu != cudaSuccess)  
       { char message[200];
-        strcpy(message,"Error create_ref_nif: ");
+        strcpy(message,"Error create_nx_ref_nif: ");
         strcat(message, cudaGetErrorString(error_gpu));
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
       }

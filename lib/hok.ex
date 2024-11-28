@@ -227,11 +227,11 @@ def new_gmatrex(%Matrex{data: matrix} = a) do
   ref=create_ref_nif(matrix)
   {ref, Matrex.size(a)}
 end
-def new_gmatrex((%Nx.Tensor{data: data, type: _type, shape: shape, names: _name}) ) do
+def new_gmatrex((%Nx.Tensor{data: data, type: type, shape: shape, names: name}) ) do
   %Nx.BinaryBackend{ state: array} = data
   {l,c} = shape
   ref=create_nx_ref_nif(array,l,c)
-  {ref, shape}
+  {:nx, type, shape, name , ref}
 end
 def new_gmatrex({array,{l,c}}) do
   ref=new_gmatrex_pinned_nif(array)
@@ -262,7 +262,11 @@ def get_matrex_nif(_ref,_rows,_cols) do
 raise "NIF get_matrex_nif/1 not implemented"
 end
 def get_gmatrex({ref,{rows,cols}}) do
-%Matrex{data: get_matrex_nif(ref,rows,cols)}
+  %Matrex{data: get_matrex_nif(ref,rows,cols)}
+end
+def get_gmatrex({:nx, type, shape, name , ref}) do
+  {rows,cols} = shape
+  %Nx.Tensor{data: %Nx.BinaryBackend{ state: get_matrex_nif(ref,rows,cols)}, type: type, shape: shape, names: name}
 end
 
 def load_kernel_nif(_module,_fun) do
@@ -348,6 +352,9 @@ end
 defp process_args([{:func, func, _type}|t1]) do
   [load_fun(func)| process_args(t1)]
 end
+defp process_args([{:nx, _type, _shape, _name , ref}|t1]) do
+  [ref| process_args(t1)]
+end
 defp process_args([{matrex,{_rows,_cols}}| t1]) do
   [matrex | process_args(t1)]
 end
@@ -365,6 +372,9 @@ defp process_args_no_fun([{:anon,_name,_type}|t1]) do
 end
 defp process_args_no_fun([{:func, _func, _type}|t1]) do
   process_args_no_fun(t1)
+end
+defp process_args_no_fun([ {:nx, _type, _shape, _name , ref}| t1]) do
+  [ref | process_args_no_fun(t1)]
 end
 defp process_args_no_fun([{matrex,{_rows,_cols}}| t1]) do
   [matrex | process_args_no_fun(t1)]
@@ -384,6 +394,7 @@ defp process_args_no_fun([]), do: []
 def type_check_args(kernel,narg, [:matrex | t1], [a|t2]) do
     case a do
       {_ref,{_l,_c}} -> type_check_args(kernel,narg+1,t1,t2)
+      {:nx, _type, _shape, _name , _ref} -> type_check_args(kernel,narg+1,t1,t2)
       _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
     end
 

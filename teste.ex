@@ -1,4 +1,11 @@
-
+defmodule Teste do
+  def new_gmatrex((%Nx.Tensor{data: data, type: type, shape: shape, names: name}) ) do
+    %Nx.BinaryBackend{ state: array} = data
+    {l,c} = shape
+    #ref=create_nx_ref_nif(array,l,c)
+    IO.inspect {:nx, type, shape, name ,  array}
+  end
+end
 
 
 t = Nx.tensor([[1, 2, 3, 4]],type: {:f, 32})
