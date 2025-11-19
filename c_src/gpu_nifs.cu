@@ -53,12 +53,14 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
   char type_name[1024];
 
   ERL_NIF_TERM  result;
-  CUdeviceptr dev_array;
-  CUresult err;
+  void *dev_array;
+  void  **array_res;
+  cudaError_t error_gpu;
 
- init_cuda(env);
+
+ //init_cuda(env);
 // printf("entrou get array\n");
-  CUdeviceptr *array_res;
+  
 
     if (!enif_get_resource(env, argv[0], ARRAY_TYPE, (void **) &array_res)) {
        return enif_make_badarg(env);
@@ -88,6 +90,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
   if (strcmp(type_name, "float") == 0) 
   {
     
+    float *dev_array_f = (float*) dev_array;
 
     int result_size = sizeof(float) * (nrow*ncol);
     int data_size = sizeof(float) * (nrow*ncol);
@@ -98,7 +101,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
     
     
     //// MAKE CUDA CALL
-      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+      cudaMemcpy(ptr_matrix, dev_array_f, data_size, cudaMemcpyDeviceToHost );
       error_gpu = cudaGetLastError();
       if(error_gpu != cudaSuccess)  
       { char message[200];
@@ -110,7 +113,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
 
   } else if (strcmp(type_name, "int") == 0)
   {
-    
+    int *dev_array_i = (int*) dev_array;
     int result_size = sizeof(int) * (nrow*ncol);
     int data_size = sizeof(int) * (nrow*ncol);
     int *result_data = (int *) enif_make_new_binary(env, result_size, &result);
@@ -121,7 +124,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
     //// MAKE CUDA CALL
      // printf("cuda get\n");
      // printf("pointer %p\n",dev_array);
-      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+      cudaMemcpy(ptr_matrix, dev_array_i, data_size, cudaMemcpyDeviceToHost );
       error_gpu = cudaGetLastError();
       if(error_gpu != cudaSuccess)  
       { char message[200];
@@ -135,6 +138,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
     
   } else if (strcmp(type_name, "double") == 0)
   {
+    double *dev_array_d = (double*) dev_array;
    
     int result_size = sizeof(double) * (nrow*ncol);
     int data_size = sizeof(double) * (nrow*ncol);
@@ -144,7 +148,7 @@ static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TE
     ptr_matrix = result_data;
     
     //// MAKE CUDA CALL
-      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+      cudaMemcpy(ptr_matrix, dev_array_d, data_size, cudaMemcpyDeviceToHost );
   error_gpu = cudaGetLastError();
   if(error_gpu != cudaSuccess)  
       { char message[200];
