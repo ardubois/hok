@@ -40,6 +40,137 @@ load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
   return 0;
 }
 
+
+//////////////////////////////////////
+/////////////
+////////////  BEGIN NX ARRAYS
+/////////
+/////////////////////////////////////
+
+static ERL_NIF_TERM get_gpu_array_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+  int nrow;
+  int ncol;
+  char type_name[1024];
+
+  ERL_NIF_TERM  result;
+  CUdeviceptr dev_array;
+  CUresult err;
+
+ init_cuda(env);
+// printf("entrou get array\n");
+  CUdeviceptr *array_res;
+
+    if (!enif_get_resource(env, argv[0], ARRAY_TYPE, (void **) &array_res)) {
+       return enif_make_badarg(env);
+    }
+
+  dev_array = *array_res;
+
+   
+  if (!enif_get_int(env, argv[1], &nrow)) {
+      return enif_make_badarg(env);
+  }
+  
+  if (!enif_get_int(env, argv[2], &ncol)) {
+      return enif_make_badarg(env);
+  }
+
+  ERL_NIF_TERM e_type_name = argv[3];
+  unsigned int size_type_name;
+  if (!enif_get_list_length(env,e_type_name,&size_type_name)) {
+      return enif_make_badarg(env);
+  }
+
+  
+  enif_get_string(env,e_type_name,type_name,size_type_name+1,ERL_NIF_LATIN1);
+
+  
+  if (strcmp(type_name, "float") == 0) 
+  {
+    
+
+    int result_size = sizeof(float) * (nrow*ncol);
+    int data_size = sizeof(float) * (nrow*ncol);
+    float *result_data = (float *) enif_make_new_binary(env, result_size, &result);
+
+    float *ptr_matrix ;
+    ptr_matrix = result_data;
+    
+    
+    //// MAKE CUDA CALL
+      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+      error_gpu = cudaGetLastError();
+      if(error_gpu != cudaSuccess)  
+      { char message[200];
+        strcpy(message,"Error get_matrex_nif: ");
+        strcat(message, cudaGetErrorString(error_gpu));
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+      }
+
+
+  } else if (strcmp(type_name, "int") == 0)
+  {
+    
+    int result_size = sizeof(int) * (nrow*ncol);
+    int data_size = sizeof(int) * (nrow*ncol);
+    int *result_data = (int *) enif_make_new_binary(env, result_size, &result);
+
+    int *ptr_matrix ;
+    ptr_matrix = result_data;
+    
+    //// MAKE CUDA CALL
+     // printf("cuda get\n");
+     // printf("pointer %p\n",dev_array);
+      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+      error_gpu = cudaGetLastError();
+      if(error_gpu != cudaSuccess)  
+      { char message[200];
+        strcpy(message,"Error get_matrex_nif: ");
+        strcat(message, cudaGetErrorString(error_gpu));
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+      }
+
+     //////// END CUDA CALL
+
+    
+  } else if (strcmp(type_name, "double") == 0)
+  {
+   
+    int result_size = sizeof(double) * (nrow*ncol);
+    int data_size = sizeof(double) * (nrow*ncol);
+    double *result_data = (double *) enif_make_new_binary(env, result_size, &result);
+
+    double *ptr_matrix ;
+    ptr_matrix = result_data;
+    
+    //// MAKE CUDA CALL
+      cudaMemcpy(ptr_matrix, dev_array, data_size, cudaMemcpyDeviceToHost );
+  error_gpu = cudaGetLastError();
+  if(error_gpu != cudaSuccess)  
+      { char message[200];
+        strcpy(message,"Error get_matrex_nif: ");
+        strcat(message, cudaGetErrorString(error_gpu));
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+      }
+
+     //////// END CUDA CALL
+
+    
+  } else /* default: */
+ {
+    char message[200];
+        strcpy(message,"Error (get_gpu_array_nif) copying data from device to host: ");
+        strcat(message, type_name);
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+ }
+  return result;
+}
+
+
+
+
+////////////////////////////////
+
 static ERL_NIF_TERM new_pinned_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
 
   float *host_matrix;
@@ -296,7 +427,6 @@ static ERL_NIF_TERM get_matrex_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM 
 
   float *ptr_matrix ;
   ptr_matrix = result_data;
-  ptr_matrix +=2;
 
 
   //// MAKE CUDA CALL
