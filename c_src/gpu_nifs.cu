@@ -312,7 +312,7 @@ static ERL_NIF_TERM create_gpu_array_nx_nif(ErlNifEnv *env, int argc, const ERL_
         enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
  }
 
-  void **gpu_res = (void**)enif_alloc_resource(ARRAY_TYPE, sizeof(CUdeviceptr));
+  void **gpu_res = (void**)enif_alloc_resource(ARRAY_TYPE, sizeof(void*));
   *gpu_res = dev_array;
   term = enif_make_resource(env, gpu_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
