@@ -643,6 +643,7 @@ static ERL_NIF_TERM spawn_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[
 }
 
 static ErlNifFunc nif_funcs[] = {
+    {"get_gpu_array_nif", 4, get_gpu_array_nif},
     {"load_kernel_nif", 2, load_kernel_nif},
     {"load_fun_nif", 2, load_fun_nif},
     {"new_pinned_nif",2,new_pinned_nif},
