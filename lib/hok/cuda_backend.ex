@@ -383,7 +383,7 @@ end
 def gen_para(p,:double) do
   "double #{p}"
 end
-def gen_para(_p, {_ret,_type}) do
+def gen_para(_p, {ret,type}) do
 
   r="#{ret} (*#{p})(#{to_arg_list(type)})"
   r
