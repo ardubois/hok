@@ -276,6 +276,235 @@ def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
 
+##################################
+###############
+############### Nx compatibility
+#############
+#######################################
+
+def get_type_gnx({:nx, type, _shape, _name , _ref}) do
+  type
+end
+def get_type({:nx, type, _shape, _name , _ref}) do
+  type
+end
+def get_shape_gnx({:nx, _type, shape, _name , _ref}) do
+  shape
+end
+def get_shape({:nx, _type, shape, _name , _ref}) do
+  shape
+end
+def new_gnx(%Nx.Tensor{data: data, type: type, shape: shape, names: name}) do
+  %Nx.BinaryBackend{ state: array} = data
+ # IO.inspect name
+ # raise "hell"
+  {l,c} = case shape do
+    {c} -> {1,c}
+    {l,c} -> {l,c}
+    {l1,l2,c} -> {l1*l2,c}
+  end
+  ref  = case type do
+     {:f,32} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("float"))
+     {:f,64} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("double"))
+     {:s,32} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("int"))
+     x -> raise "new_gnx: type #{x} not suported"
+  end
+  {:nx, type, shape, name , ref}
+end
+def new_gnx(%Matrex{data: matrix} = a) do
+  #IO.puts "aqui!"
+    <<l::unsigned-integer-little-32,c::unsigned-integer-little-32,z::binary>> = matrix
+    ref = create_gpu_array_nx_nif(z,l,c,Kernel.to_charlist("float"))
+  {:matrex, ref, Matrex.size(a)}
+end
+def new_gnx(l,c,type) do
+ # IO.puts "aque"
+  ref = case type do
+    {:f,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("float"))
+    {:f,64} -> new_gpu_array_nif(l,c,Kernel.to_charlist("double"))
+    {:s,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("int"))
+    x -> raise "new_gnx: type #{x} not suported"
+ end
+
+ {:nx, type, {l,c}, [nil,nil] , ref}
+end
+def new_gnx({c},type) do
+  l = 1
+  # IO.puts "aque"
+   ref = case type do
+     {:f,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("float"))
+     {:f,64} -> new_gpu_array_nif(l,c,Kernel.to_charlist("double"))
+     {:s,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("int"))
+     x -> raise "new_gnx: type #{x} not suported"
+  end
+
+  {:nx, type, {c}, [nil] , ref}
+ end
+def new_gnx({l,c},type) do
+  # IO.puts "aque"
+   ref = case type do
+     {:f,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("float"))
+     {:f,64} -> new_gpu_array_nif(l,c,Kernel.to_charlist("double"))
+     {:s,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("int"))
+     x -> raise "new_gnx: type #{x} not suported"
+  end
+
+  {:nx, type, {l,c}, [nil,nil] , ref}
+ end
+def new_gnx({d1,d2,d3}, type) do
+  {l,c} = {d1*d2,d3}
+  ref = case type do
+    {:f,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("float"))
+    {:f,64} -> new_gpu_array_nif(l,c,Kernel.to_charlist("double"))
+    {:s,32} -> new_gpu_array_nif(l,c,Kernel.to_charlist("int"))
+    x -> raise "new_gnx: type #{x} not suported"
+ end
+
+ {:nx, type, {d1,d2,d3}, [nil,nil,nil] , ref}
+
+end
+def get_gnx({:matrex, ref, {rows,columns}}) do
+  bin = get_gpu_array_nif(ref,rows,columns,Kernel.to_charlist("float"))
+  array = <<rows::unsigned-integer-little-32, columns::unsigned-integer-little-32,bin::binary>>
+  %Matrex{data: array}
+end
+def get_gnx({:nx, type, shape, name , ref}) do
+  #IO.puts "aqui..."
+  {l,c} = case shape do
+    {c} -> {1,c}
+    {l,c} -> {l,c}
+    {d1,d2,d3} -> {d1*d2,d3}
+  end
+  ref = case type do
+    {:f,32} -> get_gpu_array_nif(ref,l,c,Kernel.to_charlist("float"))
+    {:f,64} -> get_gpu_array_nif(ref,l,c,Kernel.to_charlist("double"))
+    {:s,32} -> get_gpu_array_nif(ref,l,c,Kernel.to_charlist("int"))
+    x -> raise "new_gnx: type #{x} not suported"
+ end
+
+  %Nx.Tensor{data: %Nx.BinaryBackend{ state: ref}, type: type, shape: shape, names: name}
+end
+#def get_gnx({:matrex, ref,{rows,cols}}) do
+#  %Matrex{data: get_matrex_nif(ref,rows,cols)}
+#end
+def new_nx_from_function(l,c,type, fun) do
+  size = l*c
+  ref =case type do
+    {:f,32} -> new_matrix_from_function_f(size-1,fun, <<fun.()::float-little-32>>)
+    {:f,64} -> new_matrix_from_function_d(size-1,fun, <<fun.()::float-little-64>>)
+    {:s,32} -> new_matrix_from_function_i(size-1,fun, <<fun.()::integer-little-32>>)
+  end
+   %Nx.Tensor{data: %Nx.BinaryBackend{ state: ref}, type: type, shape: {l,c}, names:  [nil,nil]}
+end
+
+#######################
+defp new_matrix_from_function_d(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_d(size, function, accumulator),
+    do:
+      new_matrix_from_function_d(
+        size - 1,
+        function,
+        <<accumulator::binary, function.()::float-little-64>>
+      )
+defp new_matrix_from_function_i(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_i(size, function, accumulator),
+    do:
+      new_matrix_from_function_i(
+        size - 1,
+        function,
+        <<accumulator::binary, function.()::integer-little-32>>
+      )
+defp new_matrix_from_function_f(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_f(size, function, accumulator),
+    do:
+      new_matrix_from_function_f(
+        size - 1,
+        function,
+        <<accumulator::binary, function.()::float-little-32>>
+      )
+##############################
+def new_nx_from_function_arg(l,c,type, fun) do
+  size = l*c
+  ref =case type do
+    {:f,32} -> new_matrix_from_function_f_arg(size-1,fun, <<fun.(size)::float-little-32>>)
+    {:f,64} -> new_matrix_from_function_d_arg(size-1,fun, <<fun.(size)::float-little-64>>)
+    {:s,32} -> new_matrix_from_function_i_arg(size-1,fun, <<fun.(size)::integer-little-32>>)
+  end
+   %Nx.Tensor{data: %Nx.BinaryBackend{ state: ref}, type: type, shape: {l,c}, names:  [nil,nil]}
+end
+
+#######################
+defp new_matrix_from_function_d_arg(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_d_arg(size, function, accumulator),
+    do:
+      new_matrix_from_function_d_arg(
+        size - 1,
+        function,
+        <<accumulator::binary, function.(size)::float-little-64>>
+      )
+defp new_matrix_from_function_i_arg(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_i_arg(size, function, accumulator),
+    do:
+      new_matrix_from_function_i_arg(
+        size - 1,
+        function,
+        <<accumulator::binary, function.(size)::integer-little-32>>
+      )
+defp new_matrix_from_function_f_arg(0, _, accumulator), do: accumulator
+
+  defp new_matrix_from_function_f_arg(size, function, accumulator),
+    do:
+      new_matrix_from_function_f_arg(
+        size - 1,
+        function,
+        <<accumulator::binary, function.(size)::float-little-32>>
+      )
+##############################
+def new_gnx_fake(_size,type) do
+  {:nx, type, :shape, :name, :ref}
+end
+def new_gnx_fake ((%Nx.Tensor{data: _data, type: type, shape: shape, names: name}) ) do
+ # %Nx.BinaryBackend{ state: array} = data
+  #{l,c} = shape
+  #ref = case type do
+   #  {:f,32} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("float"))
+   #  {:f,64} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("double"))
+   #  {:s,32} -> create_gpu_array_nx_nif(array,l,c,Kernel.to_charlist("int"))
+   #  x -> raise "new_gmatrex: type #{x} not suported"
+  #end
+  {:nx, type, shape, name , :ref}
+end
+def get_array_type(%Nx.Tensor{data: _data, type: _type, shape: _shape, names: _name} = nx) do
+  Nx.type(nx)
+end
+def get_array_type(%Matrex{data: _matrix}) do
+  {:f,32}
+end
+def null(a) do
+  a
+end
+def new_gpu_array_nif(_l,_c,_type) do
+  raise "NIF new_gpu_array_nif/4 not implemented"
+end
+def get_gpu_array_nif(_matrex,_l,_c,_type) do
+  raise "NIF get_gpu_array_nif/4 not implemented"
+end
+def create_gpu_array_nx_nif(_matrex,_l,_c,_type) do
+  raise "NIF create_gpu_array_nx_nif/4 not implemented"
+end
+
+
+
+
+
+
+#############################
+############################
 ############################################################## Loading types and asts from files
 
 def load_type_ast(kernel) do
