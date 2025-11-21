@@ -361,7 +361,34 @@ defp type_to_list([type]) do
   [ {List.last(ltype), List.delete_at(ltype, length(ltype)-1)}]
 end
 defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
-defp type_to_list({x,_,_}), do: raise "Unknown type constructor #{x}"
+defp type_to_list({:arr,_,_}) do
+  type = get_default_type()
+  case type do
+    :int -> [:tint]
+    :float -> [:tfloat]
+    :double -> [:tdouble]
+    t -> raise "Unknown type #{inspect t}"
+  end
+end 
+defp type_to_list({x,_,_}) do
+  type = get_default_type()
+  case type do
+    :int -> [:int]
+    :float -> [:float]
+    :double -> [:double]
+    t -> raise "Unknown type #{inspect t}"
+  end
+end
+
+def get_default_type() do
+  send(:types_ast_server,{:get_default_type, self()})
+  receive do
+             {:default_type, type} -> type
+             h    -> raise "Unknown message from type server #{inspect h}"
+  end
+end
+
+
 def gen_para(p,:tdouble) do
   "double *#{p}"
 end
