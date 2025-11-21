@@ -50,7 +50,7 @@ defmodule Hok do
     {:__aliases__, _, [module_name]} = header
 
 
-    code = Hok.CudaBackend.compile_module(module_name, body, :fint)
+    code = Hok.CudaBackend.compile_module(module_name, body, :tint)
 
     file = File.open!("c_src/Elixir.#{module_name}.cu", [:write])
     IO.write(file, "#include \"erl_nif.h\"\n\n" <> code)
