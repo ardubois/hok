@@ -85,8 +85,7 @@ end
 ############################
   def types_ast_server(types_map,ast_map,default_type) do
      receive do
-      {:get_default_type} ->
-        {:get_map,pid} ->  send(pid, {:default_type,default_type})
+      {:get_default_type} -> send(pid, {:default_type,default_type})
         types_ast_server(types_map,ast_map,default_type) 
       {:add_ast,fun, ast} ->
         types_ast_server(types_map,Map.put(ast_map,fun,ast),default_type)
