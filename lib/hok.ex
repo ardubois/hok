@@ -621,7 +621,7 @@ defp process_args_no_fun([]), do: []
 ### first two arguments are used for error messages. Takes a list of types and a list of actual parameters and type checks them
 
 
-{
+
 def type_check_args(kernel,narg, [:matrex | t1], [a|t2]) do
     case a do
       {_ref,{_l,_c}} -> type_check_args(kernel,narg+1,t1,t2)
