@@ -385,9 +385,9 @@ def gen_para(p,:double) do
 end
 def gen_para(_p, {_ret,_type}) do
 
-  #r="#{ret} (*#{p})(#{to_arg_list(type)})"
-  #r
-  nil
+  r="#{ret} (*#{p})(#{to_arg_list(type)})"
+  r
+  #nil
 
 end
 defp to_arg_list([:matrex]) do
