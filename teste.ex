@@ -8,7 +8,7 @@ defk teste_kernel(a) do
  end
 end
 
-Hok.include [Saxpy]
+Hok.include [Teste]
 
 
 
