@@ -787,7 +787,7 @@ end
     ERL_NIF_TERM head;
     ERL_NIF_TERM tail;
 
-   // void **fun_res;
+    void **fun_res;
 
     const ERL_NIF_TERM *tuple_blocks;
     const ERL_NIF_TERM *tuple_threads;
