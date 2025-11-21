@@ -1,11 +1,15 @@
-defmodule Teste do
-  def new_gmatrex((%Nx.Tensor{data: data, type: type, shape: shape, names: name}) ) do
-    %Nx.BinaryBackend{ state: array} = data
-    {l,c} = shape
-    #ref=create_nx_ref_nif(array,l,c)
-    IO.inspect {:nx, type, shape, name ,  array}
-  end
+require Hok
+
+Hok.defmodule Teste do
+
+defk teste_kernel(a) do
+   index = blockIdx.x * blockDim.x + threadIdx.x;
+   a[index] = a[index] + 1
+ end
 end
+
+Hok.include [Saxpy]
+
 
 
 t = Nx.tensor([[1, 2, 3, 4]],type: {:f, 32})
@@ -15,6 +19,10 @@ t = Nx.tensor([[1, 2, 3, 4]],type: {:f, 32})
 gm = Hok.new_gnx(t)
 
 IO.inspect gm
+
+threadsPerBlock = 128;
+numberOfBlocks = div(size + threadsPerBlock - 1, threadsPerBlock)
+Hok.spawn(&Teste.teste_kernel/1,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[gm])
 
 mt = Hok.get_gnx(gm)
 
