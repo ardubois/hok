@@ -213,7 +213,7 @@ defmodule Hok.TypeInference do
             case get_or_insert_var_type(map,array) do
               {map,:none} -> type = get_default_type()
                              case type do
-                              :none -> error "Default type = :none"
+                              :none -> raise "Default type = :none"
                               :int -> map
                                   |> Map.put(array,:tint)
                                   |> set_type_exp(:int, acc_exp)
