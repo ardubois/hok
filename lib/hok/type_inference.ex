@@ -134,7 +134,7 @@ defmodule Hok.TypeInference do
 
 
   def get_default_type() do
-    send(:types_server,{:get_default_type})
+    send(:types_server,{:get_default_type, self()})
     receive do
                {:default_type, type} -> type
                h    -> raise "Unknown message from type server #{inspect h}"
