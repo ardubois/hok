@@ -131,6 +131,15 @@ defmodule Hok.TypeInference do
 
    end
   end
+
+
+  def get_default_type() do
+    send(:types_server,{:get_default_type})
+    receive do
+               {:default_type, type} -> type
+               h    -> raise "Unknown message from type server #{inspect h}"
+    end
+  end
 #######################################################33
 
   def infer_types(map,body) do
@@ -202,9 +211,9 @@ defmodule Hok.TypeInference do
           # assignment
           {:=, _, [{{:., _, [Access, :get]}, _, [{array,_,_},acc_exp]}, exp]} ->
             case get_or_insert_var_type(map,array) do
-              {map,:none} -> type = find_type_exp(map,exp)
+              {map,:none} -> type = get_default_type()
                              case type do
-                              :none -> map
+                              :none -> error "Default type = :none"
                               :int -> map
                                   |> Map.put(array,:tint)
                                   |> set_type_exp(:int, acc_exp)

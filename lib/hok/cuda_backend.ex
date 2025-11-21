@@ -51,10 +51,10 @@ end
   end
 
   ############ Compile Hok Module
-  def compile_module(module_name,body) do
+  def compile_module(module_name,body, default_type) do
 
     # initiate server that collects types and asts
-    pid = spawn_link(fn -> types_ast_server(%{},%{}) end)
+    pid = spawn_link(fn -> types_ast_server(%{},%{},default_type) end)
     Process.register(pid, :types_ast_server)
 
     code = case body do
@@ -83,14 +83,17 @@ end
 ######            ASTs are used to recompile a kernel at runtime substituting the names of the formal parameters of a function for
 ######         the actual parameters
 ############################
-  def types_ast_server(types_map,ast_map) do
+  def types_ast_server(types_map,ast_map,default_type) do
      receive do
+      {:get_default_type} ->
+        {:get_map,pid} ->  send(pid, {:default_type,default_type})
+        types_ast_server(types_map,ast_map,default_type) 
       {:add_ast,fun, ast} ->
-        types_ast_server(types_map,Map.put(ast_map,fun,ast))
+        types_ast_server(types_map,Map.put(ast_map,fun,ast),default_type)
        {:add_type,fun, type} ->
-        types_ast_server(Map.put(types_map,fun,type),ast_map)
+        types_ast_server(Map.put(types_map,fun,type),ast_map,default_type)
        {:get_map,pid} ->  send(pid, {:map,{types_map,ast_map}})
-        types_ast_server(types_map,ast_map)
+        types_ast_server(types_map,ast_map,default_type)
        {:kill} ->
              :ok
        end
