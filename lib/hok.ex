@@ -117,7 +117,7 @@ defmodule Hok do
       #IO.inspect inc_list
       includes = inc_list
                   |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
-                  |> add_module_to_app(module)
+                  |> Enum.map(fn module -> add_module_to_app(module) end)
   
     end
   
