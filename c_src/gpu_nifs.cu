@@ -848,7 +848,7 @@ static ERL_NIF_TERM load_lib_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM ar
   // We can now make the Erlang term that holds the resource...
   ERL_NIF_TERM term = enif_make_resource(env, lib_res);
   // ...and release the resource so that it will be freed when Erlang garbage collects
-  enif_release_resource(kernel_res);
+  enif_release_resource(lib_res);
  
 
   return term;
