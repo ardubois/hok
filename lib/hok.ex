@@ -50,7 +50,7 @@ defmodule Hok do
     {:__aliases__, _, [module_name]} = header
 
 
-    code = Hok.CudaBackend.compile_module(module_name, body, :int)
+    code = Hok.CudaBackend.compile_module(module_name, body, :float)
 
     file = File.open!("c_src/Elixir.#{module_name}.cu", [:write])
     IO.write(file, "#include \"erl_nif.h\"\n\n" <> code)
@@ -641,7 +641,7 @@ end
 def type_check_args(kernel,narg, [:tint | t1], [a|t2]) do
   case a do
     {:nx, {:s,32} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
+    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Int but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
@@ -649,7 +649,7 @@ end
 def type_check_args(kernel,narg, [:tdouble | t1], [a|t2]) do
   case a do
     {:nx, {:f,64} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
+    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Double but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 

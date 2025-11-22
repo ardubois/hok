@@ -34,8 +34,8 @@ n = String.to_integer(arg)
 #vet1 = Matrex.new(1, n, fn -> :rand.uniform() end)
 #vet2 = Matrex.new(1, n, fn -> :rand.uniform() end)
 
-vet1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> :rand.uniform(1000) end )
-vet2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> :rand.uniform(1000) end)
+vet1 = Hok.new_nx_from_function(1,n,{:f,32},fn -> :rand.uniform(1000) end )
+vet2 = Hok.new_nx_from_function(1,n,{:f,32},fn -> :rand.uniform(1000) end)
 
 
 
@@ -43,7 +43,7 @@ prev = System.monotonic_time()
 
 ref1= Hok.new_gnx(vet1)
 ref2 = Hok.new_gnx(vet2)
-ref3= Hok.new_gnx(1,n,{:s,32})
+ref3= Hok.new_gnx(1,n,{:f,32})
 
 
 
