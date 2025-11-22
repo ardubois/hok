@@ -398,6 +398,9 @@ end
 def load_kernel_nif(_module,_fun) do
   raise "NIF load_kernel_nif/2 not implemented"
 end
+def load_lib_nif(_module,_fun) do
+  raise "NIF load_lib_nif/2 not implemented"
+end
 def load_fun_nif(_module,_fun) do
   raise "NIF load_fun_nif/2 not implemented"
 end
