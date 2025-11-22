@@ -16,6 +16,8 @@
 ErlNifResourceType *KERNEL_TYPE;
 ErlNifResourceType *ARRAY_TYPE;
 ErlNifResourceType *PINNED_ARRAY;
+ErlNifResourceType *LIB_TYPE;
+
 
 void
 dev_array_destructor(ErlNifEnv *env, void *res) {
@@ -31,6 +33,8 @@ dev_pinned_array_destructor(ErlNifEnv *env, void *res) {
 
 static int
 load(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
+  LIB_TYPE =
+  enif_open_resource_type(env, NULL, "LIB", NULL, ERL_NIF_RT_CREATE  , NULL);
   KERNEL_TYPE =
   enif_open_resource_type(env, NULL, "kernel", NULL, ERL_NIF_RT_CREATE  , NULL);
   ARRAY_TYPE =
@@ -794,6 +798,64 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
   return term;
 }
 
+static ERL_NIF_TERM load_lib_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+   
+  ERL_NIF_TERM e_name_module = argv[0];
+  ERL_NIF_TERM e_name_fun = argv[1];
+  
+  unsigned int size_name_module;
+  unsigned int size_name_fun;
+  
+
+  enif_get_list_length(env,e_name_fun,&size_name_fun);
+  enif_get_list_length(env,e_name_module,&size_name_module);
+
+  char kernel_name[1024];
+  char func_name[1024];
+  char lib_name[1024];
+  char module_name[1024];
+
+  enif_get_string(env,e_name_fun,kernel_name,size_name_fun+1,ERL_NIF_LATIN1);
+  enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
+
+  strcpy(func_name,kernel_name);
+  strcat(func_name,"_call");
+  strcpy(lib_name,"priv/");
+  strcat(lib_name,module_name);
+  strcat(lib_name,".so");
+
+  
+  //printf("libname %s\n",lib_name);
+ // printf("func name a %s\n",func_name);
+  //printf("module name %s\n", module_name);
+  
+  void * m_handle = dlopen(lib_name, RTLD_NOW);
+  if(m_handle== NULL)  
+      { fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
+        char message[200];
+        strcpy(message,"Error opening shared library for the programa. It was not found.\n");
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+        return enif_make_int(env, 0);
+      }
+
+ // printf("Pointer %p\n",m_handle);
+  void **lib_res =(void**) enif_alloc_resource(LIB_TYPE, sizeof(void *));
+
+  // Let's create conn and let the resource point to it
+  
+  *lib_res = m_handle;
+  
+  // We can now make the Erlang term that holds the resource...
+  ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
+  // ...and release the resource so that it will be freed when Erlang garbage collects
+  enif_release_resource(kernel_res);
+ 
+
+  return term;
+}
+
+
+
 static ERL_NIF_TERM load_fun_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
    
   ERL_NIF_TERM e_name_module = argv[0];
@@ -901,9 +963,10 @@ static ERL_NIF_TERM spawn_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[
 
 static ErlNifFunc nif_funcs[] = {
     {"get_gpu_array_nif", 4, get_gpu_array_nif},
-     {"create_gpu_array_nx_nif", 4, create_gpu_array_nx_nif},
-      {"new_gpu_array_nif", 3, new_gpu_array_nif},
+    {"create_gpu_array_nx_nif", 4, create_gpu_array_nx_nif},
+    {"new_gpu_array_nif", 3, new_gpu_array_nif},
     {"load_kernel_nif", 2, load_kernel_nif},
+    {"load_lib_nif", 2, load_lib_nif},
     {"load_fun_nif", 2, load_fun_nif},
     {"new_pinned_nif",2,new_pinned_nif},
     {"new_gmatrex_pinned_nif",1,new_gmatrex_pinned_nif},
