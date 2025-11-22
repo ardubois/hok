@@ -55,7 +55,8 @@ defmodule Hok do
       #IO.inspect body
       {:__aliases__, _, [module_name]} = header
       #IO.puts "ioooooooooooooooooooooooooooooooooo"
-      #IO.inspect module_name
+      IO.inspect module_name
+      raise "hell"
       process_module(module_name,body)
   
       ast_new_module = Hok.CudaBackend.gen_new_module(header,body)
