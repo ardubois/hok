@@ -137,11 +137,11 @@ defmodule Hok do
      f_name= case Macro.escape(k) do
        {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
         _ -> raise "Argument to spawn should be a function."
-      app = get_app()
-      IO.inspect app
+      
      end
    
-   
+     app = get_app()
+     IO.inspect app
    
        {:unit,tk} = load_type(k)
    
