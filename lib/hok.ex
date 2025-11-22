@@ -154,8 +154,8 @@ defmodule Hok do
           "--compiler-options",
           "'-fPIC'",
           "-o",
-          "priv/Elixir.#{module_name}.so",
-          "c_src/Elixir.#{module_name}.cu"
+          "priv/Elixir.app.so",
+          "c_src/Elixir.app.cu"
   ], stderr_to_stdout: true)
 
 
