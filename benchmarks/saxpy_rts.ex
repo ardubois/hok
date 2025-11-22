@@ -24,7 +24,7 @@ defd saxpy(a,b)do
   end
 end
 
-Hok.include [PMap2]
+Hok.include_rts [PMap2]
 
 [arg] = System.argv()
 
