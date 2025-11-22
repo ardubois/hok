@@ -633,7 +633,7 @@ end
 def type_check_args(kernel,narg, [:tfloat | t1], [a|t2]) do
   case a do
     {:nx, {:f,32} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{type}."
+    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
@@ -641,7 +641,7 @@ end
 def type_check_args(kernel,narg, [:tint | t1], [a|t2]) do
   case a do
     {:nx, {:s,32} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{type}."
+    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
@@ -649,7 +649,7 @@ end
 def type_check_args(kernel,narg, [:tdouble | t1], [a|t2]) do
   case a do
     {:nx, {:f,64} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{type}."
+    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
