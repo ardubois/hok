@@ -144,7 +144,7 @@ defmodule Hok do
      app = get_app()
 #     IO.inspect app
 
-     code = Hok.CudaBackend.compile_module(:app, body, :double)
+     code = Hok.CudaBackend.compile_module(:app, app, :double)
 
     file = File.open!("c_src/Elixir.app.cu", [:write])
     IO.write(file, "#include \"erl_nif.h\"\n\n" <> code)
