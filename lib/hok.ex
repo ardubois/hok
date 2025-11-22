@@ -127,7 +127,7 @@ defmodule Hok do
     defmacro include_rts(inc_list) do
       #IO.inspect inc_list
       includes = inc_list
-                  |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
+                  |> Enum.map(fn {_,_,[module]} -> module end)
                   |> Enum.map(fn module -> add_module_to_app(module) end)
   
     end
