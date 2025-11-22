@@ -43,7 +43,7 @@ prev = System.monotonic_time()
 
 ref1= Hok.new_gnx(vet1)
 ref2 = Hok.new_gnx(vet2)
-ref3= Hok.new_gnx(1,n,{:f,32})
+ref3= Hok.new_gnx(1,n,{:s,32})
 
 
 
