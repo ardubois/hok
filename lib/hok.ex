@@ -43,7 +43,89 @@ defmodule Hok do
        r
   end
 
+  ##############################################
+  ###############
+  ##############   NEW MODULE SYSTEM BASED ON A SERVER
+  ################
+  ######################################
 
+
+  defmacro defmodule_rts(header,do: body) do
+    #  IO.inspect header
+      #IO.inspect body
+      {:__aliases__, _, [module_name]} = header
+      #IO.puts "ioooooooooooooooooooooooooooooooooo"
+      #IO.inspect module_name
+      process_module(module_name,body)
+  
+      ast_new_module = Hok.CudaBackend.gen_new_module(header,body)
+     # IO.inspect ast_new_module
+      ast_new_module
+  
+  
+      #quote do: IO.puts "ok"
+    end
+  
+    def process_module(module_name,body) do
+
+      # initiate server that collects types and asts
+      start_module_server()
+       
+      _defs=case body do
+          {:__block__, [], definitions} ->  add_module_to_server(module_name,definitions,)
+          _   -> add_module_to_server(module_name,[body])
+      end
+    end
+    
+    ###########################
+    ######  This server records modules and the final app
+    ############################
+    def start_module_server() do
+      if (Process.whereis(:module_server) == nil) do
+        pid = spawn_link(fn -> module_server(%{},[],:float) end)
+        try do
+             Process.register(pid, :module_server)
+        rescue
+        _ -> :ok  
+         end
+      end  
+    end
+    def add_module_to_server(name,module) do
+      send(:module_server,{:add_module,name,module})
+    end
+    def add_module_to_app(module_name) do
+      send(:module_server,{:add_module_to_app,module_name})
+    end
+    def module_server(module_map,app,default_type) do
+       receive do
+        {:change_default_type, type} -> module_server(module_map,app,type)
+        {:add_module,name, module} ->
+          module_server(Map.put(module_map,name,module), app, default_type)
+        {:add_module_to_app, module_name} ->
+          module = module_map[module_name]
+          case module do
+            nil -> raise "Unknown module in server: #{inspect module_name}"
+            m -> module_server(module_map, app++m,default_type)
+          end
+         {:kill} ->
+               :ok
+          msg -> raise "Unknown message to module server: #{inspect msg}"
+         end
+    end
+    
+    defmacro include_rts(inc_list) do
+      #IO.inspect inc_list
+      includes = inc_list
+                  |> Enum.map(fn {_,_,[module]} -> to_string(module) end)
+                  |> add_module_to_app(module)
+  
+    end
+  
+  ##############################################
+  ###############  END END END END END
+  ##############   NEW MODULE SYSTEM BASED ON A SERVER
+  ################
+  ######################################
   defmacro defmodule(header,do: body) do
     #IO.inspect header
     #IO.inspect body
@@ -805,7 +887,7 @@ end
 #######################################
 
 def spawn({:func, k, type}, t,b,l) do
-  IO.puts "Aqui!"
+  IO.puts "Aqui aff!"
   f_name= case Macro.escape(k) do
     {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
      _ -> raise "Argument to spawn should be a function."
