@@ -364,8 +364,9 @@ defp type_to_list([type]) do
   [ {List.last(ltype), List.delete_at(ltype, length(ltype)-1)}]
 end
 defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
-defp type_to_list({:arr,_,args}) do
-  IO.puts "type arr #{inspect args}"
+defp type_to_list({:arr,_,[arg]}) do
+  next = type_to_list(arg)
+  IO.puts "List types #{inspet next}" 
   type = get_default_type()
   case type do
     :int -> [:tint]
