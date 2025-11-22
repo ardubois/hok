@@ -96,6 +96,13 @@ defmodule Hok do
     def add_module_to_app(module_name) do
       send(:module_server,{:add_module_to_app,module_name})
     end
+    def get_app() do
+      send(:module_server, {:get_app, self()})
+      receive do
+        {:app,code} -> code
+        msg -> raise "Unknown message received from module server: #{inspect msg}"
+      end
+    end
     def module_server(module_map,app,default_type) do
        receive do
         {:change_default_type, type} -> module_server(module_map,app,type)
@@ -107,7 +114,10 @@ defmodule Hok do
             nil -> raise "Unknown module in server: #{inspect module_name}"
             m -> module_server(module_map, app++m,default_type)
           end
-         {:kill} ->
+        {:get_app, pid} ->
+           send(pid,{:app,app})
+           module_server(module_map, app,default_type) 
+        {:kill} ->
                :ok
           msg -> raise "Unknown message to module server: #{inspect msg}"
          end
@@ -120,6 +130,31 @@ defmodule Hok do
                   |> Enum.map(fn module -> add_module_to_app(module) end)
   
     end
+    def spawn_rts(k,t,b,l) when is_function(k) do
+      #IO.inspect k
+      #raise "hell"
+   
+     f_name= case Macro.escape(k) do
+       {:&, [],[{:/, [], [{{:., [], [_module, f_name]}, [no_parens: true], []}, _nargs]}]} -> f_name
+        _ -> raise "Argument to spawn should be a function."
+      app = get_app()
+      IO.inspect app
+     end
+   
+   
+   
+       {:unit,tk} = load_type(k)
+   
+       type_check_args(f_name,1,tk,l)
+   
+       pk=load(k)
+   
+       args = process_args(l)
+   
+       spawn_nif(pk,t,b,args)
+   
+   end
+   
   
   ##############################################
   ###############  END END END END END
