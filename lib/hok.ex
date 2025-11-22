@@ -72,7 +72,7 @@ defmodule Hok do
       start_module_server()
        
       _defs=case body do
-          {:__block__, [], definitions} ->  add_module_to_server(module_name,definitions,)
+          {:__block__, [], definitions} ->  add_module_to_server(module_name,definitions)
           _   -> add_module_to_server(module_name,[body])
       end
     end
