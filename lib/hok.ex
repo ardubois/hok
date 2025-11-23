@@ -173,9 +173,9 @@ defmodule Hok do
     
     lib=Hok.load_lib_nif(to_charlist("Elixir.app"))
     k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{unquote f_name}"),lib)
-    args = process_args(l)
+    args = Hok.process_args(l)
 
-    spawn_nif(k,t,b,args)
+    Hok.spawn_nif(k,t,b,args)
 
     IO.puts "Ok!"
   end
