@@ -83,7 +83,7 @@ defmodule Hok do
     ############################
     def start_module_server() do
       if (Process.whereis(:module_server) == nil) do
-        pid = spawn_link(fn -> module_server(%{},[],:float) end)
+        pid = spawn_link(fn -> module_server(%{}, %{},[],:float) end)
         try do
              Process.register(pid, :module_server)
         rescue
@@ -104,20 +104,42 @@ defmodule Hok do
         msg -> raise "Unknown message received from module server: #{inspect msg}"
       end
     end
-    def module_server(module_map,app,default_type) do
+    def add_lib_server(name,lib) do
+       send(:module_server,{:add_lib,name,lib})
+    end
+    def get_lib_server(name) do
+      send(:module_server, {:get_lib, name, self()})
+      receive do
+        {:lib,lib} -> lib
+        msg -> raise "Unknown message received from module server: #{inspect msg}"
+      end
+    end
+    def module_server(module_map,lib_map,app,default_type) do
        receive do
-        {:change_default_type, type} -> module_server(module_map,app,type)
+        {:change_default_type, type} -> module_server(module_map,lib_map,app,type)
+        {:get_default_type, id} ->
+          send(id, {:default_type,default_type})
+          module_server(module_map, lib_map, app,default_type) 
+        {:add_lib, name, lib} ->
+          module_server(module_map, Map.put(lib_map,name,lib), app,default_type) 
+        {:get_lib, name, pid} ->
+          lib = lib_map[name]
+          case lib do
+            nil -> raise "Unknown lib in server: #{inspect name}"
+            send(pid, {:lib,lib})
+            module_server(module_map, lib_map, app,default_type) 
+          end
         {:add_module,name, module} ->
-          module_server(Map.put(module_map,name,module), app, default_type)
+          module_server(Map.put(module_map,name,module), lib_map, app, default_type)
         {:add_module_to_app, module_name} ->
           module = module_map[module_name]
           case module do
             nil -> raise "Unknown module in server: #{inspect module_name}"
-            m -> module_server(module_map, app++m,default_type)
+            m -> module_server(module_map, lib_map,app++m,default_type)
           end
         {:get_app, pid} ->
            send(pid,{:app,{:__block__, [], app}})
-           module_server(module_map, app,default_type) 
+           module_server(module_map, lib_map, app,default_type) 
         {:kill} ->
                :ok
           msg -> raise "Unknown message to module server: #{inspect msg}"
