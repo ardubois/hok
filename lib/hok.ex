@@ -143,6 +143,8 @@ defmodule Hok do
    
      app = get_app()
 #     IO.inspect app
+IO.puts "app"
+     IO.ipspect app
 
      IO.puts "code"
      code = Hok.CudaBackend.compile_module(:app, app, :double)
