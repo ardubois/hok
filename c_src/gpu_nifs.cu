@@ -513,8 +513,9 @@ static ERL_NIF_TERM load_fun_from_lib_nif(ErlNifEnv *env, int argc, const ERL_NI
   enif_get_string(env,e_name_fun,kernel_name,size_name_fun+1,ERL_NIF_LATIN1);
   enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
 
-  strcpy(func_name,kernel_name);
-  strcat(func_name,"_call");
+   strcpy(func_name,"get_");
+  strcat(func_name,kernel_name);
+  strcat(func_name,"_ptr");
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
   strcat(lib_name,".so");
