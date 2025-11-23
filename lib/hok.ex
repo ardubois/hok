@@ -183,6 +183,7 @@ defmodule Hok do
 
     IO.puts "Ok!"
   end
+end
 
 
   def process_args_lib([{:anon,name,_type}|t1],lib) do
@@ -224,7 +225,6 @@ defmodule Hok do
   #spawn_nif(k,t,b,args)
 
   #IO.puts "Ok!"
-end
    
   
   ##############################################
