@@ -123,11 +123,11 @@ defmodule Hok do
         {:add_lib, name, lib} ->
           module_server(module_map, Map.put(lib_map,name,lib), app,default_type) 
         {:get_lib, name, pid} ->
-          lib = lib_map[name]
-          case lib do
+          rlib = lib_map[name]
+          case rlib do
             nil -> raise "Unknown lib in server: #{inspect name}"
-            send(pid, {:lib,lib})
-            module_server(module_map, lib_map, app,default_type) 
+            lib -> send(pid, {:lib,lib})
+                   module_server(module_map, lib_map, app,default_type) 
           end
         {:add_module,name, module} ->
           module_server(Map.put(module_map,name,module), lib_map, app, default_type)
