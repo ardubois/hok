@@ -143,13 +143,13 @@ defmodule Hok do
    
      app = get_app()
 #     IO.inspect app
-IO.puts "app"
-     IO.ipspect app
+     #IO.puts "app"
+     #IO.ipspect app
 
-     IO.puts "code"
+    # IO.puts "code"
      code = Hok.CudaBackend.compile_module(:app, app, :double)
 
-     IO.inspect code
+     #IO.inspect code
 
     file = File.open!("c_src/Elixir.app.cu", [:write])
     IO.write(file, "#include \"erl_nif.h\"\n\n" <> code)
@@ -169,7 +169,7 @@ IO.puts "app"
 
   Hok.load_kernel_nif(to_charlist("Elixir.app"),to_charlist("#{f_name}"))
 
-
+  IO.puts "Ok!"
 end
    
   
