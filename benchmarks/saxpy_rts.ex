@@ -43,7 +43,7 @@ vet2 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end)
 #vet_1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
 #vet_2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
 
-Hok.set_default_type(:float)
+#Hok.set_default_type(:float)
 
 prev = System.monotonic_time()
 
@@ -56,10 +56,10 @@ ref3= Hok.new_gnx(1,n,{:f,32})
 #ref_3= Hok.new_gnx(1,n,{:s,32})
 
 
-#Hok.set_default_type(:float)
-PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
+Hok.set_default_type(:float)
+#PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 
-#Hok.set_default_type(:int)
+Hok.set_default_type(:int)
 #PMap2.map2(ref_1,ref_2,ref_3,n,&PMap2.saxpy/2)
 
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
