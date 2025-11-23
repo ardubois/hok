@@ -124,9 +124,22 @@ defmodule Hok do
         msg -> raise "Unknown message received from module server: #{inspect msg}"
       end
     end
+    def set_default_type_server(type) do
+      send(:module_server,{:set_default_type, type})
+    end
+    def get_default_type_server() do
+      send(:module_server, {:get_default_type,  self()})
+      receive do
+        {:default_type,type} -> type
+        msg -> raise "Unknown message received from module server: #{inspect msg}"
+      end
+    end
     def module_server(module_map,lib_map,app,default_type,module_id) do
        receive do
         {:change_default_type, type} -> module_server(module_map,lib_map,app,type,module_id)
+        {:set_default_type, new_default_type} ->
+          module_server(module_map, lib_map, app,new_default_type,module_id) 
+
         {:get_default_type, id} ->
           send(id, {:default_type,default_type})
           module_server(module_map, lib_map, app,default_type,module_id) 
@@ -169,8 +182,8 @@ defmodule Hok do
     defmacro spawn_rts(k,t,b,l) do #when is_function(k) do
       #IO.inspect k
       #raise "hell"
-      IO.puts "spawn rts"
-      IO.inspect k
+      #IO.puts "spawn rts"
+      #IO.inspect k
      f_name= case k do
        {:&, [_l1],[{:/, [_l2], [{{:., [_l3], [_module, f_name]}, [no_parens: true], [_l4]}, _nargs]}]} -> f_name
        {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
@@ -184,14 +197,17 @@ defmodule Hok do
      #IO.ipspect app
 
     # IO.puts "code"
-     code = Hok.CudaBackend.compile_module(:app, app, :int)
+
+     default_type = get_default_type_server()
+     IO.puts "Default type: #{inspect default_type}"
+     code = Hok.CudaBackend.compile_module(:app, app, default_type)
 
      #IO.inspect code
 
      id = get_module_id()
 
      module_name = "Elixir.app#{id}"
-     IO.puts "Module name: #{module_name}"
+     #IO.puts "Module name: #{module_name}"
 
 
     file = File.open!("c_src/#{module_name}.cu", [:write])
@@ -216,7 +232,7 @@ defmodule Hok do
   quote do
    
     m_name = unquote module_name
-    IO.puts "Module name: #{m_name}"
+    #IO.puts "Module name: #{m_name}"
     lib = Hok.get_lib_server(to_charlist(m_name))
     
     kernel_name = to_string(unquote f_name)
@@ -278,6 +294,10 @@ end
   ##############   NEW MODULE SYSTEM BASED ON A SERVER
   ################
   ######################################
+  defmacro set_default_type do
+    
+  end
+
   defmacro defmodule(header,do: body) do
     #IO.inspect header
     #IO.inspect body

@@ -40,6 +40,7 @@ n = String.to_integer(arg)
 vet1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
 vet2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
 
+set_default_type(:int)
 
 prev = System.monotonic_time()
 
