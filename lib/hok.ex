@@ -196,7 +196,7 @@ defmodule Hok do
    
   quote do
    
-    lib = get_lib_server(to_charlist("Elixir.app"))
+    lib = Hok.get_lib_server(to_charlist("Elixir.app"))
     
     kernel_name = to_string(unquote f_name)
 
