@@ -137,7 +137,7 @@ defmodule Hok do
       IO.puts "spawn rts"
       IO.inspect k
      f_name= case k do
-       {:&, [_],[{:/, [_], [{{:., [_], [_module, f_name]}, [no_parens: true], [_]}, _nargs]}]} -> f_name
+       {:&, [_l1],[{:/, [_l2], [{{:., [_l3], [_module, f_name]}, [no_parens: true], [_l4]}, _nargs]}]} -> f_name
         _ -> raise "Argument to spawn should be a function."
       
      end
