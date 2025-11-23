@@ -660,6 +660,9 @@ def load_kernel_from_lib_nif(_module,_fun, _lib) do
   raise "NIF load_kernel_from_lib_nif/3 not implemented"
 end
 
+def load_fun_from_lib_nif(_module,_fun, _lib) do
+  raise "NIF load_kernel_from_lib_nif/3 not implemented"
+end
 
 
 
@@ -719,7 +722,7 @@ def load_fun(fun) do
 
               #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              Hok.load_fun_nif(to_charlist("Elixir.aapp"),to_charlist("#{funname}"))
+              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{funname}"))
     _ -> raise "Hok.invalid function"
   end
 end
