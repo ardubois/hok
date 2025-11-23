@@ -40,10 +40,10 @@ n = String.to_integer(arg)
 vet1 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end )
 vet2 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end)
 
-vet_1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
-vet_2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
+#vet_1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
+#vet_2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
 
-Hok.set_default_type(:float)
+Hok.set_default_type(:int)
 
 prev = System.monotonic_time()
 
@@ -51,12 +51,12 @@ ref1= Hok.new_gnx(vet1)
 ref2 = Hok.new_gnx(vet2)
 ref3= Hok.new_gnx(1,n,{:f,32})
 
-ref_1= Hok.new_gnx(vet_1)
-ref_2= Hok.new_gnx(vet_2)
-ref_3= Hok.new_gnx(1,n,{:s,32})
+#ref_1= Hok.new_gnx(vet_1)
+#ref_2= Hok.new_gnx(vet_2)
+#ref_3= Hok.new_gnx(1,n,{:s,32})
 
 
-Hok.set_default_type(:float)
+#Hok.set_default_type(:float)
 PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 
 Hok.set_default_type(:int)
@@ -69,7 +69,7 @@ PMap2.map2(ref_1,ref_2,ref_3,n,&PMap2.saxpy/2)
 
 result = Hok.get_gnx(ref3)
 
-result_ = Hok.get_gnx(ref_3)
+#result_ = Hok.get_gnx(ref_3)
 
 
 next = System.monotonic_time()
