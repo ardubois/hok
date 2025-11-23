@@ -493,6 +493,74 @@ static ERL_NIF_TERM load_kernel_from_lib_nif(ErlNifEnv *env, int argc, const ERL
   return term;
 }
 
+static ERL_NIF_TERM load_fun_from_lib_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+   
+  ERL_NIF_TERM e_name_module = argv[0];
+  ERL_NIF_TERM e_name_fun = argv[1];
+  
+  unsigned int size_name_module;
+  unsigned int size_name_fun;
+  
+
+  enif_get_list_length(env,e_name_fun,&size_name_fun);
+  enif_get_list_length(env,e_name_module,&size_name_module);
+
+  char kernel_name[1024];
+  char func_name[1024];
+  char lib_name[1024];
+  char module_name[1024];
+
+  enif_get_string(env,e_name_fun,kernel_name,size_name_fun+1,ERL_NIF_LATIN1);
+  enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
+
+  strcpy(func_name,kernel_name);
+  strcat(func_name,"_call");
+  strcpy(lib_name,"priv/");
+  strcat(lib_name,module_name);
+  strcat(lib_name,".so");
+
+  void *lib;
+  void  **lib_res;
+  
+  if (!enif_get_resource(env, argv[2], LIB_TYPE, (void **) &lib_res)) {
+       return enif_make_badarg(env);
+    }
+
+ 
+
+  lib = *lib_res;
+
+  
+  void (*fn)();
+  fn= (void (*)())dlsym(lib, func_name);
+
+   if(fn == NULL)  
+        { 
+          fprintf(stderr, "dlopen failure: %s\n", dlerror()); 
+          char message[200];
+        strcpy(message,"Error opening .so file: ");
+        strcat(message, func_name);
+        strcat(message, " was not found!");
+        enif_raise_exception(env,enif_make_string(env, message, ERL_NIF_LATIN1));
+        return enif_make_int(env, 0);
+      }
+  
+  void* ptr = fn();
+
+  void** kernel_res = (void**) enif_alloc_resource(KERNEL_TYPE, sizeof(void *));
+
+  // Let's create conn and let the resource point to it
+  
+  *kernel_res = ptr;
+  
+  // We can now make the Erlang term that holds the resource...
+  ERL_NIF_TERM term = enif_make_resource(env, kernel_res);
+  // ...and release the resource so that it will be freed when Erlang garbage collects
+  enif_release_resource(kernel_res);
+ 
+
+  return term;
+}
 
 
 ///////////////////////////////////////////
@@ -1024,6 +1092,7 @@ static ErlNifFunc nif_funcs[] = {
     {"create_gpu_array_nx_nif", 4, create_gpu_array_nx_nif},
     {"new_gpu_array_nif", 3, new_gpu_array_nif},
     {"load_kernel_from_lib_nif", 3, load_kernel_from_lib_nif},
+    {"load_fun_from_lib_nif", 3, load_fun_from_lib_nif},
     {"load_kernel_nif", 2, load_kernel_nif},
     {"load_lib_nif", 1, load_lib_nif},
     {"load_fun_nif", 2, load_fun_nif},
