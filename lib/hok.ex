@@ -170,7 +170,7 @@ defmodule Hok do
   end
   
   quote do
-    IO.puts "Post code: #{inpsect (unquote f_name)}"
+    IO.puts "Post code: #{inspect (unquote f_name)}"
     
     lib=Hok.load_lib_nif(to_charlist("Elixir.app"))
     k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{unquote f_name}"),lib)
