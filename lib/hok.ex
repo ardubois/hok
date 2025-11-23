@@ -116,7 +116,7 @@ defmodule Hok do
             m -> module_server(module_map, app++m,default_type)
           end
         {:get_app, pid} ->
-           send(pid,{:app,app})
+           send(pid,{:app,{:__block__, [], app}})
            module_server(module_map, app,default_type) 
         {:kill} ->
                :ok
