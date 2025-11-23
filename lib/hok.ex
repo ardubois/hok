@@ -177,12 +177,45 @@ defmodule Hok do
     lib=Hok.load_lib_nif(to_charlist("Elixir.app"))
 
     k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{kernel_name}"),lib)
-    args = Hok.process_args(unquote l)
+    args = Hok.process_args_lib(unquote l,lib)
     IO.inspect args
     Hok.spawn_nif(k,unquote(t),unquote(b),args)
 
     IO.puts "Ok!"
   end
+
+
+  def process_args_lib([{:anon,name,_type}|t1],lib) do
+    [load_lambda(name) | process_args_lib(t1,lib)]
+  end
+  def process_args_lib([{:func, func, _type}|t1],lib) do
+    [load_fun_lib(func,lib)| process_args_lib(t1,lib)]
+  end
+  def process_args_lib([{:nx, _type, _shape, _name , ref}|t1],lib) do
+    [ref| process_args_lib(t1,lib)]
+  end
+  def process_args_lib([{matrex,{_rows,_cols}}| t1],lib) do
+    [matrex | process_args_lib(t1,lib)]
+  end
+  def process_args_lib([arg|t1],lib) when is_function(arg) do
+    [load_fun_lib(arg,lib)| process_args_lib(t1,lib)]
+  end
+  def process_args_lib([arg|t1],lib) do
+    [arg | process_args_lib(t1,lib)]
+  end
+  def process_args_lib([],_lib), do: []
+
+  def load_fun_lib(fun,lib) do
+    case Macro.escape(fun) do
+      {:&, [],[{:/, [], [{{:., [], [_module, funname]}, [no_parens: true], []}, _nargs]}]} ->
+  
+                #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
+  
+                Hok.load_fun_from_lib_nif(to_charlist("Elixir.App"),to_charlist("#{funname}"),lib)
+      _ -> raise "Hok.invalid function"
+    end
+  end
+  
   #lib=Hok.load_lib_nif(to_charlist("Elixir.app"))
   #k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{f_name}"),lib)
   
