@@ -59,8 +59,8 @@ ref3= Hok.new_gnx(1,n,{:f,32})
 #Hok.set_default_type(:float)
 PMap2.map2(ref1,ref2,ref3,n, &PMap2.saxpy/2)
 
-Hok.set_default_type(:int)
-PMap2.map2(ref_1,ref_2,ref_3,n,&PMap2.saxpy/2)
+#Hok.set_default_type(:int)
+#PMap2.map2(ref_1,ref_2,ref_3,n,&PMap2.saxpy/2)
 
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> type a float; type b float; return 2*a+b end))
 #PMap2.map2(ref1,ref2,ref3,n, Hok.hok(fn (a,b) -> 2*a+b end))
