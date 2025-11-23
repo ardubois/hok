@@ -175,10 +175,10 @@ defmodule Hok do
     kernel_name = to_string(unquote f_name)
 
     lib=Hok.load_lib_nif(to_charlist("Elixir.app"))
-    
+
     k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{kernel_name}"),lib)
     args = Hok.process_args(unquote l)
-
+    IO.inspect args
     Hok.spawn_nif(unquote(k),unquote(t),unquote(b),args)
 
     IO.puts "Ok!"
