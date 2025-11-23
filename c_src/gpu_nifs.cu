@@ -1025,7 +1025,7 @@ static ErlNifFunc nif_funcs[] = {
     {"new_gpu_array_nif", 3, new_gpu_array_nif},
     {"load_kernel_from_lib_nif", 3, load_kernel_from_lib_nif},
     {"load_kernel_nif", 2, load_kernel_nif},
-    {"load_lib_nif", 2, load_lib_nif},
+    {"load_lib_nif", 1, load_lib_nif},
     {"load_fun_nif", 2, load_fun_nif},
     {"new_pinned_nif",2,new_pinned_nif},
     {"new_gmatrex_pinned_nif",1,new_gmatrex_pinned_nif},
