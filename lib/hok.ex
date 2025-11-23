@@ -731,25 +731,25 @@ def load_lambda(lambda) do
 ######   Prepares the  arguments before making the real kernell call
 ######
 ##############
-defp process_args([{:anon,name,_type}|t1]) do
+def process_args([{:anon,name,_type}|t1]) do
   [load_lambda(name) | process_args(t1)]
 end
-defp process_args([{:func, func, _type}|t1]) do
+def process_args([{:func, func, _type}|t1]) do
   [load_fun(func)| process_args(t1)]
 end
-defp process_args([{:nx, _type, _shape, _name , ref}|t1]) do
+def process_args([{:nx, _type, _shape, _name , ref}|t1]) do
   [ref| process_args(t1)]
 end
-defp process_args([{matrex,{_rows,_cols}}| t1]) do
+def process_args([{matrex,{_rows,_cols}}| t1]) do
   [matrex | process_args(t1)]
 end
-defp process_args([arg|t1]) when is_function(arg) do
+def process_args([arg|t1]) when is_function(arg) do
   [load_fun(arg)| process_args(t1)]
 end
-defp process_args([arg|t1]) do
+def process_args([arg|t1]) do
   [arg | process_args(t1)]
 end
-defp process_args([]), do: []
+def process_args([]), do: []
 
 #########################
 defp process_args_no_fun([{:anon,_name,_type}|t1]) do
