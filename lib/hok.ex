@@ -719,7 +719,7 @@ def load_fun(fun) do
 
               #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              Hok.load_fun_nif(to_charlist("Elixir.app"),to_charlist("#{funname}"))
+              Hok.load_fun_nif(to_charlist("Elixir.aapp"),to_charlist("#{funname}"))
     _ -> raise "Hok.invalid function"
   end
 end
