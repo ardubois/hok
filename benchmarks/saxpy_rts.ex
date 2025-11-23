@@ -37,16 +37,16 @@ n = String.to_integer(arg)
 #vet1 = Hok.new_nx_from_function(1,n,{:f,64},fn -> :rand.uniform(1000) end )
 #vet2 = Hok.new_nx_from_function(1,n,{:f,64},fn -> :rand.uniform(1000) end)
 
-vet1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
-vet2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
+vet1 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end )
+vet2 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end)
 
-Hok.set_default_type(:int)
+Hok.set_default_type(:float)
 
 prev = System.monotonic_time()
 
 ref1= Hok.new_gnx(vet1)
 ref2 = Hok.new_gnx(vet2)
-ref3= Hok.new_gnx(1,n,{:s,32})
+ref3= Hok.new_gnx(1,n,{:f,32})
 
 
 
