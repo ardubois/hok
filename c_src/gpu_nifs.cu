@@ -532,7 +532,7 @@ static ERL_NIF_TERM load_fun_from_lib_nif(ErlNifEnv *env, int argc, const ERL_NI
 
   
   void (*fn)();
-  fn= (void (*)())dlsym(lib, func_name);
+  fn= (void* (*)())dlsym(lib, func_name);
 
    if(fn == NULL)  
         { 
