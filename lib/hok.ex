@@ -131,7 +131,7 @@ defmodule Hok do
           send(id, {:default_type,default_type})
           module_server(module_map, lib_map, app,default_type,module_id) 
         {:get_module_id,id} ->
-           send(id, {:module_id,id})
+           send(id, {:module_id,module_id})
            module_server(module_map, lib_map, app,default_type,module_id+1) 
         {:add_lib, name, lib} ->
           module_server(module_map, Map.put(lib_map,name,lib), app,default_type,module_id) 
