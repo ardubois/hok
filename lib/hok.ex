@@ -191,6 +191,8 @@ defmodule Hok do
      id = get_module_id()
 
      module_name = "Elixir.app#{id}"
+     IO.puts "Module name: #{module_name}"
+
 
     file = File.open!("c_src/#{module_name}.cu", [:write])
     IO.write(file, "#include \"erl_nif.h\"\n\n" <> code)
