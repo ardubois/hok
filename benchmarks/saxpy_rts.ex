@@ -43,7 +43,7 @@ vet2 = Hok.new_nx_from_function(1,n,{:f,32},fn -> 1 end)
 #vet_1 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end )
 #vet_2 = Hok.new_nx_from_function(1,n,{:s,32},fn -> 1 end)
 
-Hok.set_default_type(:int)
+Hok.set_default_type(:float)
 
 prev = System.monotonic_time()
 
