@@ -294,8 +294,8 @@ end
   ##############   NEW MODULE SYSTEM BASED ON A SERVER
   ################
   ######################################
-  defmacro set_default_type do
-    
+  defmacro set_default_type(type) do
+    set_default_type_server(type)
   end
 
   defmacro defmodule(header,do: body) do
