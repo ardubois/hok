@@ -868,25 +868,16 @@ static ERL_NIF_TERM load_kernel_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM
 static ERL_NIF_TERM load_lib_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
    
   ERL_NIF_TERM e_name_module = argv[0];
-  ERL_NIF_TERM e_name_fun = argv[1];
   
   unsigned int size_name_module;
-  unsigned int size_name_fun;
-  
-
-  enif_get_list_length(env,e_name_fun,&size_name_fun);
+ 
   enif_get_list_length(env,e_name_module,&size_name_module);
 
-  char kernel_name[1024];
-  char func_name[1024];
   char lib_name[1024];
   char module_name[1024];
 
-  enif_get_string(env,e_name_fun,kernel_name,size_name_fun+1,ERL_NIF_LATIN1);
   enif_get_string(env,e_name_module,module_name,size_name_module+1,ERL_NIF_LATIN1);
 
-  strcpy(func_name,kernel_name);
-  strcat(func_name,"_call");
   strcpy(lib_name,"priv/");
   strcat(lib_name,module_name);
   strcat(lib_name,".so");
