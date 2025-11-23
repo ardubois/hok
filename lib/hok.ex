@@ -179,7 +179,7 @@ defmodule Hok do
     k=Hok.load_kernel_from_lib_nif(to_charlist("Elixir.app"),to_charlist("#{kernel_name}"),lib)
     args = Hok.process_args(unquote l)
     IO.inspect args
-    Hok.spawn_nif(unquote(k),unquote(t),unquote(b),args)
+    Hok.spawn_nif(k,unquote(t),unquote(b),args)
 
     IO.puts "Ok!"
   end
@@ -719,7 +719,7 @@ def load_fun(fun) do
 
               #module_name=String.slice("#{module}",7..-1//1) # Eliminates Elixir.
 
-              Hok.load_fun_nif(to_charlist("Elixir.app"),to_charlist("#{funname}"))
+              Hok.load_fun_nif(to_charlist("Elixir.App"),to_charlist("#{funname}"))
     _ -> raise "Hok.invalid function"
   end
 end
