@@ -77,4 +77,4 @@ IO.puts "Hok\t#{n}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 
 IO.inspect result
-IO.inspect result_
+#IO.inspect result_
