@@ -131,7 +131,7 @@ defmodule Hok do
                   |> Enum.map(fn module -> add_module_to_app(module) end)
   
     end
-    defmacro spawn_rts(k,t,b,l) when is_function(k) do
+    defmacro spawn_rts(k,t,b,l) #when is_function(k) do
       #IO.inspect k
       #raise "hell"
       IO.puts "spawn rts"
