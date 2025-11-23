@@ -138,7 +138,7 @@ defmodule Hok do
       IO.inspect k
      f_name= case k do
        {:&, [_l1],[{:/, [_l2], [{{:., [_l3], [_module, f_name]}, [no_parens: true], [_l4]}, _nargs]}]} -> f_name
-       {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernel
+       {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} = kernelname
         _ -> raise "Argument to spawn should be a function."
       
      end
