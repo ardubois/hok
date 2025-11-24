@@ -289,7 +289,7 @@ end
        
     set_default_type_server(type)
     quote do
-      set_default_type_server(unquote type)
+      Hok.set_default_type_server(unquote type)
     end
   end
 
