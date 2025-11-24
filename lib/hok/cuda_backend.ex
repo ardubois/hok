@@ -106,7 +106,7 @@ end
     if is_type_definition(h) do
       IO.puts "aqui!: #{inspect h}"
         if t == [] do
-          {:deft,_,[{fname,_,_}]} = h"
+          {:deft,_,[{fname,_,_}]} = h
           raise "Type definition for #{fname} is not followed by function definition!"
         end
         [definition | rest ] = t
