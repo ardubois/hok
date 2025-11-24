@@ -76,7 +76,63 @@ void genBpm (uint32_t height, uint32_t width, uint8_t *pixelbuffer, char *file_n
 }
 
 
-static ERL_NIF_TERM gen_bmp_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM gen_bmp_int_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+  ErlNifBinary  matrix_el;
+  int        *matrix;
+  int dim;
+  
+  ///GET FILE NAME
+  ERL_NIF_TERM list = argv[0];
+ 
+  unsigned int size;
+  enif_get_list_length(env,list,&size);
+  char file_name[1024];
+  
+  enif_get_string(env,list,file_name,size+1,ERL_NIF_LATIN1);
+ ///// END GET FILE NAME
+  /// GET DIM
+ 
+  if (!enif_get_int(env, argv[1], &dim)) {
+      return enif_make_badarg(env);
+  }
+  //// END GET DIM
+  /// BEGIN GET MATREX
+  if (!enif_inspect_binary(env, argv[2], &matrix_el)) 
+    {
+       return enif_make_badarg(env);
+    }
+  matrix = (int *) matrix_el.data;
+  
+  
+  //// END GET MATREX
+  
+  int matrex_size=dim*dim*4;
+
+  uint8_t *pixelbuffer = (uint8_t*)malloc(matrex_size);
+
+  for(int i = 0; i<matrex_size;i++)
+  {
+     pixelbuffer[i]= (uint8_t) matrix[i];
+  }
+
+  
+
+ // printf("matrex size %d\n",matrex_size);
+
+   // for(int i=0;i<matrex_size; i++)
+     //  {   printf("matrex %d = %f\n",i,matrix[i]);
+       //    printf("pixel %d = %d\n",i,pixelbuffer[i]);
+       //}
+           
+  genBpm(dim,dim,pixelbuffer,file_name);
+  //printf("size matrex %d, size image %d\n", data_size, dim*dim*4);
+  
+  free(pixelbuffer);
+  return enif_make_int(env, 0);
+
+}
+
+static ERL_NIF_TERM gen_bmp_float_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
   ErlNifBinary  matrix_el;
   float         *matrix;
   int dim;
@@ -132,9 +188,9 @@ static ERL_NIF_TERM gen_bmp_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM arg
 
 }
 
-
 static ErlNifFunc nif_funcs[] = {
-    {"gen_bmp_nif", 3, gen_bmp_nif}
+    {"gen_bmp_int_nif", 3, gen_bmp_int_nif},
+    {"gen_bmp_float_nif", 3, gen_bmp_float_nif}
 };
 
 ERL_NIF_INIT(Elixir.BMP, nif_funcs, NULL, NULL, NULL, NULL)
