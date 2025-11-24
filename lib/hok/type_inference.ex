@@ -1,7 +1,7 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
 
-    body = Hok.TypeInference.add_return(body)
+    body = Hok.TypeInference.add_return(map,body)
 
     types = infer_types(map,body)
     notinfer = not_infered(Map.to_list(types))
