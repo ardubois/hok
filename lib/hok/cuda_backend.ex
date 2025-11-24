@@ -104,13 +104,11 @@ end
   defp compile_definitions(_module_name, []), do: ""
   defp compile_definitions(module_name,[h|t]) do
     if is_type_definition(h) do
-      IO.puts "aqui!: #{inspect h}"
         if t == [] do
           {:deft,_,[{fname,_,_}]} = h
           raise "Type definition for #{fname} is not followed by function definition!"
         end
         [definition | rest ] = t
-        IO.puts "aqui"
         case definition do
            {:defd , _, _ } ->   code = compile_function(module_name,definition,h,module_name)
                                 rest_code = compile_definitions(module_name,rest)
