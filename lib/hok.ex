@@ -185,8 +185,9 @@ defmodule Hok do
       #IO.puts "spawn rts"
       #IO.inspect k
      f_name= case Macro.escape(k) do
-       {:&, [_l1],[{:/, [_l2], [{{:., [_l3], [_module, f_name]}, [no_parens: true], [_l4]}, _nargs]}]} -> f_name
-       {:&, _ ,[{:/, _,  [{{:., _, [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
+       {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _]}]} -> f_name
+       {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
+      # {:&, [],   [{:/, [],    [{{:., [],    [PMap2, :map_2kernel]}, [no_parens: true], []}, 5]}]}
         v -> raise "Argument to spawn should be a function: #{inspect v}."
       
      end
