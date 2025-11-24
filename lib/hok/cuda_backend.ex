@@ -105,7 +105,7 @@ end
   defp compile_definitions(module_name,[h|t]) do
     if is_type_definition(h) do
         if t == [] do
-          {:deft,_,[{fname,_,_}]} = h
+          {:deft,_,[{fname,_,_}]} = IO.puts "type definition #{inspect h}"
           raise "Type definition for #{fname} is not followed by function definition!"
         end
         [definition | rest ] = t
