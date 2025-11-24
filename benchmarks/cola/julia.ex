@@ -1,4 +1,4 @@
-require PolyHok
+require Hok
 defmodule BMP do
   @on_load :load_nifs
   def load_nifs do
