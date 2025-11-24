@@ -1,7 +1,7 @@
 defmodule Hok.TypeInference do
   def type_check(map,body) do
 
-    #body = PolyHok.CudaBackend.add_return(body)
+    body = Hok.CudaBackend.add_return(body)
 
     types = infer_types(map,body)
     notinfer = not_infered(Map.to_list(types))
