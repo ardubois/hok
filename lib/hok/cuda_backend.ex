@@ -319,6 +319,8 @@ end
 
     delta = Map.put(delta,:return,fun_type)
 
+    body = Hok.TypeInference.add_return(map,body)
+
     inf_types = Hok.TypeInference.type_check(delta,body)
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
