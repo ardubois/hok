@@ -67,9 +67,9 @@ Hok.defmodule_rts Julia do
   end
 end
 
-Hok.set_default_type(:int)
 
 Hok.include_rts [Julia]
+Hok.set_default_type(:int)
 
 
 [arg] = System.argv()
