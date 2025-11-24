@@ -116,7 +116,7 @@ end
            {:defk, _, _ } ->   code = compile_kernel(module_name,definition,h,module_name)
                               rest_code = compile_definitions(module_name,rest)
                               code <> rest_code
-           _              -> raise "Type definition must be followed by gpu function or kernel definition!"
+           _              -> raise "!Type definition must be followed by gpu function or kernel definition!"
         end
     else
         case h do
