@@ -319,7 +319,7 @@ end
 
     delta = Map.put(delta,:return,fun_type)
 
-    body = Hok.TypeInference.add_return(map,body)
+    body = Hok.TypeInference.add_return(delta,body)
 
     inf_types = Hok.TypeInference.type_check(delta,body)
 
