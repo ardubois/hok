@@ -318,7 +318,7 @@ end
     end
 
     delta = Map.put(delta,:return,fun_type)
-     
+     IO.inspect delta
     body = Hok.TypeInference.add_return(delta,body)
     IO.puts "Body function: #{fname}"
     IO.inspect body 
