@@ -52,7 +52,7 @@ Hok.defmodule_rts Julia do
     ptr[offset*4 + 3] = 255;
   end
 
-  deft (arr a) ~> a ~> a ~> [(arr a) ~> a ~> a ~> a ~> unit)
+  deft (arr a) ~> a ~> a ~> [(arr a) ~> a ~> a ~> a ~> unit] ~> unit
   defk mapgen2D_xy_1para_noret_ker(resp,arg1,size,f)do
     x = blockIdx.x * blockDim.x + threadIdx.x
     y = blockIdx.y * blockDim.y + threadIdx.y
