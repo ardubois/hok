@@ -321,7 +321,10 @@ end
 
     body = Hok.TypeInference.add_return(delta,body)
 
+    IO.inspect body 
     inf_types = Hok.TypeInference.type_check(delta,body)
+
+    
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
 
