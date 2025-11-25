@@ -327,6 +327,7 @@ end
     
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
+    fun_type = if (fun_type == :unit) do :void else fun_type end
 
     save_ast_info(fname,{:defd,iinfo,[header,[body]]},is_typed, inf_types)
 
