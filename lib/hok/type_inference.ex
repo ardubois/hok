@@ -630,7 +630,9 @@ end
              :tint -> :int
              :tdouble -> :double
              :tfloat -> :float
-             nil ->  :none
+             nil -> type = get_default_type()
+                    type  
+              
              ttt -> raise "Found type #{inspect ttt} for id #{inspect arg1} (#{inspect info_})"
            end
 
