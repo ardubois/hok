@@ -434,11 +434,20 @@ def gen_para(p, {ret,type}) do
   #nil
 
 end
-defp to_arg_list([:matrex]) do
-  "float*"
+defp to_arg_list([]) do
+  ""
 end
 defp to_arg_list([:matrex|t]) do
   "float*," <> to_arg_list(t)
+end
+defp to_arg_list([:tint|t]) do
+  "int*," <> to_arg_list(t)
+end
+defp to_arg_list([:tfloat|t]) do
+  "float*," <> to_arg_list(t)
+end
+defp to_arg_list([:tdouble|t]) do
+  "double*," <> to_arg_list(t)
 end
 defp to_arg_list([t]) do
   "#{t}"
