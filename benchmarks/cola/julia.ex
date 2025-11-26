@@ -21,6 +21,7 @@ end
 end
 
 Hok.defmodule_rts Julia do
+  deft julia integer ~> integer ~> integer
   defd julia(x,y,dim) do
     scale  = 0.1
     jx = scale * (dim - x)/dim
