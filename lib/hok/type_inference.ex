@@ -84,25 +84,38 @@ defmodule Hok.TypeInference do
       end
     end
   end
-  defp check_return([h|t]) do
-    [h|check_return t]
+ 
+  defp check_return([com]) do
+    case com do
+          {:return,_,_} -> [com]
+          {:if, info, [ exp,[do: block]]} -> [{:if, info, [ exp,[do: check_return block]]}]
+          {:if, info, [ exp,[do: block, else: belse ]]} -> [{:if, info, [ exp,[do: check_return(block), else: check_return(belse) ]]}]
+          {:=, info, args} ->  [ {:=, info, args},  {:return,[],[:unit]}]
+          _ -> if is_exp?(com) do
+                      [{:return,[],[com]}]
+                  else
+                    [com]
+                  end
+              
+    end
   end
   defp check_return(com) do
     case com do
           {:return,_,_} -> com
           {:if, info, [ exp,[do: block]]} -> {:if, info, [ exp,[do: check_return block]]}
           {:if, info, [ exp,[do: block, else: belse ]]} -> {:if, info, [ exp,[do: check_return(block), else: check_return(belse) ]]}
-          {:=, info, args} -> raise "hell"  
-            [ {:=, info, args},  {:return,[],[:unit]}]
-          _ -> if is_exp?(com) do
+          {:=, info, args} ->  [ {:=, info, args},  {:return,[],[:unit]}]
+           _ -> if is_exp?(com) do
                       {:return,[],[com]}
                   else
                     com
                   end
-                   
+                    
     end
   end
-
+  defp check_return([h|t]) do
+    [h|check_return t]
+  end
   defp is_exp?(exp) do
     case exp do
       {{:., _info, [Access, :get]}, _, [_arg1,_arg2]} -> true
