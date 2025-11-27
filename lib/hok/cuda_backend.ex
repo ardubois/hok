@@ -430,7 +430,7 @@ def gen_para(p,:double) do
 end
 def gen_para(p, {ret,type}) do
 
-  r="#{ret} (*#{p})(#{to_arg_list(type)})"
+  r="#{type_to_c ret} (*#{p})(#{to_arg_list(type)})"
   r
   #nil
 
@@ -456,7 +456,13 @@ end
 defp to_arg_list([v|t]) do
   "#{v}," <> to_arg_list(t)
 end
+def type_to_c(:unit), do: "void"
 def type_to_c(:tint), do: "int*"
+def type_to_c(:tfloat), do: "float*"
+def type_to_c(:tdouble), do: "double*"
+def type_to_c(t), do: "#{t}"
+
+
 def gen_function_ptr(fname) do
     "__device__ void* #{fname}_ptr = (void*) #{fname};"
 end
