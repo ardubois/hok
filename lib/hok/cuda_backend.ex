@@ -377,7 +377,7 @@ defp type_to_list({:arr,_,[arg]}) do
   :integer -> [:tint]
   :float -> [:tfloat]
   :double -> [:tdouble]
-  variable ->
+  _variable ->
       type = get_default_type()
       case type do
         :int -> [:tint]
@@ -388,7 +388,7 @@ defp type_to_list({:arr,_,[arg]}) do
   end 
 end
 
-defp type_to_list({x,_,_}) do
+defp type_to_list({_x,_,_}) do
   type = get_default_type()
   case type do
     :int -> [:int]
