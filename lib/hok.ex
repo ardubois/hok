@@ -186,7 +186,7 @@ defmodule Hok do
       #IO.inspect k
      f_name= case Macro.escape(k) do
        {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _]}]} -> f_name
-       {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, [module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
+       {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, [_module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
       # {:&, [],   [{:/, [],    [{{:., [],    [PMap2, :map_2kernel]}, [no_parens: true], []}, 5]}]}
         v -> raise "Argument to spawn should be a function: #{inspect v}."
       
@@ -890,16 +890,16 @@ def type_check_args(kernel,narg, [:matrex | t1], [a|t2]) do
 end
 def type_check_args(kernel,narg, [:tfloat | t1], [a|t2]) do
   case a do
-    {:nx, {:f,32} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
+    {:nx, {:f,32} , _shape, _name , _ref} -> type_check_args(kernel,narg+1,t1,t2)
+    {:nx, type , _shape, _name , _ref} -> raise "#{kernel}: argument #{narg} should have type Array Float but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
 end
 def type_check_args(kernel,narg, [:tint | t1], [a|t2]) do
   case a do
-    {:nx, {:s,32} , shape, name , ref} -> type_check_args(kernel,narg+1,t1,t2)
-    {:nx, type , shape, name , ref} -> raise "#{kernel}: argument #{narg} should have type Array Int but has type #{inspect type}."
+    {:nx, {:s,32} , _shape, _name , _ref} -> type_check_args(kernel,narg+1,t1,t2)
+    {:nx, type , _shape, _name , _ref} -> raise "#{kernel}: argument #{narg} should have type Array Int but has type #{inspect type}."
      _             -> raise "#{kernel}: argument #{narg} should have type gmatrex."
   end
 
