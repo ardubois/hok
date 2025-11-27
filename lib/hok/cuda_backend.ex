@@ -456,7 +456,7 @@ end
 defp to_arg_list([v|t]) do
   "#{v}," <> to_arg_list(t)
 end
-
+def type_to_c(:tint), do: "int*"
 def gen_function_ptr(fname) do
     "__device__ void* #{fname}_ptr = (void*) #{fname};"
 end
