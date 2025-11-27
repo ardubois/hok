@@ -1,6 +1,6 @@
 require Hok
 
-PolyHok.defmodule_rts NBodies do
+Hok.defmodule_rts NBodies do
 
   defd gpu_nBodies(p,c,n) do
     softening = 0.000000001
