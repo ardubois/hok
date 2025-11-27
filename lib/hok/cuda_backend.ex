@@ -318,12 +318,13 @@ end
     end
 
     delta = Map.put(delta,:return,fun_type)
-     IO.inspect delta
+     #IO.inspect delta
     body = Hok.TypeInference.add_return(delta,body)
-    IO.puts "Body function: #{fname}"
-    IO.inspect body 
+    IO.puts "function: #{fname}"
+    #IO.inspect body 
     inf_types = Hok.TypeInference.type_check(delta,body)
 
+     IO.puts "Inf types: #{inspect inf_types}"
     
 
     fun_type = if is_typed do fun_type else Map.get(inf_types,:return) end
