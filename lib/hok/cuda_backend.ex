@@ -713,6 +713,7 @@ end
             ""
         {:type, _ , [{_,_,_}]} ->
             ""
+        {:return, _ , [:unit]} -> ""    
         {:return, _, [arg]} ->
           "return (#{gen_exp(arg)});"
         {fun, _, args} when is_list(args)->

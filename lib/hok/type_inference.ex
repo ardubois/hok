@@ -97,6 +97,7 @@ defmodule Hok.TypeInference do
                   else
                     [com]
                   end
+          {:=, info, args} ->  [ {:=, info, args},  {:return,[],[:unit]}]      
     end
   end
   defp check_return(com) do
@@ -109,6 +110,7 @@ defmodule Hok.TypeInference do
                   else
                     com
                   end
+           {:=, info, args} ->  [ {:=, info, args},  {:return,[],[:unit]}]         
     end
   end
 
@@ -674,7 +676,7 @@ end
           else
             Map.get(map,var)
           end
-
+        :unit -> :unit
         {fun, _, _args} ->
             #IO.puts "aqui"
             #raise "hell"
@@ -684,7 +686,6 @@ end
                 :none -> :none
                 {ret,_type} -> ret
             end
-
         float when  is_float(float) -> :float
         int   when  is_integer(int) -> :int
         string when is_binary(string)  -> :string
