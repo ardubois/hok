@@ -1005,7 +1005,7 @@ end
     #raise "heel"
     r ="  enif_get_list_cell(env,list,&head,&tail);
     enif_get_resource(env, head, ftype, (void **) &fun_res);
-      #{ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{ret} (*)(#{to_arg_list(types)}))*fun_res;
+      #{type_to_c ret} (*arg#{narg})(#{to_arg_list(types)}) = (#{type_to_c ret} (*)(#{to_arg_list(types)}))*fun_res;
       list = tail;
 
     "
