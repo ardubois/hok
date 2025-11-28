@@ -381,13 +381,14 @@ defp type_to_list({:arr,_,[arg]}) do
   :integer -> [:tint]
   :float -> [:tfloat]
   :double -> [:tdouble]
-  var -> IO.puts "type variable: #{var}!!!!!!!!!!!!!!!!!!!!"
+  var -> IO.puts "type variable: #{inspect var}!!!!!!!!!!!!!!!!!!!!"
       type = get_default_type()
-      case type do
-        :int -> [:tint]
-        :float -> [:tfloat]
-        :double -> [:tdouble]
-        t -> raise "Unknown type #{inspect t}"
+      if (is_atom(type)) do
+        case type do
+          :int -> [:tint]
+          :float -> [:tfloat]
+          :double -> [:tdouble]
+          t -> raise "Unknown type #{inspect t}"
       end
   end 
 end
