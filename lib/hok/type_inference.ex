@@ -140,7 +140,17 @@ defmodule Hok.TypeInference do
   def get_default_type() do
     send(:types_ast_server,{:get_default_type, self()})
     receive do
-               {:default_type, type} -> type
+               {:default_type, type} -> if (is_atom(type)) do
+                                            type
+                                        else
+                                          case type[:default] do
+                                            nil -> case type[:a] do
+                                                    nil -> raise "Error in type inference, no default type defined!"
+                                                    t -> t
+                                                   end 
+                                            t ~> t       
+                                          end
+                                        end
                h    -> raise "Unknown message from type server #{inspect h}"
     end
   end

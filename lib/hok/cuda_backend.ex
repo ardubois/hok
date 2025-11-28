@@ -395,6 +395,7 @@ defp type_to_list({:arr,_,[arg]}) do
           :int -> [:tint]
           :float -> [:tfloat]
           :double -> [:tdouble]
+          nil -> raise "No type defined for type variable #{inspect var}!"
           t -> raise "Unknown type #{inspect t}"
         end
       end  
@@ -415,6 +416,7 @@ defp type_to_list({var,_,_}) do
       :int -> [:int]
       :float -> [:float]
       :double -> [:double]
+      nil -> raise "No type defined for type variable #{inspect var}!"
       t -> raise "Unknown type #{inspect t}"
     end
   end  
