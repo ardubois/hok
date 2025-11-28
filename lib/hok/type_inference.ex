@@ -565,7 +565,7 @@ defp set_type_exp(map,type,exp) do
               :none ->      {map, infered_type}= infer_types_args(map,args,[])
                             map = Map.put(map,fun, {type,infered_type})
                             map
-              {ret,type_args} -> IO.puts "set type args call fun: #{fun}, args: #{inspect args}" 
+              {ret,type_args} -> # IO.puts "set type args call fun: #{fun}, args: #{inspect args}" 
                               {map, infered_type} = set_type_args(map,type_args,args,[])
                               cond do
                                 ret == type -> Map.put(map,fun, {type, infered_type})
@@ -622,7 +622,8 @@ defp set_type_exp(map,type,exp) do
                :none ->      {map, infered_type}= infer_types_args(map,args,[])
                              map = Map.put(map,fun, {:none,infered_type})
                              map
-               {ret,type_args} -> {map, infered_type} = set_type_args(map,type_args,args,[])
+               {ret,type_args} -> IO.puts "set type args call fun: #{fun}, args: #{inspect args}"
+                                  {map, infered_type} = set_type_args(map,type_args,args,[])
                                   Map.put(map,fun, {ret, infered_type})
 
              end
