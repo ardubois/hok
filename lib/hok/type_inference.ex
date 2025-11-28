@@ -566,6 +566,12 @@ defp set_type_exp(map,type,exp) do
         #Enum.reduce(args,map, fn v,acc -> infer_type_exp(acc,v) end)
       {_fun, _, _noargs} ->
         map
+      :unit ->
+        if(type == :unit) do
+          map
+        else
+          raise ("Type error: :unit is being used in a context of type #{inspect type}")
+        end  
       float when  is_float(float) ->
         if(type == :float) do
           map
