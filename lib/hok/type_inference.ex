@@ -148,7 +148,7 @@ defmodule Hok.TypeInference do
                                                     nil -> raise "Error in type inference, no default type defined!"
                                                     t -> t
                                                    end 
-                                            t ~> t       
+                                            t -> t       
                                           end
                                         end
                h    -> raise "Unknown message from type server #{inspect h}"
