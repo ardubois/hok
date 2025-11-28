@@ -23,7 +23,7 @@ Hok.defmodule_rts NBodies do
   p[3] = p[3]+ dt*fx;
   p[4] = p[4]+ dt*fy;
   p[5] = p[5]+ dt*fz;
-
+  return :unit
   end
   defd gpu_integrate(p, dt, n) do
       p[0] = p[0] + p[3]*dt;
