@@ -83,7 +83,7 @@ defmodule Hok do
     ############################
     def start_module_server() do
       if (Process.whereis(:module_server) == nil) do
-        pid = spawn_link(fn -> module_server(%{}, %{},[],:float,0) end)
+        pid = spawn_link(fn -> module_server(%{}, %{},[],:float,0,0) end)
         try do
              Process.register(pid, :module_server)
         rescue
@@ -134,38 +134,54 @@ defmodule Hok do
         msg -> raise "Unknown message received from module server: #{inspect msg}"
       end
     end
-    def module_server(module_map,lib_map,app,default_type,module_id) do
+    def set_current_id(type) do
+      send(:module_server,{:set_current_id, id})
+    end
+    def get_current_id() do
+      send(:module_server, {:get_current_id,  self()})
+      receive do
+        {:current_id,id} -> id
+        msg -> raise "Unknown message received from module server: #{inspect msg}"
+      end
+    end
+    def module_server(module_map,lib_map,app,default_type,module_id,current_id) do
        receive do
-        {:change_default_type, type} -> module_server(module_map,lib_map,app,type,module_id)
-        {:set_default_type, new_default_type} ->
-          module_server(module_map, lib_map, app,new_default_type,module_id) 
+        {:change_default_type, type} -> module_server(module_map,lib_map,app,type,module_id,current_id)
+        {:set_current_id, new_id} ->
+          module_server(module_map, lib_map, app,new_default_type,module_id,new_id) 
 
+        {:get_current_id, pid} ->
+          send(pid, {:current_id,current_id})
+          module_server(module_map, lib_map, app,default_type,module_id,current_id)
+        {:set_default_type, new_default_type} ->
+            module_server(module_map, lib_map, app,new_default_type,module_id,current_id) 
+  
         {:get_default_type, id} ->
-          send(id, {:default_type,default_type})
-          module_server(module_map, lib_map, app,default_type,module_id) 
+            send(id, {:default_type,default_type})
+            module_server(module_map, lib_map, app,default_type,module_id,current_id)    
         {:get_module_id,id} ->
            send(id, {:module_id,module_id})
-           module_server(module_map, lib_map, app,default_type,module_id+1) 
+           module_server(module_map, lib_map, app,default_type,module_id+1,current_id) 
         {:add_lib, name, lib} ->
-          module_server(module_map, Map.put(lib_map,name,lib), app,default_type,module_id) 
+          module_server(module_map, Map.put(lib_map,name,lib), app,default_type,module_id,current_id) 
         {:get_lib, name, pid} ->
           rlib = lib_map[name]
           case rlib do
             nil -> raise "Unknown lib in server: #{inspect name}"
             lib -> send(pid, {:lib,lib})
-                   module_server(module_map, lib_map, app,default_type,module_id) 
+                   module_server(module_map, lib_map, app,default_type,module_id,current_id) 
           end
         {:add_module,name, module} ->
-          module_server(Map.put(module_map,name,module), lib_map, app, default_type,module_id)
+          module_server(Map.put(module_map,name,module), lib_map, app, default_type,module_id,current_id)
         {:add_module_to_app, module_name} ->
           module = module_map[module_name]
           case module do
             nil -> raise "Unknown module in server: #{inspect module_name}"
-            m -> module_server(module_map, lib_map,app++m,default_type,module_id)
+            m -> module_server(module_map, lib_map,app++m,default_type,module_id,current_id)
           end
         {:get_app, pid} ->
            send(pid,{:app,{:__block__, [], app}})
-           module_server(module_map, lib_map, app,default_type,module_id) 
+           module_server(module_map, lib_map, app,default_type,module_id,current_id) 
         {:kill} ->
                :ok
           msg -> raise "Unknown message to module server: #{inspect msg}"
@@ -195,7 +211,9 @@ defmodule Hok do
      IO.puts "Aqui!"
     type = get_default_type_server()
 
-    m_name = "Elixir.app_#{to_string(type)}"
+    id = get_current_id()
+
+    m_name = "Elixir.app_#{to_string(id)}"
     
     #IO.puts "Module name: #{m_name}"
     lib = Hok.get_lib_server(to_charlist(m_name))
@@ -270,9 +288,11 @@ end
   end
   
    app = get_app()
+
+   id = get_module_id()
     
     code = Hok.CudaBackend.compile_module(:app, app, type)
-    module_name = "Elixir.app_#{to_string(type)}"
+    module_name = "Elixir.app_#{to_string(id)}"
     IO.puts "Module name: #{module_name}"
          #IO.puts "Module name: #{module_name}"
     
@@ -298,7 +318,7 @@ end
        
     set_default_type_server(type)
     quote do
-      Hok.set_default_type_server(unquote type)
+      Hok.set_current_id(unquote id)
     end
   end
 
