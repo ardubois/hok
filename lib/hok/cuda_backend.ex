@@ -390,18 +390,34 @@ defp type_to_list({:arr,_,[arg]}) do
           :double -> [:tdouble]
           t -> raise "Unknown type #{inspect t}"
         end
+      else
+        case type[var] do
+          :int -> [:tint]
+          :float -> [:tfloat]
+          :double -> [:tdouble]
+          t -> raise "Unknown type #{inspect t}"
+        end
       end  
   end 
 end
 
-defp type_to_list({_x,_,_}) do
+defp type_to_list({var,_,_}) do
   type = get_default_type()
-  case type do
-    :int -> [:int]
-    :float -> [:float]
-    :double -> [:double]
-    t -> raise "Unknown type #{inspect t}"
-  end
+  if (is_atom(type)) do
+    case type do
+      :int -> [:int]
+      :float -> [:float]
+      :double -> [:double]
+      t -> raise "Unknown type #{inspect t}"
+    end
+  else
+    case type[var] do
+      :int -> [:int]
+      :float -> [:float]
+      :double -> [:double]
+      t -> raise "Unknown type #{inspect t}"
+    end
+  end  
 end
 
 def get_default_type() do
