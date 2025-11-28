@@ -116,7 +116,6 @@ end
 [arg] = System.argv()
 
 Hok.include_rts [NBodies]
-Hok.set_default_type(:double)
 
 
 user_value = String.to_integer(arg)
@@ -142,9 +141,14 @@ prev = System.monotonic_time()
 
 d_buf = PolyHok.new_gnx(h_buf)
 
-_gpu_resp = d_buf
-  |> NBodies.map_2_para_no_resp(d_buf,nBodies,nBodies, &NBodies.gpu_nBodies/3)
-  |> NBodies.map_2_para_no_resp( 0.01,nBodies,nBodies, &NBodies.gpu_integrate/3)
+
+Hok.set_default_type(%{default: :double, a: double, b: :tdouble, :c :int })
+
+r1 = NBodies.map_2_para_no_resp(d_buf,d_buf,nBodies,nBodies, &NBodies.gpu_nBodies/3)
+
+Hok.set_default_type(%{default: :double, a: double, b: double, :c :int })
+
+r2 = NBodies.map_2_para_no_resp( r1, 0.01,nBodies,nBodies, &NBodies.gpu_integrate/3)
   |> PolyHok.get_gnx
   #|> IO.inspect
 
