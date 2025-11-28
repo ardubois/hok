@@ -26,10 +26,11 @@ Hok.defmodule_rts NBodies do
   return :unit
   end
   defd gpu_integrate(p, dt, n) do
+      type n int
       p[0] = p[0] + p[3]*dt;
       p[1] = p[1] + p[4]*dt;
       p[2] = p[2] + p[5]*dt;
-
+      return :unit
   end
   defk map_step_2_para_no_resp_kernel(d_array,  step, par1, par2,size,f) do
 
