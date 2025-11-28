@@ -389,7 +389,8 @@ defp type_to_list({:arr,_,[arg]}) do
           :float -> [:tfloat]
           :double -> [:tdouble]
           t -> raise "Unknown type #{inspect t}"
-      end
+        end
+      end  
   end 
 end
 
