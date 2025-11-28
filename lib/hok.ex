@@ -260,10 +260,14 @@ end
   ################
   ######################################
   defmacro set_default_type(type) do
-    IO.inspect type
-    raise "hell"
-    app = get_app()
-    
+   # IO.inspect type
+   # raise "hell"
+
+  type = cond do
+    is_atom(type) -> type
+    _ ->   {real_map, _binding} = Code.eval_quoted(type)
+           real_map 
+  end
     code = Hok.CudaBackend.compile_module(:app, app, type)
     module_name = "Elixir.app_#{to_string(type)}"
     IO.puts "Module name: #{module_name}"
