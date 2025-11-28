@@ -45,10 +45,10 @@ Hok.defmodule_rts NBodies do
   end
   def map_2_para_no_resp(d_array,  par1, par2, size, f) do
     block_size =  128;
-    {_l,step} = PolyHok.get_shape_gnx(d_array)
+    {_l,step} = Hok.get_shape_gnx(d_array)
     nBlocks = floor ((size + block_size - 1) / block_size)
 
-      PolyHok.spawn(&NBodies.map_step_2_para_no_resp_kernel/6,{nBlocks,1,1},{block_size,1,1},[d_array,step,par1,par2,size,f])
+      Hok.spawn(&NBodies.map_step_2_para_no_resp_kernel/6,{nBlocks,1,1},{block_size,1,1},[d_array,step,par1,par2,size,f])
       d_array
   end
   def nbodies(-1,p,_dt,_softening,_n) do
@@ -139,7 +139,7 @@ h_buf = Hok.new_nx_from_function(nBodies,size_body,{:f,64},fn -> :rand.uniform()
 
 prev = System.monotonic_time()
 
-d_buf = PolyHok.new_gnx(h_buf)
+d_buf = Hok.new_gnx(h_buf)
 
 
 Hok.set_default_type(%{default:  :double, a: :double, b: :tdouble, c: :int })
@@ -154,7 +154,7 @@ r2 = NBodies.map_2_para_no_resp( r1, 0.01,nBodies,nBodies, &NBodies.gpu_integrat
 
   next = System.monotonic_time()
 
-IO.puts "PolyHok\t#{user_value}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
+IO.puts "Hok\t#{user_value}\t#{System.convert_time_unit(next-prev,:native,:millisecond)}"
 
 #IO.inspect gpu_resp
 
