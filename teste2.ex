@@ -2,9 +2,9 @@ require Hok
 
 Hok.defmodule Teste do
 
-defk teste_kernel(a) do
+defd teste_kernel(a) do
    #index = blockIdx.x * blockDim.x + threadIdx.x;
-   a[index] = a[index] + 1
+   a[1] = a[1] + 1
  end
 end
 
