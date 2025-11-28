@@ -263,7 +263,7 @@ end
 
     app = get_app()
     
-    code = Hok.CudaBackend.compile_module(:app, app, quote do: type)
+    code = Hok.CudaBackend.compile_module(:app, app, unquote type)
     module_name = "Elixir.app_#{to_string(type)}"
     IO.puts "Module name: #{module_name}"
          #IO.puts "Module name: #{module_name}"
