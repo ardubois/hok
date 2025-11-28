@@ -260,7 +260,8 @@ end
   ################
   ######################################
   defmacro set_default_type(type) do
-
+    IO.inspect type
+    raise "hell"
     app = get_app()
     
     code = Hok.CudaBackend.compile_module(:app, app, unquote type)
