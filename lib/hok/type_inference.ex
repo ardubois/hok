@@ -143,6 +143,7 @@ defmodule Hok.TypeInference do
                {:default_type, type} -> if (is_atom(type)) do
                                             type
                                         else
+                                          IO.inspect type
                                           case type[:default] do
                                             nil -> case type[:a] do
                                                     nil -> raise "Error in type inference, no default type defined!"
