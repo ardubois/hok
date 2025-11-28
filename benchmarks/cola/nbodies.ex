@@ -32,6 +32,7 @@ Hok.defmodule_rts NBodies do
       p[2] = p[2] + p[5]*dt;
       return :unit
   end
+  deft map_step_2_para_no_resp_kernel (Arr a) ~> integer
   defk map_step_2_para_no_resp_kernel(d_array,  step, par1, par2,size,f) do
 
 

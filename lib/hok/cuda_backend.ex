@@ -381,7 +381,7 @@ defp type_to_list({:arr,_,[arg]}) do
   :integer -> [:tint]
   :float -> [:tfloat]
   :double -> [:tdouble]
-  _variable ->
+  var -> IO.puts "type variable: #{var}!!!!!!!!!!!!!!!!!!!!"
       type = get_default_type()
       case type do
         :int -> [:tint]
