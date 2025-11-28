@@ -134,7 +134,7 @@ defmodule Hok do
         msg -> raise "Unknown message received from module server: #{inspect msg}"
       end
     end
-    def set_current_id(type) do
+    def set_current_id(id) do
       send(:module_server,{:set_current_id, id})
     end
     def get_current_id() do
@@ -148,7 +148,7 @@ defmodule Hok do
        receive do
         {:change_default_type, type} -> module_server(module_map,lib_map,app,type,module_id,current_id)
         {:set_current_id, new_id} ->
-          module_server(module_map, lib_map, app,new_default_type,module_id,new_id) 
+          module_server(module_map, lib_map, app,default_type,module_id,new_id) 
 
         {:get_current_id, pid} ->
           send(pid, {:current_id,current_id})
