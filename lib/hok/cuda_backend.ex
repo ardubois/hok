@@ -413,11 +413,8 @@ defp type_to_list({var,_,_}) do
     end
   else
     case type[var] do
-      :int -> [:int]
-      :float -> [:float]
-      :double -> [:double]
       nil -> raise "No type defined for type variable #{inspect var}!"
-      t -> raise "Unknown type #{inspect t}"
+      t -> [t]
     end
   end  
 end
