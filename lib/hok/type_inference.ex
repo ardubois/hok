@@ -327,7 +327,8 @@ defmodule Hok.TypeInference do
                   case type_fun do
                     :none ->      {map, infered_type}= infer_types_args(map,args,[])
                                   Map.put(map,fun, {:unit,infered_type})
-                    {ret,type} -> {map, infered_type} = set_type_args(map,type,args,[])
+                    {ret,type} -> IO.puts "set type args call fun: #{fun}, args: #{inspect args}"
+                                  {map, infered_type} = set_type_args(map,type,args,[])
                                   case ret do
                                     :none -> Map.put(map,fun, {:unit, infered_type})
                                     :unit -> Map.put(map,fun, {:unit, infered_type})
@@ -622,7 +623,7 @@ defp set_type_exp(map,type,exp) do
                :none ->      {map, infered_type}= infer_types_args(map,args,[])
                              map = Map.put(map,fun, {:none,infered_type})
                              map
-               {ret,type_args} -> IO.puts "set type args call fun: #{fun}, args: #{inspect args}"
+               {ret,type_args} -> #IO.puts "set type args call fun: #{fun}, args: #{inspect args}"
                                   {map, infered_type} = set_type_args(map,type_args,args,[])
                                   Map.put(map,fun, {ret, infered_type})
 
