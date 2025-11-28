@@ -265,7 +265,7 @@ end
 
   type = cond do
     is_atom(type) -> type
-    _ ->   {real_map, _binding} = Code.eval_quoted(type)
+    true ->   {real_map, _binding} = Code.eval_quoted(type)
            real_map 
   end
     code = Hok.CudaBackend.compile_module(:app, app, type)
