@@ -48,7 +48,7 @@ Hok.defmodule_rts NBodies do
     {_l,step} = Hok.get_shape_gnx(d_array)
     nBlocks = floor ((size + block_size - 1) / block_size)
 
-      Hok.spawn(&NBodies.map_step_2_para_no_resp_kernel/6,{nBlocks,1,1},{block_size,1,1},[d_array,step,par1,par2,size,f])
+      Hok.spawn_rts(&NBodies.map_step_2_para_no_resp_kernel/6,{nBlocks,1,1},{block_size,1,1},[d_array,step,par1,par2,size,f])
       d_array
   end
   def nbodies(-1,p,_dt,_softening,_n) do
