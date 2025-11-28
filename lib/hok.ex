@@ -263,11 +263,14 @@ end
    # IO.inspect type
    # raise "hell"
 
-  type = cond do
+   type = cond do
     is_atom(type) -> type
     true ->   {real_map, _binding} = Code.eval_quoted(type)
            real_map 
   end
+  
+   app = get_app()
+    
     code = Hok.CudaBackend.compile_module(:app, app, type)
     module_name = "Elixir.app_#{to_string(type)}"
     IO.puts "Module name: #{module_name}"
