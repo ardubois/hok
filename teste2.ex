@@ -5,6 +5,7 @@ Hok.defmodule Teste do
 defd teste_kernel(a) do
    index = blockIdx.x * blockDim.x + threadIdx.x;
    a[1] = a[1] + 1
+   return :unit
  end
 end
 
