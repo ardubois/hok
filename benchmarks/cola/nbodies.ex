@@ -131,7 +131,7 @@ size_body = 6
 
 
 
-h_buf = PolyHok.new_nx_from_function(nBodies,size_body,{:f,64},fn -> :rand.uniform() end )
+h_buf = Hok.new_nx_from_function(nBodies,size_body,{:f,64},fn -> :rand.uniform() end )
 
 #h_buf = PolyHok.new_nx_from_function(nBodies,size_body,{:f,32},fn -> 1 end )
 

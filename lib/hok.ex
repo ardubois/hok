@@ -208,9 +208,7 @@ defmodule Hok do
       
      end
    
-     IO.puts "Aqui!"
-    type = get_default_type_server()
-
+     
     id = get_current_id()
 
     m_name = "Elixir.app_#{to_string(id)}"
