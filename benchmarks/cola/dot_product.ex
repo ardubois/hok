@@ -121,7 +121,7 @@ end
 n = String.to_integer(arg)
 
 Hok.include_rts [DP]
-Hok.set_default_type(:float)
+Hok.set_default_type(%{default:  :float, a: :float, b: :float, c: :float })
 
 #{vet1,_} = Nx.Random.uniform(Nx.Random.key(1), shape: {1, n}, type: :f32)
 #{vet2,_} = Nx.Random.uniform(Nx.Random.key(1), shape: {1, n}, type: :f32)
