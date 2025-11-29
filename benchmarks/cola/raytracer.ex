@@ -88,7 +88,7 @@ defk mapxy_2D_step_2_para_no_resp_kernel(d_array,  step, par1, par2,size,f) do
   end
 end
 def mapxy_2D_para_no_resp(d_array,  step,par1, par2, size, f) do
-  Hok.spawn(&RayTracer.mapxy_2D_step_2_para_no_resp_kernel/6,{size,size,1},{1,1,1},[d_array,step,par1,par2,size,f])
+  Hok.spawn_rts(&RayTracer.mapxy_2D_step_2_para_no_resp_kernel/6,{size,size,1},{1,1,1},[d_array,step,par1,par2,size,f])
    # Hok.spawn(&RayTracer.mapxy_2D_step_2_para_no_resp_kernel/6,{trunc(size/16),trunc(size/16),1},{16,16,1},[d_array,step,par1,par2,size,f])
     d_array
 end
