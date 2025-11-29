@@ -21,7 +21,7 @@ end
   end
 end
 
-Hok.defmodule RayTracer do
+Hok.defmodule_rts RayTracer do
 
 
 defd raytracing(image, width,  spheres ,x,y) do
@@ -70,9 +70,11 @@ defd raytracing(image, width,  spheres ,x,y) do
   image[1] = g * 255
   image[2] = b * 255
   image[3] = 255
+  return :unit
 
 end
 
+deft mapxy_2D_step_2_para_no_resp_kernel (arr a) ~> integer ~> b ~> c ~> integer ~> [(arr a) ~> b ~> c ~> integer ~> integer ~> unit]
 defk mapxy_2D_step_2_para_no_resp_kernel(d_array,  step, par1, par2,size,f) do
 
   x = threadIdx.x + blockIdx.x * blockDim.x
@@ -158,6 +160,8 @@ defmodule Main do
 
     def main do
 
+      Hok.include_rts [RayTracer]
+
         sphereList = Nx.tensor([sphereMaker2(Main.spheres,Main.dim)], type: {:f,32})
 
         width = Main.dim
@@ -170,6 +174,8 @@ defmodule Main do
 
         ref_sphere = Hok.new_gnx(sphereList)
         ref_image = Hok.new_gnx(1,width * height  * 4,{:s,32})
+
+        Hok.set_default_type(%{default:  :int, a: :int, b: :int, c: :tint })
 
         RayTracer.mapxy_2D_para_no_resp(ref_image, 4,width, ref_sphere, width, &RayTracer.raytracing/5)
 

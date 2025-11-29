@@ -483,7 +483,7 @@ defp set_type_exp(map,type,exp) do
                   end
               end
           end
-      {op, info, [arg1,arg2]} when op in [ :<=, :<, :>, :>=, :!=,:==] ->
+      {op, info, [arg1,arg2]} when op in [:!=,:==] ->
         if(type != :int)  do
           raise "Operaotr (#{inspect op}) (#{inspect info}) is being used in a context #{inspect type}"
         end
@@ -497,7 +497,7 @@ defp set_type_exp(map,type,exp) do
                     end
           ntype ->  set_type_exp(map,ntype,arg1)
                     case t2 do
-                        :none -> set_type_exp(map,ntype,arg2)
+                        :none -> map = set_type_exp(map,ntype,arg2)
                         ntype2 -> if ntype != ntype2 do
                                       raise "Operator #{inspect op} (#{inspect info}) is applyed to type #{t1} and type #{t2}."
                                   else
@@ -505,6 +505,23 @@ defp set_type_exp(map,type,exp) do
                                   end
                     end
         end
+        {op, info, [arg1,arg2]} when op in [ :<=, :<, :>, :>=] ->
+          if(type != :int)  do
+            raise "Operaotr (#{inspect op}) (#{inspect info}) is being used in a context #{inspect type}"
+          end
+          t1 = find_type_exp(map,arg1)
+          t2 = find_type_exp(map, arg2)
+          case t1 do
+            :none -> case t2 do
+                        :none ->  map
+                        ntype ->  set_type_exp(map,ntype,arg2)
+                      end
+            ntype ->  map = set_type_exp(map,ntype,arg1)
+                      case t2 do
+                          :none -> map
+                          ntype2 -> set_type_exp(map,ntype2,arg2)
+                      end
+          end
         #case t1 do
         #  :none ->
         #    map = set_type_exp(map,type,arg1)
