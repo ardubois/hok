@@ -176,9 +176,9 @@ defmodule Main do
         ref_image = Hok.new_gnx(1,width * height  * 4,{:s,32})
 
         Hok.set_default_type(%{default:  :int, a: :int, b: :tfloat, c: :int })
-
+        IO.inspect "before"
         RayTracer.mapxy_2D_para_no_resp(ref_image, 4,width, ref_sphere, width, &RayTracer.raytracing/5)
-
+        IO.inspect "after"
        # Hok.spawn_jit(&RayTracer.raytracing/4,{trunc(width/16),trunc(height/16),1},{16,16,1},[width, height, refSphere, refImag])
 
         image = Hok.get_gnx(ref_image)
