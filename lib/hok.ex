@@ -10,7 +10,7 @@ defmodule Hok do
      #resp
     #IO.inspect function
     #raise "hell"
-    name = CudaBackend.gen_lambda_name()
+    name = Hok.CudaBackend.gen_lambda_name()
     {:fn, i1, [{:->, i2 , [para,body]}] } = function
 
     #{:defd,iinfo,[header,[body]]}
