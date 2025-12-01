@@ -175,7 +175,7 @@ defmodule Main do
         ref_sphere = Hok.new_gnx(sphereList)
         ref_image = Hok.new_gnx(1,width * height  * 4,{:s,32})
 
-        Hok.set_default_type(%{default:  :int, a: :int, b: :tflaot, c: :int })
+        Hok.set_default_type(%{default:  :int, a: :int, b: :tfloat, c: :int })
 
         RayTracer.mapxy_2D_para_no_resp(ref_image, 4,width, ref_sphere, width, &RayTracer.raytracing/5)
 
