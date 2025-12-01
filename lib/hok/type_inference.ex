@@ -498,6 +498,7 @@ defp set_type_exp(map,type,exp) do
           ntype ->  set_type_exp(map,ntype,arg1)
                     case t2 do
                         :none -> map = set_type_exp(map,ntype,arg2)
+                                 map
                         ntype2 -> if ntype != ntype2 do
                                       raise "Operator #{inspect op} (#{inspect info}) is applyed to type #{t1} and type #{t2}."
                                   else
