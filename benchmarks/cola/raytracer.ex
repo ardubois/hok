@@ -175,7 +175,7 @@ defmodule Main do
         ref_sphere = Hok.new_gnx(sphereList)
         ref_image = Hok.new_gnx(1,width * height  * 4,{:s,32})
 
-        Hok.set_default_type(%{default:  :int, a: :int, b: :int, c: :tint })
+        Hok.set_default_type(%{default:  :int, a: :int, b: :tflaot, c: :int })
 
         RayTracer.mapxy_2D_para_no_resp(ref_image, 4,width, ref_sphere, width, &RayTracer.raytracing/5)
 
@@ -187,7 +187,7 @@ defmodule Main do
         IO.puts "Hok\t#{width}\t#{System.convert_time_unit(next-prev,:native,:millisecond)} "
 
 
-        BMP.gen_bmp_int(~c"ray.bmp",width,image)
+        #BMP.gen_bmp_int(~c"ray.bmp",width,image)
 
         #image = Matrex.to_list(image)
 
