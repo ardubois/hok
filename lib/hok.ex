@@ -17,7 +17,7 @@ defmodule Hok do
     #{fname, _, para} = header
 
     add_module_to_server(name,[ {:defd,i1,[{name,i1, para},[body]]}])
-    id = get_module_id()
+    id = get_current_id()
 
     result = quote do: Hok.load_lambda_compilation(unquote("Elixir.app_#{id}"), unquote(name), :none)
     #IO.inspect result
@@ -872,7 +872,7 @@ def load_lambda_compilation(_module,lambda,type) do
  {:anon, lambda, type}
 end
 def load_lambda(lambda) do
-  id = get_module_id()
+  id = get_current_id()
   Hok.load_fun_nif(to_charlist("Elixir.app_#{id}"),to_charlist(lambda))
  end
 ############################
