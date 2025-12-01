@@ -337,13 +337,13 @@ end
 
   set_default_type_server(type)
 
-
+  
 
   #IO.inspect app
    
-    #quote do
-    #  Hok.set_current_id(unquote id)
-    #end
+    quote do
+      IO.inpect "ok"
+    end
   end
 
   defmacro defmodule(header,do: body) do
