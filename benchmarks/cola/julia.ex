@@ -42,7 +42,7 @@ Hok.defmodule_rts Julia do
     end
     return 1
   end
-  deft julia_function (arr int) ~> integer ~> integer ~> integer ~> unit  
+  deft julia_function (arr integer) ~> integer ~> integer ~> integer ~> unit  
   defd julia_function(ptr,x,y,dim) do
     offset = x + y * dim # gridDim.x
     juliaValue = julia(x,y,dim)
