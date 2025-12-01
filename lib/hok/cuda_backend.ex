@@ -407,7 +407,7 @@ defp type_to_list({var,_,_}) do
   type = get_default_type()
   if (is_atom(type)) do
     case type do
-      :integer -> [:int]
+      :int -> [:int]
       :float -> [:float]
       :double -> [:double]
       t -> raise "Unknown type #{inspect t}"
