@@ -148,7 +148,7 @@ defmodule Hok do
     def set_default_type_server(type) do
       send(:module_server,{:set_default_type, type})
     end
-    def get_default_type_server() do
+    def get_default_type() do
       send(:module_server, {:get_default_type,  self()})
       receive do
         {:default_type,type} -> type
@@ -341,9 +341,9 @@ end
 
   #IO.inspect app
    
-    quote do
-      Hok.set_current_id(unquote id)
-    end
+    #quote do
+    #  Hok.set_current_id(unquote id)
+    #end
   end
 
   defmacro defmodule(header,do: body) do
