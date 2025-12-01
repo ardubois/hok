@@ -196,6 +196,8 @@ defmodule Hok do
           module_server(Map.put(module_map,name,module), lib_map, app, default_type,module_id,current_id)
         {:add_module_to_app, module_name} ->
           module = module_map[module_name]
+          IO.inspect module_name
+          IO.inspect module
           case module do
             nil -> raise "Unknown module in server: #{inspect module_name}"
             m -> module_server(module_map, lib_map,app++m,default_type,module_id,current_id)
