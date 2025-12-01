@@ -377,6 +377,7 @@ defp type_to_list({:~>,_, [a1,a2]}), do: type_to_list(a1) ++ type_to_list(a2)
 defp type_to_list({:arr,_,[arg]}) do
  # next = type_to_list(arg)
  # IO.puts "arg Arr #{inspect arg}"
+ IO.puts "Arg: #{inspect arg}"
  case arg do
   :integer -> [:tint]
   :float -> [:tfloat]
