@@ -17,6 +17,7 @@ defmodule Hok do
     #{fname, _, para} = header
 
     add_module_to_server(name,[ {:defd,i1,[{name,i1, para},[body]]}])
+    add_module_to_app(name)
     id = get_current_id()
 
     result = quote do: Hok.load_lambda_compilation(unquote("Elixir.app_#{id}"), unquote(name), :none)
