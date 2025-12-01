@@ -379,9 +379,9 @@ defp type_to_list({:arr,_,[arg]}) do
  # IO.puts "arg Arr #{inspect arg}"
  IO.puts "Arg: #{inspect arg}"
  case arg do
-  :integer -> [:tint]
-  :float -> [:tfloat]
-  :double -> [:tdouble]
+  {:integer,_,_} -> [:tint]
+  {:float ,_,_}-> [:tfloat]
+  {:double,_,_} -> [:tdouble]
   {var,_,_} -> 
       type = get_default_type()
       if (is_atom(type)) do
