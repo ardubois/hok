@@ -4,7 +4,7 @@ require Integer
 #import Nx
 Hok.defmodule_rts DP do
 include CAS
-  deft (arr a) ~> (arr b) ~> (arr c) ~> integer ~> [a ~> b ~> c]
+  deft map_2kernel (arr a) ~> (arr b) ~> (arr c) ~> integer ~> [a ~> b ~> c]
   defk map_2kernel(a1,a2,a3,size,f) do
     id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
