@@ -6,7 +6,7 @@ Hok.defmodule_rts DP do
 include CAS
   deft (arr a) ~> (arr b) ~> integer ~> [a ~> b ~> c]
   defk map_2kernel(a1,a2,a3,size,f) do
-    type int size
+    type size int
     id = blockIdx.x * blockDim.x + threadIdx.x
     if(id < size) do
       a3[id] = f(a1[id],a2[id])
