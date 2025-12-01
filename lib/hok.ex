@@ -5,6 +5,26 @@ defmodule Hok do
       #IO.puts("ok")
   end
 
+  defmacro hok_rts(function) do
+    #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
+     #resp
+    #IO.inspect function
+    #raise "hell"
+    name = CudaBackend.gen_lambda_name()
+    {:fn, i1, [{:->, i2 , [para,body]}] } = function
+
+    #{:defd,iinfo,[header,[body]]}
+    #{fname, _, para} = header
+
+    add_module_to_server(name,[ {:defd,i1,[{name,i1, para},[body]]}])
+    id = get_module_id()
+
+    result = quote do: Hok.load_lambda_compilation(unquote("Elixir.app_#{id}"), unquote(name), :none)
+    #IO.inspect result
+    #raise "hell"
+    result
+  end
+
   defmacro hok(function) do
     #resp =  Macro.escape(quote(do: {:anon , unquote(function)}))
      #resp
