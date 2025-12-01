@@ -23,7 +23,7 @@ end
 
 Hok.defmodule_rts RayTracer do
 
-
+deft raytracing (arr int) ~> integer ~> (arr float) ~> integer ~> integer ~> unit
 defd raytracing(image, width,  spheres ,x,y) do
 
 
