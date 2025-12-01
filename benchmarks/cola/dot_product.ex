@@ -39,6 +39,7 @@ include CAS
       Hok.spawn_rts(&DP.reduce_kernel/5,{numberOfBlocks,1,1},{threadsPerBlock,1,1},[ref,result_gpu, initial,f, size])
       result_gpu
   end
+  deft reduce_kernel (arr a) ~> (arr a) ~> a ~> [a ~> a ~> a ] ~> integer
   defk reduce_kernel(a, ref4, initial,f,n) do
 
     __shared__ cache[256]
