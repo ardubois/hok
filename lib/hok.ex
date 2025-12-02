@@ -265,7 +265,7 @@ defmodule Hok do
 
     m_name = "Elixir.app_#{to_string(id)}"
     
-    #IO.puts "Module name: #{m_name}"
+    IO.puts "Module name: #{m_name}"
     quote do
       lib = Hok.get_lib_server(to_charlist(unquote(m_name)))
       kernel_name = to_string(unquote(f_name))
