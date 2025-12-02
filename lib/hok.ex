@@ -271,8 +271,8 @@ defmodule Hok do
       kernel_name = to_string(unquote(f_name))
      # k=Hok.load_kernel_from_lib_nif(to_charlist(m_name),to_charlist("#{kernel_name}"),lib)
       #args = Hok.process_args_lib(unquote(l),lib)
-      IO.inspect args
-      Hok.spawn_nif(k,unquote(t),unquote(b),args)
+      #IO.inspect args
+      #Hok.spawn_nif(k,unquote(t),unquote(b),args)
 
       IO.puts "Ok!"
     end
