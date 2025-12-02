@@ -342,7 +342,7 @@ end
   #IO.inspect app
    
     quote do
-      IO.inpect "set default type macro"
+      IO.inspect "set default type macro"
     end
   end
 
