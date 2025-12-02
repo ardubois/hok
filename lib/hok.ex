@@ -269,6 +269,7 @@ defmodule Hok do
     quote do
     #  lib = Hok.get_lib_server(to_charlist(unquote(m_name)))
       kernel_name = to_string(unquote(f_name))
+      IO.puts "kernel name: #{inspect kernel_name}"
      # k=Hok.load_kernel_from_lib_nif(to_charlist(m_name),to_charlist("#{kernel_name}"),lib)
       #args = Hok.process_args_lib(unquote(l),lib)
       #IO.inspect args
