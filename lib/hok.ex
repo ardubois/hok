@@ -234,6 +234,7 @@ defmodule Hok do
      id = get_module_id()
      app = get_app()
      type = get_default_type()
+     IO.puts "Default types: #{inspect type}"
     
     code = Hok.CudaBackend.compile_module(:app, app, type)
     module_name = "Elixir.app_#{to_string(id)}"
