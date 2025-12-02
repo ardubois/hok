@@ -263,11 +263,10 @@ defmodule Hok do
      
     id = get_current_id()
 
-    m_name = "Elixir.app_#{to_string(id)}"
-  
     quote do
-    #  lib = Hok.get_lib_server(to_charlist(unquote(m_name)))
-      m_name = "Elixir.app_#{unquote(id)}"
+      m_name = "Elixir.app_#{unquote(id)}"   
+      lib = Hok.get_lib_server(to_charlist(m_name))
+ 
       kernel_name = to_string(unquote(f_name))
       IO.puts "kernel name: #{inspect kernel_name}"
      # k=Hok.load_kernel_from_lib_nif(to_charlist(m_name),to_charlist("#{kernel_name}"),lib)
