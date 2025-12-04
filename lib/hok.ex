@@ -243,7 +243,6 @@ defmodule Hok do
       Hok.spawn_nif(k,t,b,args)
 
       IO.puts "Ok!"
-    end
 end
 
 
