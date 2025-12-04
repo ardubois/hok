@@ -225,7 +225,7 @@ defmodule Hok do
       IO.inspect k
      f_name= case Macro.escape(k) do
        {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _]}]} -> f_name
-       {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, _}, kernelname]}, _, _}, _nargs]}]} -> kernelname
+       {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, _}, kernelname]}, _, _}, _]}]} -> kernelname
       # {:&, [],   [{:/, [],    [{{:., [],    [PMap2, :map_2kernel]}, [no_parens: true], []}, 5]}]}
         v -> raise "Argument to spawn should be a function: #{inspect v}."
       
