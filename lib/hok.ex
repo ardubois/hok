@@ -218,11 +218,10 @@ defmodule Hok do
                   |> Enum.map(fn module -> add_module_to_app(module) end)
   
     end
-    defmacro spawn_rts(k,t,b,l) do #when is_function(k) do
+    def spawn_rts(k,t,b,l) do #when is_function(k) do
       #IO.inspect k
       #raise "hell"
       #IO.puts "spawn rts"
-      IO.inspect k
      f_name= case Macro.escape(k) do
        {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _]}]} -> f_name
        {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, _}, kernelname]}, _, _}, _]}]} -> kernelname
