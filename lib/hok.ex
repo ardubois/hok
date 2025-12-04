@@ -222,7 +222,7 @@ defmodule Hok do
       #IO.inspect k
       #raise "hell"
       #IO.puts "spawn rts"
-      #IO.inspect k
+      IO.inspect k
      f_name= case Macro.escape(k) do
        {:&, _,[{:/, _, [{{:., _, [_module, f_name]}, [no_parens: true], _}, _]}]} -> f_name
        {:&, _ ,   [{:/, _,     [{{:., _,     [{:__aliases__, _, [_module]}, kernelname]}, _, []}, _nargs]}]} -> kernelname
